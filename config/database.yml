@@ -1,0 +1,7 @@
+development:
+  adapter: postgresql
+  host: localhost
+  database: your-app-name
+  username: postgres
+  password: postgres
+  encoding: unicode
