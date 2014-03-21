@@ -1,0 +1,125 @@
+<div class="container">
+  <%= form_tag "/your_reservation" do %>
+
+
+  <div class="pull-left" style="margin:20px; background-color:orange; padding:20px;">
+
+    <h4 style="text-align:center">Reservation</h4>
+    <hr>
+  
+    <p>
+        <b>Check-In:</b><br>
+        <%= text_field_tag :start_date, @start_date, class: "datepicker" %>
+    </p>
+    <p>
+        <b>Check-Out:</b><br>
+        <%= text_field_tag :end_date, @end_date, class: "datepicker" %>
+    </p>
+    <% if @reservation_category == "Cabin" %>
+    
+      <p><b>Select a cabin category: </b></p>
+      <p>
+          <%= radio_button_tag "reservation_subcategory", "Land", @reservation_subcategory == "Land" %>&nbsp;
+          <%= label_tag "reservation_subcategory_land", "Land Cabin" %><br>
+          <%= radio_button_tag "reservation_subcategory", "Floating", @reservation_subcategory == "Floating" %> &nbsp;
+          <%= label_tag "reservation_subcategory_floating", "Floating Cabin" %><br>
+      </p>
+    <% elsif @reservation_category == "Boat" %>
+        <p><b>Select a boat category:</b></p>
+        <p>
+            <%= radio_button_tag "reservation_subcategory", "Deck", @reservation_subcategory == "Deck" %>&nbsp;
+            <%= label_tag "reservation_subcategory_deck", "Deck Boat" %><br>
+            <%= radio_button_tag "reservation_subcategory", "Pontoon", @reservation_subcategory == "Pontoon" %>&nbsp;
+            <%= label_tag "reservation_subcategory_pontoon", "Pontoon Boat" %><br>
+            <%= radio_button_tag "reservation_subcategory", "Double Decker Pontoon", @reservation_subcategory == "Double Decker Pontoon" %>&nbsp;
+            <%= label_tag "reservation_subcategory_dblpontoon", "Double Decker Pontoon" %><br>
+        </p>
+    <% elsif @reservation_category == "Boat Slip" %>
+        <p><b>Select a boat slip category:</b></p>
+        <p>
+            <%= radio_button_tag "reservation_subcategory", "Covered", @reservation_subcategory == "Covered" %>&nbsp;
+            <%= label_tag "reservation_subcategory_covered", "Covered" %><br>
+            <%= radio_button_tag "reservation_subcategory", "Uncovered", @reservation_subcategory == "Uncovered" %>&nbsp;
+            <%= label_tag "reservation_subcategory_uncovered", "Uncovered" %><br>
+        </p>      
+    <% end %>
+    
+    <% if @reservation_category == "Boat Slip" %>
+      Add vessel dimension entry here
+    
+    <% else %>
+        <p>
+            <%= label_tag "adults", "Adults" %>
+            <%= select_tag "adults", options_for_select([1,2,3,4,5,6,7,8,9,10], @adults), prompt: "1" %><br>
+        </p>
+        <p>
+            <%= label_tag "children", "Children under 18" %>
+            <%= select_tag "children", options_for_select([0,1,2,3,4,5,6,7,8,9,10], @children), prompt: "0" %><br>
+        </p>
+        <p> 
+            <%= label_tag "pets", "Pets" %>
+            <%= select_tag "pets", options_for_select([0,1,2,3], @pets), prompt: "0" %>
+        </p>
+
+      <p><%= submit_tag "Check Availability" %></p>
+      <p><%= submit_tag "Cancel" %></p>
+    <% end %>
+    
+  </div>
+
+  <div class="pull-right" style="width:880px; padding= 20px; margin=20px">
+
+    <div class="container">
+    
+          <% if @available_rentals != nil %>
+
+            <table class="table">    
+              <% @available_rentals.each do |rental, rental_item_ids| %>
+                  <tr>
+                    <td><%= image_tag rental.image_filename, width:170 %>
+                    </td>
+    
+                    <td>
+                      <% if @reservation_category == "Cabin" %>
+                          <h4><%= "#{rental.num_bedrooms} Bedroom #{@reservation_subcategory} Cabins"  %></h4>                  
+                          <p>
+                            <b>Maximum Occupancy:</b> <%= rental.max_occupancy %> &nbsp;&nbsp;&nbsp;&nbsp; 
+                            <b>No. Baths: </b> <%= rental.num_baths %><br> 
+                          </p>
+                      <% elsif @reservation_category == "Boat" %>
+                          <h4><%= "#{@reservation_subcategory} Boats" %></h4>
+                          <p>
+                            <b>Maximum Occupancy:</b> <%= rental.max_occupancy %> 
+                          </p>
+                      <% elsif @reservation_category == "Boat Slip" %>
+                          <h4>Boat Slip</h4>
+                          <p>
+                            <b>Max Length: </b> <%= rental.length %> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <b>Max Width: </b> <%= rental.width %> &nbsp;&nbsp;&nbsp;&nbsp; 
+                            <b>Max Height: </b> <%= rental.height %>
+                          </p>
+                      <% end %>
+                      <p>
+                        <%= rental.description %>
+                      </p>
+                      <p>
+                        <b><%= "#{rental_item_ids.length} available" %></b>
+                      </p>
+                    </td>
+    
+                    <td style="width:160px;">
+                        <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first %>
+                    </td>
+                  </tr>
+              <% end %>
+            </table>
+        
+          <% end %>
+          
+    </div>
+  </div>
+  <% end %> <!-- form tag -->
+</div>
+
+
+

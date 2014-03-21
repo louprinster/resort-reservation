@@ -1,4 +1,17 @@
 ResortReservation::Application.routes.draw do
+
+  get "/" => "main#root"
+  get "/:reservation_category/intro"  => "main#intro_get"
+  post "/:reservation_category/intro" => "main#intro_post"
+  get "/your_reservation"             => "main#reservation_get"
+  post "/your_reservation"            =>  "main#reservation_post"
+  get "/guest_details"                => "main#guest_details_get"
+  post "/guest_details"               => "main#guest_details_post"
+  get "/review"                       => "main#review_get"
+  post "/review"                      => "main#review_post"
+
+end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -53,4 +66,3 @@ ResortReservation::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-end

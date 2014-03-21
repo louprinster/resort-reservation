@@ -1,0 +1,47 @@
+
+
+
+Saved from your_reservation sidebar options
+    <p> 
+        <%= check_box_tag "view", "on", @view %>
+        <%= label_tag "view", "View" %>
+        <br> 
+        <%= check_box_tag "full_kitchen", "on", @full_kitchen %>
+        <%= label_tag "full_kitchen", "Full Kitchen" %>
+        <br> 
+        <%= check_box_tag "washer_dryer", "on", @washer_dryer %>
+        <%= label_tag "washer_dryer", "Washer/Dryer" %>
+        <br> 
+        <%= check_box_tag "screened_porch", "on", @screened_porch %>
+        <%= label_tag "screened_porch", "Screened Porch" %>
+        <br> 
+        <%= check_box_tag "cable_tv", "on", @cable_tv %>
+        <%= label_tag "cable_tv", "Cable TV" %>
+        <br> 
+        <%= check_box_tag "fireplace", "on", @fireplace %>
+        <%= label_tag "fireplace", "Fireplace" %>
+        <br> 
+        <%= check_box_tag "loft", "on", @loft %>
+        <%= label_tag "loft", "Loft" %>
+        <br> 
+        <%= check_box_tag "air_heat", "on", @air_heat %>
+        <%= label_tag "air_heat", "Air & Heating" %>
+     </p>
+     
+Saved from your_reservation descriptions loop
+                  <p>
+                    <% if c.view == true %>Lake View<% end %>
+                    <% if c.full_kitchen == true %>, Full Kitchen<% end %>
+                    <% if c.washer_dryer == true %>, Washer/Dryer<% end %>
+                    <% if c.screened_porch == true %>, Screened Porch<% end %>
+                    <% if c.cable_tv == true %>, Cable TV<% end %>
+                    <% if c.fireplace == true %>, Fireplace<% end %>
+                    <% if c.loft == true %>, Loft<% end %>
+                    <% if c.air_heat == true %>, Air-Conditioning & Heating<% end %>
+                  </p>
+Saved rate info from your_reservation
+                    Sun - Thu: $<%= "%.2f" % ar.weekday_rate %><br>
+                    Fri - Sat: $<%= "%.2f" % ar.weekend_rate %><br>
+                    Holidays : $<%= "%.2f" % ar.holiday_rate %><br>
+                    Weekly   : $<%= "%.2f" % ar.weekly_rate %><br>
+                    Winter   : $<%= "%.2f" % ar.winter_rate %><br><br>

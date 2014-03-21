@@ -1,0 +1,19 @@
+html {
+  background-color: #eee;
+}
+body {
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+  padding-top: 50px;
+  padding-bottom: 20px;
+
+/*  width: 760px;
+  margin: 20px auto;
+  background-color: white;
+  border: 3px #ccc solid;
+  padding: 30px;
+  font-family: sans-serif;
+  font-size: 16pt;
+}
+
+  
