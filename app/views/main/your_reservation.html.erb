@@ -17,7 +17,7 @@
     </p>
     <% if @reservation_category == "Cabin" %>
     
-      <p><b>Select a cabin category: </b></p>
+      <p><b>Select a cabin type: </b></p>
       <p>
           <%= radio_button_tag "reservation_subcategory", "Land", @reservation_subcategory == "Land" %>&nbsp;
           <%= label_tag "reservation_subcategory_land", "Land Cabin" %><br>
@@ -25,7 +25,7 @@
           <%= label_tag "reservation_subcategory_floating", "Floating Cabin" %><br>
       </p>
     <% elsif @reservation_category == "Boat" %>
-        <p><b>Select a boat category:</b></p>
+        <p><b>Select a boat type:</b></p>
         <p>
             <%= radio_button_tag "reservation_subcategory", "Deck", @reservation_subcategory == "Deck" %>&nbsp;
             <%= label_tag "reservation_subcategory_deck", "Deck Boat" %><br>
@@ -35,7 +35,7 @@
             <%= label_tag "reservation_subcategory_dblpontoon", "Double Decker Pontoon" %><br>
         </p>
     <% elsif @reservation_category == "Boat Slip" %>
-        <p><b>Select a boat slip category:</b></p>
+        <p><b>Select a boat slip type:</b></p>
         <p>
             <%= radio_button_tag "reservation_subcategory", "Covered", @reservation_subcategory == "Covered" %>&nbsp;
             <%= label_tag "reservation_subcategory_covered", "Covered" %><br>
@@ -76,7 +76,7 @@
             <table class="table">    
               <% @available_rentals.each do |rental, rental_item_ids| %>
                   <tr>
-                    <td><%= image_tag rental.image_filename, width:170 %>
+                    <td><%= image_tag rental.image_filename, {width: 170} %>
                     </td>
     
                     <td>

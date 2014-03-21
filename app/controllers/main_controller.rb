@@ -285,4 +285,7 @@ def review_post
   
 end
 
+def contact
+end
+
 end # class MainController

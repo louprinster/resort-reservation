@@ -9,6 +9,7 @@ ResortReservation::Application.routes.draw do
   post "/guest_details"               => "main#guest_details_post"
   get "/review"                       => "main#review_get"
   post "/review"                      => "main#review_post"
+  get "/contact"                      => "main#contact"
 
 end
 
