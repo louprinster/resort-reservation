@@ -10,5 +10,9 @@ class Customer < ActiveRecord::Base
   validates :phone1,        length: { is: 10 }
 #   validates :phone2,        length: { is: 10 }, allow_nil: true       
   validates :email,         presence: true
+
   has_many :reservations, class_name: "Reservation", foreign_key: "customer_id"
+
+# Method calls: Customer.find(1).reservations  
+  
 end

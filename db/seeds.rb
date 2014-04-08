@@ -13,8 +13,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-if Rental.count == 0
-Rental.create! \
+if RentalType.count == 0
+RentalType.create! \
       category:           "Cabin",
       subcategory:        "Land",
       max_occupancy:  4,
@@ -27,7 +27,7 @@ Rental.create! \
       width:          nil,
       height:         nil
       
-Rental.create! \
+RentalType.create! \
       category:           "Cabin",
       subcategory:        "Land",
       max_occupancy:  6,
@@ -40,7 +40,7 @@ Rental.create! \
       width:          nil,
       height:         nil
       
-Rental.create! \
+RentalType.create! \
       category:           "Cabin",
       subcategory:        "Land",
       max_occupancy:  10,
@@ -53,7 +53,7 @@ Rental.create! \
       width:          nil,
       height:         nil
 
-Rental.create! \
+RentalType.create! \
       category:           "Cabin",
       subcategory:        "Floating",
       max_occupancy:  4,
@@ -66,7 +66,7 @@ Rental.create! \
       width:          nil,
       height:         nil
       
-Rental.create! \
+RentalType.create! \
       category:           "Cabin",
       subcategory:        "Floating",
       max_occupancy:  6,
@@ -79,7 +79,7 @@ Rental.create! \
       width:          nil,
       height:         nil
       
-Rental.create! \
+RentalType.create! \
       category:           "Boat",
       subcategory:        "Deck",
       max_occupancy:  6,
@@ -92,7 +92,7 @@ Rental.create! \
       width:          nil,
       height:         nil
 
-Rental.create! \
+RentalType.create! \
       category:           "Boat",
       subcategory:        "Pontoon",
       max_occupancy:  10,
@@ -105,7 +105,7 @@ Rental.create! \
       width:          nil,
       height:         nil
 
-Rental.create! \
+RentalType.create! \
       category:           "Boat",
       subcategory:        "Double Decker Pontoon",
       max_occupancy:  14,
@@ -120,7 +120,7 @@ Rental.create! \
 
 
 
-Rental.create! \
+RentalType.create! \
       category:           "Boat Slip",
       subcategory:        "Covered",
       max_occupancy:  30,
@@ -133,7 +133,7 @@ Rental.create! \
       width:          12,
       height:         15
 
-Rental.create! \
+RentalType.create! \
       category:           "Boat Slip",
       subcategory:        "Covered",
       max_occupancy:  50,
@@ -146,7 +146,7 @@ Rental.create! \
       width:          18,
       height:         20
 
-Rental.create! \
+RentalType.create! \
       category:           "Boat Slip",
       subcategory:        "Uncovered",
       max_occupancy:  80,
@@ -164,138 +164,138 @@ end
 
 if RentalItem.count == 0 
 RentalItem.create! \
-      rental_id:      1,
+      rental_type_id:      1,
       name:           "1",
       bed_config:      "1 Queen, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      1,
+      rental_type_id:      1,
       name:           "2",
       bed_config:      "1 Queen, 1 sleeper sofa.",
       status:         "active"
 RentalItem.create! \
-      rental_id:      1,
+      rental_type_id:      1,
       name:           "3",
       bed_config:      "1 Queen, 1 sleeper sofa.",
       status:         "active"
 RentalItem.create! \
-      rental_id:      1,
+      rental_type_id:      1,
       name:           "4",
       bed_config:      "1 Queen, 1 sleeper sofa.",
       status:         "active"
 RentalItem.create! \
-      rental_id:      1,
+      rental_type_id:      1,
       name:           "5",
       bed_config:      "1 Queen, 1 sleeper sofa.",
       status:         "inactive"
 
 RentalItem.create! \
-      rental_id:      3,
+      rental_type_id:      3,
       name:           "6",
       bed_config:      "1 King, 1 queen, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      3,
+      rental_type_id:      3,
       name:           "7",
       bed_config:      "1 King, 1 queen, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      3,
+      rental_type_id:      3,
       name:           "8",
       bed_config:      "1 King, 1 queen, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      3,
+      rental_type_id:      3,
       name:           "9",
       bed_config:      "1 King, 1 queen, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      3,
+      rental_type_id:      3,
       name:           "10",
       bed_config:      "1 King, 1 queen, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      2,
+      rental_type_id:      2,
       name:           "11",
       bed_config:      "1 queen, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      2,
+      rental_type_id:      2,
       name:           "12",
       bed_config:      "1 queen, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      4,
+      rental_type_id:      4,
       name:           "13",
       bed_config:      "1 queen, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      4,
+      rental_type_id:      4,
       name:           "14",
       bed_config:      "1 queen, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      5,
+      rental_type_id:      5,
       name:           "15",
       bed_config:      "1 king, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      5,
+      rental_type_id:      5,
       name:           "16",
       bed_config:      "1 king, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      6,
+      rental_type_id:      6,
       name:           "17",
       bed_config:      "1 king, 1 queen, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      6,
+      rental_type_id:      6,
       name:           "18",
       bed_config:      "1 king, 1 queen, 2 twins, 1 sleeper sofa.",
       status:         "active"
 
 
 RentalItem.create! \
-      rental_id:      7,
-      name:           "Deck Boat 2",
+      rental_type_id:      7,
+      name:           "2",
       bed_config:      nil,
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      7,
-      name:           "Deck Boat 3",
+      rental_type_id:      7,
+      name:           "3",
       bed_config:      nil,
       status:         "active"
 
 RentalItem.create! \
-      rental_id:      8,
-      name:           "Pontoon 4",
+      rental_type_id:      8,
+      name:           "4",
       bed_config:      nil,
       status:         "active"
 
  RentalItem.create! \
-      rental_id:      8,
-      name:           "Pontoon 5",
+      rental_type_id:      8,
+      name:           "5",
       bed_config:      nil,
       status:         "active"
 
  RentalItem.create! \
-      rental_id:      9,
-      name:           "Double Decker Pontoon",
+      rental_type_id:      9,
+      name:           "15",
       bed_config:      nil,
       status:         "active"
 else

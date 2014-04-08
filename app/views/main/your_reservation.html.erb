@@ -1,4 +1,5 @@
 <div class="container">
+
   <%= form_tag "/your_reservation" do %>
 
 
@@ -7,14 +8,15 @@
     <h4 style="text-align:center">Reservation</h4>
     <hr>
   
-    <p>
-        <b>Check-In:</b><br>
-        <%= text_field_tag :start_date, @start_date, class: "datepicker" %>
-    </p>
-    <p>
-        <b>Check-Out:</b><br>
-        <%= text_field_tag :end_date, @end_date, class: "datepicker" %>
-    </p>
+    <p><div class="form-group <%= @reservation_item.errors[:start_date] != [] && "has-error" %>">
+        <%= label_tag :start_date, "Start Date #{@reservation_item.errors[:start_date].join(", ")}", class: "control-label" %><br>
+        <%= text_field_tag :start_date, @reservation_item.start_date, class: "datepicker form-control" %>
+    </div></p>
+    <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
+        <%= label_tag :end_date, "End Date #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
+        <%= text_field_tag :end_date, @reservation_item.end_date, class: "datepicker form-control" %>
+    </div></p>
+
     <% if @reservation_category == "Cabin" %>
     
       <p><b>Select a cabin type: </b></p>
@@ -50,15 +52,15 @@
     <% else %>
         <p>
             <%= label_tag "adults", "Adults" %>
-            <%= select_tag "adults", options_for_select([1,2,3,4,5,6,7,8,9,10], @adults), prompt: "1" %><br>
+            <%= select_tag "adults", options_for_select([1,2,3,4,5,6,7,8,9,10], @reservation_item.adults), prompt: "1" %><br>
         </p>
         <p>
             <%= label_tag "children", "Children under 18" %>
-            <%= select_tag "children", options_for_select([0,1,2,3,4,5,6,7,8,9,10], @children), prompt: "0" %><br>
+            <%= select_tag "children", options_for_select([0,1,2,3,4,5,6,7,8,9,10], @reservation_item.children), prompt: "0" %><br>
         </p>
         <p> 
             <%= label_tag "pets", "Pets" %>
-            <%= select_tag "pets", options_for_select([0,1,2,3], @pets), prompt: "0" %>
+            <%= select_tag "pets", options_for_select([0,1,2,3], @reservation_item.pets), prompt: "0" %>
         </p>
 
       <p><%= submit_tag "Check Availability" %></p>
@@ -71,36 +73,36 @@
 
     <div class="container">
     
-          <% if @available_rentals != nil %>
+          <% if @available_rental_types != nil %>
 
             <table class="table">    
-              <% @available_rentals.each do |rental, rental_item_ids| %>
+              <% @available_rental_types.each do |rental_type, rental_item_ids| %>
                   <tr>
-                    <td><%= image_tag rental.image_filename, {width: 170} %>
+                    <td><%= image_tag rental_type.image_filename, {width: 170} %>
                     </td>
     
                     <td>
                       <% if @reservation_category == "Cabin" %>
-                          <h4><%= "#{rental.num_bedrooms} Bedroom #{@reservation_subcategory} Cabins"  %></h4>                  
+                          <h4><%= "#{rental_type.num_bedrooms} Bedroom #{rental_type.subcategory} Cabins"  %></h4>                  
                           <p>
-                            <b>Maximum Occupancy:</b> <%= rental.max_occupancy %> &nbsp;&nbsp;&nbsp;&nbsp; 
-                            <b>No. Baths: </b> <%= rental.num_baths %><br> 
+                            <b>Maximum Occupancy:</b> <%= rental_type.max_occupancy %> &nbsp;&nbsp;&nbsp;&nbsp; 
+                            <b>No. Baths: </b> <%= rental_type.num_baths %><br> 
                           </p>
                       <% elsif @reservation_category == "Boat" %>
-                          <h4><%= "#{@reservation_subcategory} Boats" %></h4>
+                          <h4><%= "#{rental_type.subcategory} Boats" %></h4>
                           <p>
-                            <b>Maximum Occupancy:</b> <%= rental.max_occupancy %> 
+                            <b>Maximum Occupancy:</b> <%= rental_type.max_occupancy %> 
                           </p>
                       <% elsif @reservation_category == "Boat Slip" %>
                           <h4>Boat Slip</h4>
                           <p>
-                            <b>Max Length: </b> <%= rental.length %> &nbsp;&nbsp;&nbsp;&nbsp;
-                            <b>Max Width: </b> <%= rental.width %> &nbsp;&nbsp;&nbsp;&nbsp; 
-                            <b>Max Height: </b> <%= rental.height %>
+                            <b>Max Length: </b> <%= rental_type.length %> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <b>Max Width: </b> <%= rental_type.width %> &nbsp;&nbsp;&nbsp;&nbsp; 
+                            <b>Max Height: </b> <%= rental_type.height %>
                           </p>
                       <% end %>
                       <p>
-                        <%= rental.description %>
+                        <%= rental_type.description %>
                       </p>
                       <p>
                         <b><%= "#{rental_item_ids.length} available" %></b>

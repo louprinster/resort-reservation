@@ -1,0 +1,31 @@
+<div class="pull-left" style="margin:20px; background-color:orange; padding:20px;">
+
+  <h4 style="text-align:center">Reservation Summary</h4>
+  <hr>
+  <% reservation_items.each do |res_item| %>
+      <% rental_type = res_item.rental_item.rental_type %>
+      <p>
+        <b><%= "#{rental_type.subcategory} #{rental_type.category}" %> No. <%= res_item.rental_item.name %></b><br>
+        <% if rental_type.category == "Cabin" %>        
+            <b>No. Bedrooms: </b> <%= rental_type.num_bedrooms %>&nbsp;&nbsp;&nbsp;&nbsp;
+            <b>No. Baths:    </b> <%= rental_type.num_baths %><br>
+            <b>Max Occupancy: </b> <%= rental_type.max_occupancy %>
+        <% elsif rental_type.category == "Boat" %>
+            <b>Max Occupancy: </b> <%= rental_type.max_occupancy %>
+        <% elsif rental_type.category == "Boat Slip" %>
+            <b>Length: </b>        <%= rental_type.length %><br>
+            <b>Width: </b>         <%= rental_type.width %><br>
+            <b>Height: </b>        <%= rental_type.height %><br>
+        <% end %>
+      </p>
+      <p>
+          <b>From: </b> <%= res_item.start_date %>&nbsp;&nbsp;<b>To: </b><%= res_item.end_date %><br>
+          <%= res_item.adults %> adults, <%= res_item.children %> children, <%= res_item.pets %> pets
+      </p>
+      <%= button_tag "Change", name: "change_res_item_id", value: res_item.id %>&nbsp;&nbsp;
+      <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id %>
+      
+      <hr>
+  <% end %>
+  
+</div>

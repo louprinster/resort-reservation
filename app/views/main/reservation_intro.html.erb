@@ -1,6 +1,14 @@
+<!-- Requires instance vars: -->
+<!-- @reservation_category -->
+<!-- @reservation_subcategory -->
+<!-- @reservation_item (initialized) in order to use date validations -->
+<!-- Post params: -->
+<!-- "reservation_category" -->
+<!-- "reservation_subcategory" -->
+<!-- start_date, end_date, adults, children, pets -->
+
 <div class="container">
 <%= form_tag "/#{@reservation_category}/intro" do %>
-
 <h1 style="margin:20px">Nickajack <%= "#{@reservation_category}s" %></h1>
 
   <div class="pull-left" style="margin: auto 20px auto 20px; background-color:orange; padding:20px">
@@ -8,15 +16,15 @@
     <h4 style="text-align:center">Reservation</h4>
     <hr>
   
-    <p>
-        <b>Check-In:</b><br>
-        <%= text_field_tag :start_date, @start_date, class: "datepicker", placeholder: "YYYY-MM-DD" %>
-    </p>
+    <p><div class="form-group <%= @reservation_item.errors[:start_date] != [] && "has-error" %>">
+        <%= label_tag :start_date, "Start Date #{@reservation_item.errors[:start_date].join(", ")}", class: "control-label" %><br>
+        <%= text_field_tag :start_date, @reservation_item.start_date, class: "datepicker form-control" %>
+    </div></p>
+    <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
+        <%= label_tag :end_date, "End Date #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
+        <%= text_field_tag :end_date, @reservation_item.end_date, class: "datepicker form-control" %>
+    </div></p>
     
-    <p>
-        <b>Check-Out:</b><br>
-        <%= text_field_tag :end_date, @end_date, class: "datepicker", placeholder: "YYYY-MM-DD" %>
-    </p>
     <% if @reservation_category == "Cabin" %>
         <p><b>Select a cabin category:</b></p>
         <p>
@@ -53,19 +61,21 @@
     <% else %>
         <p>
             <%= label_tag "adults", "Adults" %>
-            <%= select_tag "adults", options_for_select([1,2,3,4,5,6,7,8,9,10], @adults) %><br>
+            <%= select_tag "adults", options_for_select([1,2,3,4,5,6,7,8,9,10], @reservation_item.adults) %><br>
         </p>
         <p>
             <%= label_tag "children", "Children under 18" %>
-            <%= select_tag "children", options_for_select([0,1,2,3,4,5,6,7,8,9], @children) %><br>
+            <%= select_tag "children", options_for_select([0,1,2,3,4,5,6,7,8,9], @reservation_item.children) %><br>
         </p>
         <p> 
             <%= label_tag "pets", "Pets" %>
-            <%= select_tag "pets", options_for_select([0,1,2,3], @pets) %>
+            <%= select_tag "pets", options_for_select([0,1,2,3], @reservation_item.pets) %>
         </p>
+        
     <% end %>
     
-      <%= submit_tag "Check Availability" %>
+      <p><%= submit_tag "Check Availability" %></p>
+      <p><%= submit_tag "Continue to Guest Details" %></p>
 
   </div>
   

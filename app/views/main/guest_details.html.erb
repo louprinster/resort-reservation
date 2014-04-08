@@ -2,62 +2,19 @@
 
   <%= form_tag "/guest_details" do %>
 
-    <div class="pull-left" style="margin:20px; background-color:orange; padding:20px;">
-
-      <h4 style="text-align:center">Reservation Summary</h4>
-      <hr>
-  
-      <p>
-          <b>Check-In: </b><%= @start_date %><br>
-      </p>
-      <p>
-          <b>Check-Out: </b><%= @end_date %><br>
-      </p>
-      <p>
-          <b>Adults: </b><%= @adults %><br>
-      </p>
-      <p>
-          <b>Children under 18: </b><%= @children %><br>
-      </p>
-      <p> 
-          <b>Pets: </b><%= @pets %><br>
-      </p>
-      <% if @rental.category == "Cabin" %>
-          <p> 
-              <b>Cabin No.: </b>    <%= @rental_item.name %>                           <br>
-              <b>Cabin Type: </b>   <%= "#{@rental.subcategory} #{@rental.category}" %><br>
-              <b>No. Bedrooms: </b> <%= @rental.num_bedrooms %>                        <br>
-              <b>No. Baths: </b>    <%= @rental.num_baths %>                           <br>
-          </p>
-      <% elsif @rental.category == "Boat" %>
-          <p>
-              <b>Boat No: </b>      <%= @rental_item.name %>    <br>
-              <b>Boat Type: </b>    <%= @rental.subcategory %>  <br>
-          </p>
-      <% elsif @rental.category == "Boat Slip" %>
-          <p>
-              <b>Boat Slip No: <b>    <%= @rental_item.name %>    < br>
-              <b>Boat Slip Type: </b> <%= @rental.subcategory %>  <br>
-              <b>Length: </b>         <%= @rental_item.length %>  <br>
-              <b>Width: </b>          <%= @rental_item.width %>   <br>
-              <b>Height: </b>         <%= @rental_item.height %>  <br>
-          </p>
-      <% end %>
-  
-        <p><%= submit_tag "Change Reservation" %></p>
-        <p><%= submit_tag "Cancel" %></p>
-    </div>
+  <%= render partial: "reservation_summary", locals: { reservation_items: @reservation_items } %>
 
     <div class="pull-right" style="width:830px; margin:20px;">
 
-      <div class="container">
   
         <%= error_messages_for @customer %>
   
         <%= submit_tag "Login" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= submit_tag "Register" %>
 
         <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Guest Details</h4>
-        <div style="text-align:right; padding-right:500px; width=400px">
+        
+        <div style="text-align:right; padding-right:200px; width:500px;">
+                
         <p>
           <%= label_tag "first_name", "First Name: " %>
           <%= text_field_tag "first_name", @customer.first_name %>
@@ -102,15 +59,12 @@
         </p>
         </div>
 
-      </div> <!--container 2 for guest details-->   
 
-      <div class="container">
  
         <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Card Details</h4>
   
 
         <%= submit_tag "Continue" %>
-      </div> <!--container 3 for Card Details & Submit Tag -->
   
   <% end %> <!-- form tag -->
 

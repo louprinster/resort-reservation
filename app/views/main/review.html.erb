@@ -1,50 +1,7 @@
 <div class="container">
   <%= form_tag "/review" do %>
   
-  <div class="pull-left" style="margin:20px; background-color:orange; padding:20px;">
-
-    <h4 style="text-align:center">Reservation Summary</h4>
-    <hr>
-  
-    <p>
-        <b>Check-In: </b><%= @start_date %><br>
-    </p>
-    <p>
-        <b>Check-Out: </b><%= @end_date %><br>
-    </p>
-    <p>
-        <b>Adults: </b><%= @adults %><br>
-    </p>
-    <p>
-        <b>Children under 18: </b><%= @children %><br>
-    </p>
-    <p> 
-        <b>Pets: </b><%= @pets %><br>
-    </p>
-      <% if @rental.category == "Cabin" %>
-          <p> 
-              <b>Cabin No.: </b><%= @rental_item.name %><br>
-              <b>Cabin Type: </b><%= "#{@rental.subcategory} #{@rental.category}" %><br>
-              <b>No. Bedrooms: </b><%= @rental.num_bedrooms %><br>
-              <b>No. Baths: </b><%= @rental.num_baths %><br>
-          </p>
-      <% elsif @rental.category == "Boat" %>
-          <p>
-              <b>Boat No: </b><%= @rental_item.name %><br>
-              <b>Boat Type: </b><<%= @rental.subcategory %><br>
-          </p>
-      <% elsif @rental.category == "Boat Slip" %>
-          <p>
-              <b>Boat Slip No: <b><%= @rental_item.name %><br>
-              <b>Boat Slip Type: </b><%= @rental.subcategory %><br>
-              <b>Length: </b><%= @rental_item.length %><br>
-              <b>Width: </b><%= @rental_item.width %><br>
-              <b>Height: </b><%= @rental_item.height %><br>
-          </p>
-      <% end %>  
-    <p><%= submit_tag "Change Reservation" %></p>
-    <p><%= submit_tag "Cancel" %></p>
-  </div>
+  <%= render partial: "reservation_summary", locals: { reservation_items: @reservation_items } %>
 
   <div class="pull-right" style="width:830px; margin:20px;">
 

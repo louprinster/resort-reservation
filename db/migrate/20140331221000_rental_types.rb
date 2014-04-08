@@ -1,6 +1,6 @@
-class Rentals < ActiveRecord::Migration
+class RentalTypes < ActiveRecord::Migration
   def change
-    create_table :rentals do |t|
+    create_table :rental_types do |t|
       t.string  :category
       t.string  :subcategory
       t.integer :max_occupancy

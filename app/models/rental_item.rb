@@ -1,4 +1,16 @@
 class RentalItem < ActiveRecord::Base
-  belongs_to :rental, class_name: "Rental", foreign_key: "rental_id"
-  has_many   :reservations, class_name: "Reservation", foreign_key: "rental_item_id"
+
+  belongs_to :rental_type, 
+                class_name: "RentalType", 
+                foreign_key: "rental_type_id"
+  
+  has_many   :reservation_items
+  
+  has_many   :reservations, 
+                through: "reservation_items"
+
+# RentalItem.find(1).rental_type
+# RentalItem.find(1).reservation_items
+# RentalItem.find(1).reservations
+  
 end
