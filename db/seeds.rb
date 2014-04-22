@@ -28,8 +28,6 @@ RentalType.create! \
       height:         nil,
       weekday_rate:   100.0,
       weekend_rate:   150.0,
-      holiday_rate:   200.0,
-      off_season_rate: 80.0,
       monthly_rate:   nil
       
 RentalType.create! \
@@ -46,8 +44,6 @@ RentalType.create! \
       height:         nil,
       weekday_rate:   200.0,
       weekend_rate:   250.0,
-      holiday_rate:   300.0,
-      off_season_rate: 150.0,
       monthly_rate:   nil
       
 RentalType.create! \
@@ -64,8 +60,6 @@ RentalType.create! \
       height:         nil,
       weekday_rate:   300.0,
       weekend_rate:   350.0,
-      holiday_rate:   400.0,
-      off_season_rate: 250.0,
       monthly_rate:   nil
 
 RentalType.create! \
@@ -82,8 +76,6 @@ RentalType.create! \
       height:         nil,
       weekday_rate:   100.0,
       weekend_rate:   150.0,
-      holiday_rate:   200.0,
-      off_season_rate: 80.0,
       monthly_rate:   nil
       
 RentalType.create! \
@@ -100,8 +92,6 @@ RentalType.create! \
       height:         nil,
       weekday_rate:   200.0,
       weekend_rate:   250.0,
-      holiday_rate:   300.0,
-      off_season_rate: 150.0,
       monthly_rate:   nil
       
 RentalType.create! \
@@ -118,8 +108,6 @@ RentalType.create! \
       height:         nil,
       weekday_rate:   325.0,
       weekend_rate:   350.0,
-      holiday_rate:   375.0,
-      off_season_rate: 250.0,
       monthly_rate:   nil
 
 RentalType.create! \
@@ -136,8 +124,6 @@ RentalType.create! \
       height:         nil,
       weekday_rate:   225.0,
       weekend_rate:   250.0,
-      holiday_rate:   275.0,
-      off_season_rate: 150.0,
       monthly_rate:   nil
 
 RentalType.create! \
@@ -154,8 +140,6 @@ RentalType.create! \
       height:         nil,
       weekday_rate:   300.0,
       weekend_rate:   325.0,
-      holiday_rate:   350.0,
-      off_season_rate: 250.0,
       monthly_rate:   nil
 
 
@@ -174,8 +158,6 @@ RentalType.create! \
       height:         15,
       weekday_rate:   nil,
       weekend_rate:   nil,
-      holiday_rate:   nil,
-      off_season_rate: nil,
       monthly_rate:   200.0
 
 RentalType.create! \
@@ -192,8 +174,6 @@ RentalType.create! \
       height:         20,
       weekday_rate:   nil,
       weekend_rate:   nil,
-      holiday_rate:   nil,
-      off_season_rate: nil,
       monthly_rate:   400.0
 
 RentalType.create! \
@@ -210,8 +190,6 @@ RentalType.create! \
       height:         30,
       weekday_rate:   nil,
       weekend_rate:   nil,
-      holiday_rate:   nil,
-      off_season_rate: nil,
       monthly_rate:   700.0
 else
   puts "Already created rentals"

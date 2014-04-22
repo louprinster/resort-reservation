@@ -57,16 +57,7 @@ ActiveRecord::Schema.define(version: 20140422163057) do
     t.integer "height"
     t.float   "weekday_rate"
     t.float   "weekend_rate"
-    t.float   "holiday_rate"
-    t.float   "extended_stay_rate"
-    t.float   "off_season_rate"
     t.float   "monthly_rate"
-  end
-
-  create_table "reservation_item_rates", force: true do |t|
-    t.integer "reservation_item_id"
-    t.date    "reservation_date"
-    t.float   "reservation_rate"
   end
 
   create_table "reservation_items", force: true do |t|
