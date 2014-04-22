@@ -96,7 +96,7 @@ def intro_post
   if @reservation_category == "Cabin"
     @reservation_item.end_date     = params["end_date"]
     @reservation_item.start_date   = params["start_date"]
-    @reservation_item.num_of_days  = (@reservation_itme.start_date...@reservation_item.end_date).count
+    @reservation_item.num_of_days  = (@reservation_item.start_date...@reservation_item.end_date).count
   elsif @reservation_category == "Boat"
     @reservation_item.num_of_days    = params["num_of_days"].to_i
     @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
@@ -394,7 +394,14 @@ def cancel_reservation_item
 # If the reservation item has siblings, it redirects to the "add reservation item" page
 # Otherwise, it also destroys the parent reservation and redirects to the home page
 
-    ReservationItem.find(@res_item_id).destroy!
+    res_item = ReservationItem.find(@res_item_id)
+    rates = res_item.rates
+    if rates.count > 0
+      rates.each do |rate|
+        rate.destroy!
+      end
+    end
+    res_item.destroy!
     @reservation_items = Reservation.find(session[:reservation_id]).reservation_items
     if @reservation_items.count > 0
       flash[:info] = "Reservation item cancelled"
