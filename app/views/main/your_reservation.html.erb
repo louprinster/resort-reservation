@@ -10,15 +10,16 @@
   
     <p><div class="form-group <%= @reservation_item.errors[:start_date] != [] && "has-error" %>">
         <%= label_tag :start_date, "Start Date #{@reservation_item.errors[:start_date].join(", ")}", class: "control-label" %><br>
-        <%= text_field_tag :start_date, @reservation_item.start_date, class: "datepicker form-control" %>
-    </div></p>
-    <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
-        <%= label_tag :end_date, "End Date #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
-        <%= text_field_tag :end_date, @reservation_item.end_date, class: "datepicker form-control" %>
+        <%= text_field_tag :start_date, @reservation_item.start_date.strftime("%a, %b %d, %Y"), class: "datepicker form-control" %>
     </div></p>
 
+
     <% if @reservation_category == "Cabin" %>
-    
+      <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
+        <%= label_tag :end_date, "End Date #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
+        <%= text_field_tag :end_date, @reservation_item.end_date.strftime("%a, %b %d, %Y"), class: "datepicker form-control" %>
+        </div>
+      </p>
       <p><b>Select a cabin type: </b></p>
       <p>
           <%= radio_button_tag "reservation_subcategory", "Land", @reservation_subcategory == "Land" %>&nbsp;
@@ -27,6 +28,10 @@
           <%= label_tag "reservation_subcategory_floating", "Floating Cabin" %><br>
       </p>
     <% elsif @reservation_category == "Boat" %>
+        <p>
+          <%= label_tag "num_of_days", "Number of days" %>
+          <%= select_tag "num_of_days", options_for_select([1,2,3,4,5,6,7,8,9,10], @reservation_item.num_of_days) %>
+        </p>
         <p><b>Select a boat type:</b></p>
         <p>
             <%= radio_button_tag "reservation_subcategory", "Deck", @reservation_subcategory == "Deck" %>&nbsp;
@@ -37,6 +42,12 @@
             <%= label_tag "reservation_subcategory_dblpontoon", "Double Decker Pontoon" %><br>
         </p>
     <% elsif @reservation_category == "Boat Slip" %>
+        <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
+          <%= label_tag :end_date, "Check-out #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
+          <%= text_field_tag :end_date, @reservation_item.end_date, class: "datepicker form-control" %>
+          </div>
+        </p>
+
         <p><b>Select a boat slip type:</b></p>
         <p>
             <%= radio_button_tag "reservation_subcategory", "Covered", @reservation_subcategory == "Covered" %>&nbsp;
@@ -69,16 +80,16 @@
     
   </div>
 
-  <div class="pull-right" style="width:880px; padding= 20px; margin=20px">
-
-    <div class="container">
+  <div style="padding:20px; margin-left:250px">
     
           <% if @available_rental_types != nil %>
 
             <table class="table">    
               <% @available_rental_types.each do |rental_type, rental_item_ids| %>
                   <tr>
-                    <td><%= image_tag rental_type.image_filename, {width: 170} %>
+                    <td>
+                      <%= image_tag rental_type.image_filename, {width: 170} %><br><br>
+                      <%= submit_tag "More Photos" %>
                     </td>
     
                     <td>
@@ -109,19 +120,23 @@
                       </p>
                     </td>
     
-                    <td style="width:160px;">
+                    <td style="width:250px;">
+                      <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: @reservation_item} %>
+                      <p>
+                        <%= button_tag "Rate Breakdown", name: "rate_res_item_id", value: @reservation_item.id %>&nbsp;&nbsp;
                         <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first %>
+                      </p>
                     </td>
                   </tr>
               <% end %>
             </table>
         
-          <% end %>
+          <% end %><!-- if available rental types -->
           
-    </div>
+    </div><!-- container -->
   </div>
   <% end %> <!-- form tag -->
-</div>
+</div><!-- container -->
 
 
 

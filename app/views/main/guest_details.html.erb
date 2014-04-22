@@ -2,70 +2,99 @@
 
   <%= form_tag "/guest_details" do %>
 
-  <%= render partial: "reservation_summary", locals: { reservation_items: @reservation_items } %>
-
-    <div class="pull-right" style="width:830px; margin:20px;">
-
+  <div class="pull-left" style="background-color:orange; padding:20px;">
+    <h4 style="text-align:center">Reservation Summary</h4>
+    <hr>
+    <% @reservation_items.order(:rental_item_id).each do |res_item| %>
+        <% rental_type = res_item.rental_item.rental_type %>
+        <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+        <br><br>
+        <%= button_tag "Details", name: "details_res_item_id", value: res_item.id %>&nbsp;&nbsp;
+        <%= button_tag "Change", name: "change_res_item_id", value: res_item.id %>&nbsp;&nbsp;
+        <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id %>
+        <hr>
+    <% end %>
+  </div>
   
-        <%= error_messages_for @customer %>
+  <div style="width:830px; margin:20px 20px 20px 300px;">
   
-        <%= submit_tag "Login" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= submit_tag "Register" %>
+    <!--<%= error_messages_for @customer %>-->
 
-        <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Guest Details</h4>
-        
-        <div style="text-align:right; padding-right:200px; width:500px;">
-                
+    <%= submit_tag "Login" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= submit_tag "Register" %>
+
+    <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Guest Details</h4>
+  
+    <div style="text-align:left; padding:0px 100px 0px 100px; width:500px;">
+   
+      <form class="form-horizontal" role="form">     
         <p>
-          <%= label_tag "first_name", "First Name: " %>
-          <%= text_field_tag "first_name", @customer.first_name %>
+          <div class="form-group <%= @customer.errors[:first_name] != [] && "has-error" %>">
+            <%= label_tag :first_name, "First Name #{@customer.errors[:first_name].join(", ")}", class: "control-label" %>
+            <%= text_field_tag "first_name", @customer.first_name, class: "form-control" %>
+          </div>
         </p>
         <p>
-          <%= label_tag "last_name", "Last Name: " %>
-          <%= text_field_tag "last_name", @customer.last_name %>
+          <div class="form-group <%= @customer.errors[:last_name] != [] && "has-error" %>">
+            <%= label_tag "last_name", "Last Name #{@customer.errors[:last_name].join(", ")}", class: "control-label" %>
+            <%= text_field_tag "last_name", @customer.last_name, class: "form-control" %>
+          </div>
         </p>
         <p>
-          <%= label_tag "address1", "Address 1: " %>
-          <%= text_field_tag "address1", @customer.address1 %>
+          <div class="form-group <%= @customer.errors[:address1] != [] && "has-error" %>">
+            <%= label_tag "address1", "Address 1 #{@customer.errors[:address1].join(", ")}", class: "control-label" %>
+            <%= text_field_tag "address1", @customer.address1, class: "form-control" %>
+          </div>
         </p>
         <p>
-          <%= label_tag "address2", "Address 2: " %>
-          <%= text_field_tag "address2", @customer.address2 %>
+          <div class="form-group <%= @customer.errors[:address2] != [] && "has-error" %>">
+          <%= label_tag "address2", "Address 2 #{@customer.errors[:address2].join(", ")}", class: "control-label" %>
+          <%= text_field_tag "address2", @customer.address2, class: "form-control" %>
+          </div>
         </p>
         <p>
-          <%= label_tag "city", "City: " %>
-          <%= text_field_tag "city", @customer.city %>
+          <div class="form-group <%= @customer.errors[:city] != [] && "has-error" %>">
+          <%= label_tag "city", "City #{@customer.errors[:city].join(", ")}", class: "control-label" %>
+          <%= text_field_tag "city", @customer.city, class: "form-control" %>
+          </div>
         </p>
         <p>
-          <%= label_tag "state", "State: " %>
+          <div class="form-group <%= @customer.errors[:state] != [] && "has-error" %>">
+          <%= label_tag "state", "State #{@customer.errors[:state].join(", ")}", class: "control-label" %>
           <%= select_tag "state", options_from_collection_for_select(
               USState.order(:id), :abbreviation, :name, @customer.state),
-              prompt: "Choose a state..." %>
+              prompt: "Choose a state...", class: "form-control" %>
+          </div>
         </p>
         <p>
-          <%= label_tag "zipcode", "Zip Code: " %>
-          <%= text_field_tag "zipcode", @customer.zipcode %>
+          <div class="form-group <%= @customer.errors[:zipcode] != [] && "has-error" %>">
+          <%= label_tag "zipcode", "Zip Code #{@customer.errors[:zipcode].join(", ")}", class: "control-label" %>
+          <%= text_field_tag "zipcode", @customer.zipcode, class: "form-control" %>
+          </div>
         </p>
         <p>
-          <%= label_tag "phone1", "Phone 1: " %>
-          <%= text_field_tag "phone1", @customer.phone1 %>
+          <div class="form-group <%= @customer.errors[:phone1] != [] && "has-error" %>">
+          <%= label_tag "phone1", "Phone 1 #{@customer.errors[:phone1].join(", ")}", class: "control-label" %>
+          <%= text_field_tag "phone1", @customer.phone1, class: "form-control" %>
+          </div>
         </p>
         <p>
-          <%= label_tag "phone2", "Phone 2: " %>
-          <%= text_field_tag "phone2", @customer.phone2 %>
+          <div class="form-group <%= @customer.errors[:phone2] != [] && "has-error" %>">
+          <%= label_tag "phone2", "Phone 2 #{@customer.errors[:phone2].join(", ")}", class: "control-label" %>
+          <%= text_field_tag "phone2", @customer.phone2, class: "form-control" %>
+          </div>
         </p>
         <p>
-          <%= label_tag "email", "Email: " %>
-          <%= text_field_tag "email", @customer.email %>
+          <div class="form-group <%= @customer.errors[:email] != [] && "has-error" %>">
+          <%= label_tag "email", "Email #{@customer.errors[:email].join(", ")}", class: "control-label" %>
+          <%= text_field_tag "email", @customer.email, class: "form-control" %>
+          </div>
         </p>
-        </div>
-
-
+      </form>
+    </div>
  
-        <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Card Details</h4>
-  
-
-        <%= submit_tag "Continue" %>
-  
+    <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Card Details</h4>
+    <%= submit_tag "Continue to Review" %>
+    
   <% end %> <!-- form tag -->
 
 </div><!--container 1 for whole page-->

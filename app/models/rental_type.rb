@@ -3,3 +3,4 @@ class RentalType < ActiveRecord::Base
 end
 
 # Method calls:  RentalType.find(1).rental_items
+#                Rental_Type.find(1).rates

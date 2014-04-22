@@ -25,7 +25,12 @@ RentalType.create! \
       num_baths:      1,
       length:         nil,
       width:          nil,
-      height:         nil
+      height:         nil,
+      weekday_rate:   100.0,
+      weekend_rate:   150.0,
+      holiday_rate:   200.0,
+      off_season_rate: 80.0,
+      monthly_rate:   nil
       
 RentalType.create! \
       category:           "Cabin",
@@ -38,7 +43,12 @@ RentalType.create! \
       num_baths:      1,
       length:         nil,
       width:          nil,
-      height:         nil
+      height:         nil,
+      weekday_rate:   200.0,
+      weekend_rate:   250.0,
+      holiday_rate:   300.0,
+      off_season_rate: 150.0,
+      monthly_rate:   nil
       
 RentalType.create! \
       category:           "Cabin",
@@ -51,7 +61,12 @@ RentalType.create! \
       num_baths:      2,
       length:         nil,
       width:          nil,
-      height:         nil
+      height:         nil,
+      weekday_rate:   300.0,
+      weekend_rate:   350.0,
+      holiday_rate:   400.0,
+      off_season_rate: 250.0,
+      monthly_rate:   nil
 
 RentalType.create! \
       category:           "Cabin",
@@ -64,7 +79,12 @@ RentalType.create! \
       num_baths:      1,
       length:         nil,
       width:          nil,
-      height:         nil
+      height:         nil,
+      weekday_rate:   100.0,
+      weekend_rate:   150.0,
+      holiday_rate:   200.0,
+      off_season_rate: 80.0,
+      monthly_rate:   nil
       
 RentalType.create! \
       category:           "Cabin",
@@ -77,7 +97,12 @@ RentalType.create! \
       num_baths:      1,
       length:         nil,
       width:          nil,
-      height:         nil
+      height:         nil,
+      weekday_rate:   200.0,
+      weekend_rate:   250.0,
+      holiday_rate:   300.0,
+      off_season_rate: 150.0,
+      monthly_rate:   nil
       
 RentalType.create! \
       category:           "Boat",
@@ -90,7 +115,12 @@ RentalType.create! \
       num_baths:      nil,
       length:         nil,
       width:          nil,
-      height:         nil
+      height:         nil,
+      weekday_rate:   325.0,
+      weekend_rate:   350.0,
+      holiday_rate:   375.0,
+      off_season_rate: 250.0,
+      monthly_rate:   nil
 
 RentalType.create! \
       category:           "Boat",
@@ -103,7 +133,12 @@ RentalType.create! \
       num_baths:      nil,
       length:         nil,
       width:          nil,
-      height:         nil
+      height:         nil,
+      weekday_rate:   225.0,
+      weekend_rate:   250.0,
+      holiday_rate:   275.0,
+      off_season_rate: 150.0,
+      monthly_rate:   nil
 
 RentalType.create! \
       category:           "Boat",
@@ -116,7 +151,12 @@ RentalType.create! \
       num_baths:      nil,
       length:         nil,
       width:          nil,
-      height:         nil
+      height:         nil,
+      weekday_rate:   300.0,
+      weekend_rate:   325.0,
+      holiday_rate:   350.0,
+      off_season_rate: 250.0,
+      monthly_rate:   nil
 
 
 
@@ -131,7 +171,12 @@ RentalType.create! \
       num_baths:      nil,
       length:         30,
       width:          12,
-      height:         15
+      height:         15,
+      weekday_rate:   nil,
+      weekend_rate:   nil,
+      holiday_rate:   nil,
+      off_season_rate: nil,
+      monthly_rate:   200.0
 
 RentalType.create! \
       category:           "Boat Slip",
@@ -144,7 +189,12 @@ RentalType.create! \
       num_baths:      nil,
       length:         50,
       width:          18,
-      height:         20
+      height:         20,
+      weekday_rate:   nil,
+      weekend_rate:   nil,
+      holiday_rate:   nil,
+      off_season_rate: nil,
+      monthly_rate:   400.0
 
 RentalType.create! \
       category:           "Boat Slip",
@@ -157,7 +207,12 @@ RentalType.create! \
       num_baths:      nil,
       length:         80,
       width:          20,
-      height:         30
+      height:         30,
+      weekday_rate:   nil,
+      weekend_rate:   nil,
+      holiday_rate:   nil,
+      off_season_rate: nil,
+      monthly_rate:   700.0
 else
   puts "Already created rentals"
 end
@@ -302,32 +357,42 @@ else
   puts "Already created rental items"
 end
 
-# if Reservation.count == 0
-# Reservation.create! \
-#       start_date:     "2014-05-01",
-#       end_date:       "2014,05,05",
-#       adults:         2,
-#       children:       2,
-#       pets:           1,
-#       tax:            0.1,
-#       rental_item_id: 1,
-#       customer_id:    1,
-#       status:         "confirmed"
-# 
-# Reservation.create! \
-#       start_date:     "2014-05-10",
-#       end_date:       "2014-05-14",
-#       adults:         2,
-#       children:       2,
-#       pets:           1,
-#       tax:            0.1,
-#       rental_item_id: 1,
-#       customer_id:    1,
-#       status:         "confirmed"
-#             
-# else
-#   puts "Already created reservations"
-# end
+if Reservation.count == 0
+Reservation.create! \
+      customer_id:    1,
+      status:         "confirmed"
+
+Reservation.create! \
+      customer_id:    1,
+      status:         "confirmed"
+else
+  puts "Already created reservations"
+end
+
+if ReservationItem.count == 0
+ReservationItem.create! \
+      start_date:     Date.new(2014, 05, 01),
+      end_date:       Date.new(2014, 05, 05),
+      adults:         2,
+      children:       2,
+      pets:           1,
+      rental_item_id: 1,
+      reservation_id: 1,
+      status:         "confirmed"
+
+ReservationItem.create! \
+      start_date:     Date.new(2014, 05, 10),
+      end_date:       Date.new(2014, 05, 14),
+      adults:         2,
+      children:       2,
+      pets:           1,
+      rental_item_id: 1,
+      reservation_id: 2,
+      status:         "confirmed"
+            
+else
+  puts "Already created reservation items"
+end
 
 if Customer.count == 0
 Customer.create! \
@@ -345,7 +410,6 @@ Customer.create! \
 else
   puts "Already created customer"
 end
-     
 
 if USState.count == 0
   USState.create(name: "Alabama", abbreviation: "AL")

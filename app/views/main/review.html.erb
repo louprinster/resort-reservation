@@ -1,10 +1,21 @@
 <div class="container">
   <%= form_tag "/review" do %>
   
-  <%= render partial: "reservation_summary", locals: { reservation_items: @reservation_items } %>
-
-  <div class="pull-right" style="width:830px; margin:20px;">
-
+  <div class="pull-left" style="margin:20px 0px; background-color:orange; padding:20px;">
+    <h4 style="text-align:center">Reservation Summary</h4>
+    <hr>
+    <% @reservation_items.each do |res_item| %>
+        <% rental_type = res_item.rental_item.rental_type %>
+        <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+        <br><br>
+        <%= button_tag "Details", name: "details_res_item_id", value: res_item.id %>&nbsp;&nbsp;
+        <%= button_tag "Change", name: "change_res_item_id", value: res_item.id %>&nbsp;&nbsp;
+        <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id %>
+        <hr>
+    <% end %>
+  </div>
+  
+  <div style="width:830px; margin:20px 20px 20px 300px;">
     <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Guest Details</h4>
     <p>
       <%= @customer.first_name %> <%= @customer.last_name %><br>
@@ -20,6 +31,7 @@
     </p>
     <br><br>
     <p>
+    <%= submit_tag "Change Guest Details" %>&nbsp;&nbsp;&nbsp;&nbsp;
     <%= submit_tag "Confirm" %>
     </p>
 

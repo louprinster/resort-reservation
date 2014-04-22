@@ -12,6 +12,9 @@ class RentalTypes < ActiveRecord::Migration
       t.integer :length
       t.integer :width
       t.integer :height
+      t.float   :weekday_rate
+      t.float   :weekend_rate
+      t.float   :monthly_rate
     end
   end
 end

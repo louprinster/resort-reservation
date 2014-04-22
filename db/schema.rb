@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140331221000) do
+ActiveRecord::Schema.define(version: 20140422163057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,12 @@ ActiveRecord::Schema.define(version: 20140331221000) do
     t.string "phone1"
     t.string "phone2"
     t.string "email"
+  end
+
+  create_table "rates", force: true do |t|
+    t.integer "reservation_item_id"
+    t.date    "date"
+    t.float   "amount"
   end
 
   create_table "rental_items", force: true do |t|
@@ -49,16 +55,28 @@ ActiveRecord::Schema.define(version: 20140331221000) do
     t.integer "length"
     t.integer "width"
     t.integer "height"
+    t.float   "weekday_rate"
+    t.float   "weekend_rate"
+    t.float   "holiday_rate"
+    t.float   "extended_stay_rate"
+    t.float   "off_season_rate"
+    t.float   "monthly_rate"
+  end
+
+  create_table "reservation_item_rates", force: true do |t|
+    t.integer "reservation_item_id"
+    t.date    "reservation_date"
+    t.float   "reservation_rate"
   end
 
   create_table "reservation_items", force: true do |t|
     t.string  "status"
     t.date    "start_date"
     t.date    "end_date"
+    t.integer "num_of_days"
     t.integer "adults"
     t.integer "children"
     t.integer "pets"
-    t.float   "tax"
     t.integer "reservation_id"
     t.integer "rental_item_id"
   end

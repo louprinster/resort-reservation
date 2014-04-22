@@ -29,7 +29,7 @@ def rental_type_search
           rental_item.reservation_items.each do |ri|
           
             if (@reservation_item.start_date < ri.end_date and ri.start_date < @reservation_item.end_date)
-              if ri.status == "confirmed"
+              if ri.status == "confirmed" or ri.status == "in progress"
                 available = false
               end
             end
@@ -68,10 +68,17 @@ def intro_get
   
   @reservation_item = ReservationItem.new
   @reservation_item.start_date = Date.today
-  @reservation_item.end_date   = Date.today.advance(days: 2)
   @reservation_item.adults     = 1
   @reservation_item.children   = 0
   @reservation_item.pets       = 0
+  
+  if @reservation_category == "Boat"
+    @reservation_item.num_of_days = 1
+  elsif @reservation_category == "Cabin"
+    @reservation_item.end_date   = Date.today.advance(days: 2)
+  elsif @reservation_category == "Boat Slip"
+    @reservation_item.end_date == Date.today.advance(days: 30)
+  end
   
   render :reservation_intro and return
 end
@@ -82,10 +89,19 @@ def intro_post
   
   @reservation_item = ReservationItem.new
   @reservation_item.start_date     = params["start_date"]
-  @reservation_item.end_date       = params["end_date"]
   @reservation_item.adults         = params["adults"].to_i
   @reservation_item.children       = params["children"].to_i
   @reservation_item.pets           = params["pets"].to_i
+
+  if @reservation_category == "Cabin"
+    @reservation_item.end_date     = params["end_date"]
+    @reservation_item.start_date   = params["start_date"]
+    @reservation_item.num_of_days  = (@reservation_itme.start_date...@reservation_item.end_date).count
+  elsif @reservation_category == "Boat"
+    @reservation_item.num_of_days    = params["num_of_days"].to_i
+    @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
+  end
+    
 
   if params["commit"] == "Check Availability"
     if params["reservation_subcategory"] == nil
@@ -146,22 +162,28 @@ def reservation_post
   @reservation_item = ReservationItem.find(session[:reservation_item_id])
   
   if params["commit"] == "Cancel"  
-#     @reservation_item.reservation.destroy!
-    @reservation_item.destroy!
-    redirect_to "/" and return
+    @res_item_id = session[:reservation_item_id]
+    cancel_reservation_item
     
   elsif params["commit"] == "Check Availability"
-#     lines 148-156 are the same as intro_post ??
     @reservation_category    = session[:reservation_category]
     @reservation_subcategory          = params["reservation_subcategory"]
     session[:reservation_subcategory] = params["reservation_subcategory"]  
           
     @reservation_item.start_date     = params["start_date"]
-    @reservation_item.end_date       = params["end_date"]
     @reservation_item.adults         = params["adults"].to_i
     @reservation_item.children       = params["children"].to_i
     @reservation_item.pets           = params["pets"].to_i
-    
+
+    if @reservation_category == "Cabin"
+      @reservation_item.end_date = params["end_date"]
+      @reservation_item.start_date = params["start_date"]
+      @reservation_item.num_of_days    = (@reservation_item.start_date...@reservation_item.end_date).count
+    elsif @reservation_category == "Boat"
+      @reservation_item.num_of_days    = params["num_of_days"].to_i
+      @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
+    end
+
     if @reservation_item.save
         @rental_types = RentalType.where(category: @reservation_category, subcategory: @reservation_subcategory)
         @available_rental_types = rental_type_search
@@ -175,10 +197,10 @@ def reservation_post
   elsif params["rental_item_id"] != nil
 
     @reservation_item.rental_item_id = params["rental_item_id"]
+    @reservation_item.status         = "in progress"
     @reservation_item.save!
+    assign_rates
     
-    session[:rental_item_id] = params["rental_item_id"]
-
     redirect_to "/add_reservation_item" and return
   end
   
@@ -188,33 +210,24 @@ end
 def add_reservation_item_get
 
   @reservation_items = Reservation.find(session[:reservation_id]).reservation_items
-  
   render :add_reservation_item and return
 
 end
 
 def add_reservation_item_post
 
-  if params["change_res_item_id"] != nil
-    res_item_id = params["cancel_res_item_id"]
-    reservation_item = ReservationItem.find(res_item_id)
-    session[:reservation_category] = reservation_item.rental_item.rental_type.category
-    session[:reservation_subcategory] = reservation_item.rental_item.rental_type.subcategory
-    session[:reservation_item_id] = res_item_id
-    redirect_to "/your_reservation" and return
+  if params["details_res_item_id"] != nil
+    id = params["details_res_item_id"]
+    @rental_type = ReservationItem.find(id).rental_item.rental_type
+    render :res_item_details and return
+    
+  elsif params["change_res_item_id"] != nil
+    @res_item_id = params["change_res_item_id"]
+    change_reservation_item
     
   elsif params["cancel_res_item_id"] != nil
-    res_item_id = params["cancel_res_item_id"]
-    ReservationItem.find(res_item_id).destroy!
-    @reservation_items = Reservation.find(session[:reservation_id]).reservation_items
-    if @reservation_items.count > 0
-      flash[:info] = "Reservation item cancelled"
-      redirect_to "/add_reservation_item" and return
-    else 
-      Reservation.find(session[:reservation_id]).destroy!
-      flash[:info] = "Your reservation has been cancelled."
-      redirect_to "/" and return
-    end
+    @res_item_id = params["cancel_res_item_id"]
+    cancel_reservation_item
     
   elsif params["commit"] == "Add a cabin reservation"
     @reservation_category = "Cabin"
@@ -230,7 +243,7 @@ def add_reservation_item_post
     flash[:info] = "Add a boat to your existing reservation"
     redirect_to "/boat/intro" and return
     
-  elsif params["commit"] == "Continue"
+  elsif params["commit"] == "Continue to Guest Details"
     redirect_to "/guest_details" and return
   end
 
@@ -254,29 +267,16 @@ def guest_details_get
 end
 
 def guest_details_post
-# NOTE:  lines 259-278 are a copy of first two conditions in add_reservation_item_post
+
   if params["change_res_item_id"] != nil
-    res_item_id = params["cancel_res_item_id"]
-    reservation_item = ReservationItem.find(res_item_id)
-    session[:reservation_category] = reservation_item.rental_item.rental_type.category
-    session[:reservation_subcategory] = reservation_item.rental_item.rental_type.subcategory
-    session[:reservation_item_id] = res_item_id
-    redirect_to "/your_reservation" and return
+    @res_item_id = params["change_res_item_id"]
+    change_reservation_item
     
   elsif params["cancel_res_item_id"] != nil
-    res_item_id = params["cancel_res_item_id"]
-    ReservationItem.find(res_item_id).destroy!
-    @reservation_items = Reservation.find(session[:reservation_id]).reservation_items
-    if @reservation_items.count > 0
-      flash[:info] = "Reservation item cancelled"
-      redirect_to "/add_reservation_item" and return
-    else 
-      Reservation.find(session[:reservation_id]).destroy!
-      flash[:info] = "Your reservation has been cancelled."
-      redirect_to "/" and return
-    end
-    
-  elsif params["commit"] == "Continue"
+    @res_item_id = params["cancel_res_item_id"]
+    cancel_reservation_item
+        
+  elsif params["commit"] == "Continue to Review"
       @customer = Customer.new
       @customer.first_name  = params["first_name"]
       @customer.last_name   = params["last_name"]
@@ -311,27 +311,13 @@ end
 
 def review_post
 
-# NOTE:  lines 315-334 are a copy of first two conditions in add_reservation_item_post
   if params["change_res_item_id"] != nil
-    res_item_id = params["change_res_item_id"]
-    reservation_item = ReservationItem.find(res_item_id)
-    session[:reservation_category] = reservation_item.rental_item.rental_type.category
-    session[:reservation_subcategory] = reservation_item.rental_item.rental_type.subcategory
-    session[:reservation_item_id] = res_item_id
-    redirect_to "/your_reservation" and return
-    
+    @res_item_id = params["change_res_item_id"]
+    change_reservation_item
+
   elsif params["cancel_res_item_id"] != nil
-    res_item_id = params["cancel_res_item_id"]
-    ReservationItem.find(res_item_id).destroy!
-    @reservation_items = Reservation.find(session[:reservation_id]).reservation_items
-    if @reservation_items.count > 0
-      flash[:info] = "Reservation item cancelled"
-      redirect_to "/add_reservation_item" and return
-    else 
-      Reservation.find(session[:reservation_id]).destroy!
-      flash[:info] = "Your reservation has been cancelled."
-      redirect_to "/" and return
-    end
+    @res_item_id = params["cancel_res_item_id"]
+    cancel_reservation_item
     
   elsif params["commit"] == "Change Guest Details"
     redirect_to "/guest_details" and return
@@ -346,7 +332,7 @@ def review_post
       res_item.status = "confirmed"
       res_item.save!
     end
-    flash[:success] = "Your cabin reservation has been confirmed."
+    flash.now[:success] = "Your reservation has been confirmed. An email regarding your reservation has been sent."
     session.clear
     redirect_to "/" and return
   end
@@ -355,5 +341,72 @@ end
 
 def contact
 end
+
+# SUBROUTINES =======================================================================
+
+
+def assign_rates
+# This subroutine is called from your_reservation & accepts a reservation_item
+# Retrieves a rental_type (to access rates)
+# Destroys previously assigned (created) rates that belong to the reservation_item
+# Assigns a rate breakdown by date
+# Creates a ReservationItemRate instance for each date
+
+  rental_type = @reservation_item.rental_item.rental_type
+
+  rates = @reservation_item.rates
+
+  if rates != []
+    rates.clear
+  end
+
+  (@reservation_item.start_date...@reservation_item.end_date).each do |date|
+      if (date.strftime("%u").to_i == 5) || (date.strftime("%u").to_i == 6) 
+        item_rate = rental_type.weekday_rate
+      else
+        item_rate = rental_type.weekend_rate
+      end
+      rate = Rate.new
+      rate.reservation_item_id = @reservation_item.id
+      rate.date    = date
+      rate.amount  = item_rate
+      rate.save!
+  end
+end
+
+def change_reservation_item
+# This subroutine is called from the "add reservation item", "guest details" and "review" pages.
+# It accepts @res_item_id, saves search criteria in sessions after user requests a change to existing res item
+# It then redirects to the "/your reservation" page
+
+    reservation_item = ReservationItem.find(@res_item_id)
+    reservation_item.status = "available"
+    reservation_item.save!
+    session[:reservation_category] = reservation_item.rental_item.rental_type.category
+    session[:reservation_subcategory] = reservation_item.rental_item.rental_type.subcategory
+    session[:reservation_item_id] = @res_item_id
+    redirect_to "/your_reservation" and return
+end
+
+def cancel_reservation_item
+# This subroutine is called from the "add reservation item", "guest details" and "review" pages.
+# It accepts @res_item_id and destroys the record after user requests a cancellation.
+# If the reservation item has siblings, it redirects to the "add reservation item" page
+# Otherwise, it also destroys the parent reservation and redirects to the home page
+
+    ReservationItem.find(@res_item_id).destroy!
+    @reservation_items = Reservation.find(session[:reservation_id]).reservation_items
+    if @reservation_items.count > 0
+      flash[:info] = "Reservation item cancelled"
+      redirect_to "/add_reservation_item" and return
+    else 
+      Reservation.find(session[:reservation_id]).destroy!
+      session.clear
+      flash[:info] = "Your reservation has been cancelled."
+      redirect_to "/" and return
+    end
+
+end
+
 
 end # class MainController

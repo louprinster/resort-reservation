@@ -2,16 +2,46 @@
 
   <%= form_tag "/add_reservation_item" do %>
 
-  <%= render partial: "reservation_summary", locals: { reservation_items: @reservation_items } %>
+  <div style="width:700px; border: 1px #B06A09 solid; margin: auto 100px auto 100px; padding:20px">
 
-  <div class="pull-right" style="width:830px; margin:20px;">
-  
-    <p><%= submit_tag "Add a cabin reservation" %></p>
-    <p><%= submit_tag "Add a boat reservation" %></p>
+    <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Reservation Summary</h4>
+    <table class="table table-condensed">
+    <% @reservation_items.order(:rental_item_id).each do |res_item| %>
+
+      <tr>
+        <% rental_type = res_item.rental_item.rental_type %>
+      
+        <td style="width:200px">
+          <%= image_tag rental_type.image_filename, {width: 170} %><br><br>
+          <%= button_tag "Details", name: "details_res_item_id", value: res_item.id %>&nbsp;&nbsp;
+          <%= button_tag "More Photos", name: "photos_res_item_id", value: res_item.id %>&nbsp;&nbsp;
+        </td>
+      
+        <td style="width:200px">
+            <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+            <br><br>
+            <%= button_tag "Change", name: "change_res_item_id", value: res_item.id %>&nbsp;&nbsp;
+            <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id %>
+        </td>
+        
+        <td style="width:220px">
+          <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+          <br>
+            <%= button_tag "Rate Breakdown", name: "rate_res_item_id", value: res_item.id %>
+        </td>
+        
+       </tr> 
+    <% end %>
+    </table>
     
-    <p><%= submit_tag "Continue" %></p>
-  
-  </div><!--class pull right-->
+  </div>
+
+  <br clear="all">  
+  <p>
+    <%= submit_tag "Add a cabin reservation" %>&nbsp;&nbsp;&nbsp;&nbsp;
+    <%= submit_tag "Add a boat reservation" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <%= submit_tag "Continue to Guest Details", class:"pull-right" %>
+  </p>  
     
   <% end %><!--form tag-->
     
