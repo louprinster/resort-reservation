@@ -323,16 +323,25 @@ def review_post
     redirect_to "/guest_details" and return
     
   elsif params["commit"] == "Confirm"
-    reservation = Reservation.find(session[:reservation_id])
-    reservation.status = "confirmed"
-    reservation.customer_id = session[:customer_id]
-    reservation.save!
+    @reservation = Reservation.find(session[:reservation_id])
+    @reservation.confirmation_num = rand(99999999) + 1
+    @reservation.status = "confirmed"
+    @reservation.customer_id = session[:customer_id]
+    @reservation.save!
     @reservation_items = reservation.reservation_items
     @reservation_items.each do |res_item|
       res_item.status = "confirmed"
       res_item.save!
     end
-    flash.now[:success] = "Your reservation has been confirmed. An email regarding your reservation has been sent."
+    @customer = Customer.find(session[:customer_id])
+    letter = get_letter
+    Pony.mail(
+      to: customer.email,
+      subject:  "Nickajack Marina & Resorts Reservation Confirmation #{reservation.confirmation_num}",
+      body:     "This is the body.",
+      html_body: "This is the body in <b>HTML</b>."
+    )
+    flash[:success] = "Your reservation confirmation no. is #{reservation.confirmation_num} . An email regarding your reservation has been sent."
     session.clear
     redirect_to "/" and return
   end

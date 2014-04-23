@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20140422163057) do
   create_table "reservations", force: true do |t|
     t.string  "status"
     t.integer "customer_id"
+    t.integer "confirmation_num"
   end
 
   create_table "u_s_states", force: true do |t|
