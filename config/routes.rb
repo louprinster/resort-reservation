@@ -11,7 +11,31 @@ ResortReservation::Application.routes.draw do
   post "/guest_details"               => "main#guest_details_post"
   get "/review"                       => "main#review_get"
   post "/review"                      => "main#review_post"
+  get "/modify_confirmed_reservation/:last_name/:confirmation_num" => "main#modify_confirmed_reservation_get",
+    as: "modify_confirmed_reservation"
+  post "/modify_confirmed_reservation" => "main#modify_confirmed_reservation_post"
+  
   get "/contact"                      => "main#contact"
+  
+  
+  resources :user, only: ["index", "new", "create"]
+  post "/users/login"  => "user#login",  as: "login"
+  post "/users/logout" => "user#logout", as: "logout"
+
+  get "/verify_email/:user_id/:token" => "user#verify_email",
+    as: "verify_email"
+  post "/resend_verification_email" => "user#resend_verification_email",
+    as: "resend_verification_email"
+
+  get  "/users/forgot_password" => "user#forgot_password",
+    as: "forgot_password"
+  post "/users/forgot_password" => "user#forgot_password_post",
+    as: "forgot_password_post"
+  get  "/users/reset_password/:user_id/:token" => "user#reset_password",
+    as: "reset_password"
+  post "/users/reset_password" => "user#reset_password_post",
+    as: "reset_password_post"
+
 
 end
 

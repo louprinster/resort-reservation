@@ -36,6 +36,7 @@ GEM
     arel (4.0.2)
     atomic (1.1.16)
     awesome_print (1.2.0)
+    bcrypt (3.1.7)
     builder (3.1.4)
     coderay (1.1.0)
     coffee-rails (4.0.1)
@@ -135,6 +136,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  bcrypt (~> 3.1.7)
   coffee-rails (~> 4.0.0)
   dynamic_form
   jbuilder (~> 1.2)

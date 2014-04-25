@@ -8,6 +8,10 @@ class ReservationItems < ActiveRecord::Migration
       t.integer :adults
       t.integer :children
       t.integer :pets
+      t.float   :ave_rate
+      t.float   :subtotal
+      t.float   :tax
+      t.float   :total
       t.integer :reservation_id
       t.integer :rental_item_id
     end

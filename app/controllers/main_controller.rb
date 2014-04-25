@@ -1,5 +1,9 @@
 class MainController < ApplicationController
 
+before_filter do
+  session[:original_route] = request.path_info
+end
+
 def rental_type_search 
 
   total_guests = @reservation_item.adults + @reservation_item.children
@@ -258,6 +262,12 @@ def guest_details_get
   
   if session[:customer_id] != nil 
     @customer = Customer.find(session[:customer_id])
+  elsif session[:logged_in_user_id] != nil
+    user = User.find(session[:logged_in_user_id])
+    @customer = Customer.find_by(email: user.email)
+    if @customer == nil
+      @customer = Customer.new
+    end
   else
     @customer = Customer.new
   end
@@ -278,6 +288,7 @@ def guest_details_post
         
   elsif params["commit"] == "Continue to Review"
       @customer = Customer.new
+      @customer.title       = params["title"]
       @customer.first_name  = params["first_name"]
       @customer.last_name   = params["last_name"]
       @customer.address1    = params["address1"]
@@ -323,30 +334,139 @@ def review_post
     redirect_to "/guest_details" and return
     
   elsif params["commit"] == "Confirm"
-    @reservation = Reservation.find(session[:reservation_id])
-    @reservation.confirmation_num = rand(99999999) + 1
-    @reservation.status = "confirmed"
-    @reservation.customer_id = session[:customer_id]
-    @reservation.save!
+    reservation = Reservation.find(session[:reservation_id])
+    reservation.confirmation_num = rand(99999999) + 1
+    reservation.status = "confirmed"
+    reservation.customer_id = session[:customer_id]
+    reservation.save!
+    
     @reservation_items = reservation.reservation_items
     @reservation_items.each do |res_item|
       res_item.status = "confirmed"
+      subtotal = 0
+      res_item.rates.each do |rate|
+        subtotal = subtotal + rate.amount
+      end
+      ave = subtotal/res_item.num_of_days
+      res_item.ave_rate = ave
+      res_item.subtotal = subtotal
+      res_item.tax = subtotal * 0.1725
+      res_item.total = res_item.subtotal + res_item.tax
       res_item.save!
     end
-    @customer = Customer.find(session[:customer_id])
-    letter = get_letter
+# Format confirmation email
+    customer = Customer.find(session[:customer_id])
+    link = modify_confirmed_reservation_url(customer.last_name, reservation.confirmation_num)
+    res_info = ""
+    @reservation_items.order(:rental_item_id).each do |res_item| 
+      rental_type = res_item.rental_item.rental_type   
+      res_info = "#{res_info}<hr>"
+      res_info = "#{res_info}<p>#{rental_type.subcategory} #{rental_type.category} No. #{res_item.rental_item.name}</p>"
+      
+      if rental_type.category == "Cabin"       
+        res_info = "#{res_info} 
+                    <p>#{rental_type.num_bedrooms} #{"bedroom".pluralize(rental_type.num_bedrooms)},
+                      #{rental_type.num_baths} #{"bath".pluralize(rental_type.num_baths)}<br>
+                        Max Occupancy: #{rental_type.max_occupancy}</p>"
+      elsif rental_type.category == "Boat"
+        res_info = "#{res_info}
+                    <p>Max Occupancy: #{rental_type.max_occupancy}</p>"
+      elsif rental_type.category == "Boat Slip"
+        res_info = "#{res_info}
+          Length: #{rental_type.length}<br>
+          Width: #{rental_type.width}<br>
+          Height: #{rental_type.height}</p>"
+      end
+      res_info = "#{res_info}<b>From: </b>#{res_item.start_date.strftime('%a, %b %d, %Y')}<br>"
+      if (rental_type.category == "Cabin") || (rental_type.category == "Boat Slip")
+        res_info = "#{res_info}
+            <b>To: </b>#{res_item.end_date.strftime('%a, %b %d, %Y')}<br>"
+      else
+        res_info = "#{res_info}
+            <b>No. of days: </b>#{res_item.num_of_days}<br>"
+      end
+      res_info = "#{res_info} #{res_item.adults} #{'adult'.pluralize(res_item.adults)}, 
+            #{res_item.children} #{'child'.pluralize(res_item.children)}, 
+            #{res_item.pets} #{'pet'.pluralize(res_item.pets)}<br>"
+      
+      res_info = "#{res_info} <br>
+                      <table>
+                        <tr>"
+      if rental_type.category == "Cabin"
+          res_info = "#{res_info} <td>Ave. Nightly Rate: </td>"
+      elsif rental_type.category == "Boat"
+          res_info = "#{res_info} <td>Ave. Daily Rate: </td>"
+      elsif rental_type.category == "Boat Slip"
+          res_info = "#{res_info} <td>Ave. Monthly Rate: </td>"
+      end 
+      
+      res_info = "#{res_info}
+                          <td>$#{sprintf('%.2f', res_item.ave_rate)}</td>
+                        </tr>
+                        <tr>
+                          <td>Subtotal:</td>
+                          <td>$#{sprintf('%.2f', res_item.subtotal)}</td>
+                        </tr>
+                        <tr>
+                          <td>Tax (17.25%)</td>
+                          <td style='text-align:right'>$#{sprintf('%.2f', res_item.tax)}</td>
+                        </tr>
+                        <tr>
+                          <td><b>Total</b></td>
+                          <td><b>$#{sprintf('%.2f', res_item.total)}</b></td>
+                        </tr>
+                      </table>"
+    end
+    
     Pony.mail(
-      to: customer.email,
-      subject:  "Nickajack Marina & Resorts Reservation Confirmation #{reservation.confirmation_num}",
+      to:       "#{customer.email}",
+      subject:  "Nickajack Marina & Resorts Reservation Confirmation No. #{reservation.confirmation_num}",
       body:     "This is the body.",
-      html_body: "This is the body in <b>HTML</b>."
-    )
+      html_body: "<div style='width:500px'>
+                  <h2>Nickajack Marina & Resorts</h2><br>
+                    <p>
+                      <b>Reservation for #{customer.first_name} #{customer.last_name} </b><br>
+                      <b>Confirmation No. #{reservation.confirmation_num}</b><br>
+                    </p><br>
+                    <p>Dear #{customer.title} #{customer.last_name},</p>
+                    <p>We are pleased to confirm your reservation with Nickajack Resorts. Below you will find details regarding your reservation. We look forward to your stay.</p>
+                    <p>Nickajack Marina & Resorts</p><br>
+                    <p>To modify or cancel your reservation, click <a href='#{link}'>here</a>.</p><br>
+                    <p>#{res_info}</p>
+                  </div>".html_safe)
     flash[:success] = "Your reservation confirmation no. is #{reservation.confirmation_num} . An email regarding your reservation has been sent."
     session.clear
     redirect_to "/" and return
   end
   
 end
+#====================================================================================
+def modify_confirmed_reservation_get
+  
+  @last_name        = params[:last_name]
+  @confirmation_num = params[:confirmation_num]
+  render :modify_confirmed_reservation and return
+
+end
+
+def modify_confirmed_reservation_post
+  reservation = Reservation.find_by(confirmation_num: params[:confirmation_num])
+  if reservation != nil
+    customer = reservation.customer
+    if customer.last_name == params["last_name"]
+      session[:reservation_id] = reservation.id
+      session[:customer_id] = customer.id
+      redirect_to "/add_reservation_item" and return
+    else
+      flash.now[:error] = "No reservation found. Please correct name or confirmation number and try again."
+      render :modify_confirmed_reservation and return
+    end  
+  else
+      flash.now[:error] = "No reservation found. Please correct name or confirmation number and try again."
+      render :modify_confirmed_reservation and return
+  end
+end
+#====================================================================================
 
 def contact
 end
@@ -423,6 +543,5 @@ def cancel_reservation_item
     end
 
 end
-
 
 end # class MainController

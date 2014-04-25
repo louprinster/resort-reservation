@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css" type="text/css" media="all">
 </head>
 <body>
-     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+     <div class="navbar navbar-fixed-top" role="navigation">
         <div class="container">
           <div class="navbar-header">
           
@@ -29,26 +29,25 @@
               <li><a href="/contact">Contact</a></li>
             </ul>
           
-          <form class="navbar-form navbar-right" role="form">
+            <!--<ul class="nav navbar-nav navbar-right">        
+              <li><button type="button" class="btn btn-default navbar-btn">Sign in</button></li>
+            </ul>-->
+
+            <!--<form class="navbar-form navbar-right" role="form">
+              <div class="form-group">
+                <input type="text" placeholder="Email" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="password" placeholder="Password" class="form-control">
+              </div>
+              <button type="submit" class="btn btn-success">Sign in</button>
+            </form>-->          
           
-            <% if session[:logged_in_user_id] == nil %>
-                <a type="button" class="btn btn-success" href="/user">Login</a>
-                &nbsp;&nbsp;OR&nbsp;&nbsp;
-                <a type="button" class="btn btn-info" href="/user/new">Register</a>
-           <% else %>
-              <%= form_tag logout_path do %>
-                You are logged in as <b style="font-color:white"><%= User.where(id: session[:logged_in_user_id]).first.email %></b>.
-                <button type="submit" class="btn btn-info navbar-btn">Logout</button>
-              <% end %>
-              
-          <% end %> 
-        </div>   
+          
           
           </div><!--/.navbar-collapse -->
       </div><!-- container-->
     </div><!--navbar-->
-
-
   
     <% if flash[:error] != nil %>
       <div class="alert alert-danger">

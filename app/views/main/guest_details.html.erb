@@ -8,6 +8,8 @@
     <% @reservation_items.order(:rental_item_id).each do |res_item| %>
         <% rental_type = res_item.rental_item.rental_type %>
         <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+        <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+
         <br><br>
         <%= button_tag "Details", name: "details_res_item_id", value: res_item.id %>&nbsp;&nbsp;
         <%= button_tag "Change", name: "change_res_item_id", value: res_item.id %>&nbsp;&nbsp;
@@ -26,7 +28,13 @@
   
     <div style="text-align:left; padding:0px 100px 0px 100px; width:500px;">
    
-      <form class="form-horizontal" role="form">     
+      <form class="form-horizontal" role="form">  
+        <p>
+          <div class="form-group <%= @customer.errors[:title] != [] && "has-error" %>">
+            <%= label_tag :title, "Title #{@customer.errors[:title].join(", ")}", class: "control-label" %>
+            <%= select_tag "title", options_for_select(["Ms.", "Mr.", "Mrs.", "Dr."], @customer.title), class: "form-control" %>
+          </div>
+        </p>
         <p>
           <div class="form-group <%= @customer.errors[:first_name] != [] && "has-error" %>">
             <%= label_tag :first_name, "First Name #{@customer.errors[:first_name].join(", ")}", class: "control-label" %>
