@@ -29,19 +29,17 @@
               <li><a href="/contact">Contact</a></li>
             </ul>
           
-          <form class="navbar-form navbar-right" role="form">
-          
+          <div class="navbar-right" style="color:silver">
             <% if session[:logged_in_user_id] == nil %>
-                <a type="button" class="btn btn-success" href="/user">Login</a>
+                <a type="button" class="btn btn-success navbar-btn" href="/user">Login</a>
                 &nbsp;&nbsp;OR&nbsp;&nbsp;
-                <a type="button" class="btn btn-info" href="/user/new">Register</a>
+                <a type="button" class="btn btn-info navbar-btn" href="/user/new">Register</a>
            <% else %>
               <%= form_tag logout_path do %>
-                You are logged in as <b style="font-color:white"><%= User.where(id: session[:logged_in_user_id]).first.email %></b>.
+                You are logged in as <b><%= User.where(id: session[:logged_in_user_id]).first.email %>&nbsp;&nbsp;
                 <button type="submit" class="btn btn-info navbar-btn">Logout</button>
               <% end %>
-              
-          <% end %> 
+          <% end %>
         </div>   
           
           </div><!--/.navbar-collapse -->
@@ -70,17 +68,17 @@
         <%= flash[:success] %>
       </div>
     <% end %>
-    
+  
     <% if flash[:remind_to_verify_email] %>
       <div class="alert alert-info">
         Please click the link in the email you were sent to verify your email address.
         <%= form_tag resend_verification_email_path do %>
-          <%= hidden_field_tag :afterwards_go_to, request.path_info %>
+          <!--<%= hidden_field_tag :afterwards_go_to, request.path_info %>-->
           <%= submit_tag "Resend email" %>
         <% end %>
       </div>
     <% end %>
-
+        
     <%= yield %>
     
     <br clear="all">   
@@ -92,8 +90,28 @@
 
   <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js" type="text/javascript"></script> 
   <script>
-    $(function(){ $(".datepicker").datepicker({dateFormat:"yy-mm-dd"});
-    }); 
+   $(function() {
+      $( "#start_date" ).datepicker({
+        minDate: "+0D",
+        changeMonth: true,
+        numberOfMonths: 2,
+        dateFormat:"DD, d M, yy",
+        onClose: function( selectedDate ) {
+          $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
+          
+        }
+      });
+      $( "#end_date" ).datepicker({
+        defaultDate: "#start_date+2D",
+        minDate: "#start_date+1D",
+        changeMonth: true,
+        numberOfMonths: 2,
+        dateFormat:"DD, d M, yy",
+        onClose: function( selectedDate ) {
+          $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
+        }
+      });
+    });  
   </script>
 </body>
 </html>

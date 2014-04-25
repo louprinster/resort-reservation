@@ -15,12 +15,12 @@ class UserController < ApplicationController
 
   def index
     @users = User.order("id")
-    render :index, layout: false and return
+    render :index and return
   end
 
   def new
     @user = User.new
-    render :new, layout: false and return
+    render :new and return
   end
 
   def create
@@ -43,14 +43,9 @@ class UserController < ApplicationController
       )
 
       session[:logged_in_user_id] = @user.id
+
+      determine_route
 #       redirect_to user_index_path and return
-      original_route = session[:original_route]
-      if original_route != nil
-        session[:original_route] = nil
-        redirect_to original_route and return
-      else
-        redirect_to "/" and return
-      end  
     else
       render :new and return
     end
@@ -64,27 +59,20 @@ class UserController < ApplicationController
     else
       flash[:error] = "Wrong email or password"
     end
-#     redirect_to user_index_path and return
-    original_route = session[:original_route]
-    if original_route != nil
-      session[:original_route] = nil
-      redirect_to original_route and return
-    else
-      redirect_to "/" and return
-    end  
+      determine_route
+#       redirect_to user_index_path and return
   end
 
   def logout
-    session[:logged_in_user_id] = nil
-    raise session[:original_route].inspect
-#     redirect_to user_index_path and return
     original_route = session[:original_route]
+    session[:logged_in_user_id] = nil
     if original_route != nil
       session[:original_route] = nil
       redirect_to original_route and return
     else
       redirect_to "/" and return
-    end  
+    end 
+ 
   end
 
   def verify_email
@@ -98,14 +86,8 @@ class UserController < ApplicationController
       else
         flash[:error] = "Wrong email verification token"
       end
+      determine_route
 #       redirect_to user_index_path and return
-      original_route = session[:original_route]
-      if original_route != nil
-        session[:original_route] = nil
-        redirect_to original_route and return
-      else
-        redirect_to "/" and return
-      end  
     else
       flash[:error] = "Couldn't find user with that ID"
     end
@@ -119,13 +101,8 @@ class UserController < ApplicationController
 #{verify_email_url(@logged_in_user.id, @logged_in_user.email_verification_token)}"
     )
     flash[:success] = "Verification email sent."
-    original_route = session[:original_route]
-    if original_route != nil
-      session[:original_route] = nil
-      redirect_to original_route and return
-    else
-      redirect_to "/" and return
-    end  
+#       determine_route
+      redirect_to user_index_path and return
   end
 
   def forgot_password
@@ -141,18 +118,14 @@ class UserController < ApplicationController
         body:    "Please click the following link to reset your password:
 #{reset_password_url(user.id, user.email_verification_token)}"
       )
-      flash[:success] = "Password reset sent."
-      redirect_to user_index_path
+      flash[:success] = "Password reset email sent."
+#       determine_route
+      redirect_to user_index_path and return
     else
       flash[:error] = "Couldn't find user record for that email."
-#       redirect_to user_index_path
-    original_route = session[:original_route]
-    if original_route != nil
-      session[:original_route] = nil
-      redirect_to original_route and return
-    else
-      redirect_to "/" and return
-    end  
+#       determine_route
+      redirect_to user_index_path and return
+
     end
   end
 
@@ -182,11 +155,27 @@ class UserController < ApplicationController
       @user.password_confirmation    = params[:password_confirmation]
       if @user.save == true
         flash[:success] = "Password has been set."
-#         redirect_to user_index_path and return
-        redirect_to params[:afterwards_go_to]
+#         redirect_to params[:afterwards_go_to]
+      determine_route
+#       redirect_to user_index_path and return
+
       else
         render :reset_password and return
       end
     end
   end
+  
+  def determine_route
+      original_route = session[:original_route]
+      if original_route != nil
+        session[:original_route] = nil
+        redirect_to original_route and return
+      else
+        redirect_to "/" and return
+      end 
+   end    
+
+  
+  
+  
 end

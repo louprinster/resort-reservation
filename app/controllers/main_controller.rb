@@ -71,7 +71,7 @@ def intro_get
   session[:reservation_category] = @reservation_category
   
   @reservation_item = ReservationItem.new
-  @reservation_item.start_date = Date.today
+  @reservation_item.start_date = Date.today.strftime("%A, %b %d, %Y")
   @reservation_item.adults     = 1
   @reservation_item.children   = 0
   @reservation_item.pets       = 0
@@ -79,9 +79,9 @@ def intro_get
   if @reservation_category == "Boat"
     @reservation_item.num_of_days = 1
   elsif @reservation_category == "Cabin"
-    @reservation_item.end_date   = Date.today.advance(days: 2)
+    @reservation_item.end_date   = Date.today.advance(days: 2).strftime("%A, %b %d, %Y")
   elsif @reservation_category == "Boat Slip"
-    @reservation_item.end_date == Date.today.advance(days: 30)
+    @reservation_item.end_date == Date.today.advance(days: 30).strftime("%A, %b %d, %Y")
   end
   
   render :reservation_intro and return
@@ -435,7 +435,16 @@ def review_post
                     <p>#{res_info}</p>
                   </div>".html_safe)
     flash[:success] = "Your reservation confirmation no. is #{reservation.confirmation_num} . An email regarding your reservation has been sent."
-    session.clear
+
+    if session[:logged_in_user_id] == nil
+      session.clear
+    else
+      session[:reservation_category] = nil
+      session[:reservation_subcategory] = nil
+      session[:reservation_id] = nil
+      session[:reservation_item_id] = nil
+      session[:customer_id] = nil
+    end
     redirect_to "/" and return
   end
   
