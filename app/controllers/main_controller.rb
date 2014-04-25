@@ -2,6 +2,11 @@ class MainController < ApplicationController
 
 before_filter do
   session[:original_route] = request.path_info
+  
+  @logged_in_user = User.where(id: session[:logged_in_user_id]).first
+  if @logged_in_user != nil && @logged_in_user.was_email_verified != true
+    flash.now[:remind_to_verify_email] = true
+  end
 end
 
 def rental_type_search 
