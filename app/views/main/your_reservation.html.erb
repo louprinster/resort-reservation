@@ -121,10 +121,11 @@
                     </td>
     
                     <td style="width:250px;">
-                      <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: @reservation_item} %>
                       <p>
-                        <%= button_tag "Rate Breakdown", name: "rate_res_item_id", value: @reservation_item.id %>&nbsp;&nbsp;
-                        <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first %>
+                        <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: @reservation_item} %>
+                      </p>
+                      <p>
+                        <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first, class: "btn btn-success" %>
                       </p>
                     </td>
                   </tr>

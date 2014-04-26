@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>Nickajack Marina and Resort</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
   <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css" type="text/css" media="all">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.2/themes/dark-hive/jquery-ui.css" />
 </head>
 <body>
      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -87,10 +91,12 @@
       <p>&copy; Lou Prinster 2014</p>
     </footer>
 
-
+  <!--<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>--> 
+  <!--<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>-->  
   <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js" type="text/javascript"></script> 
-  <script>
-   $(function() {
+  <script type="text/javascript">
+   $(document).ready(
+    function() {
       $( "#start_date" ).datepicker({
         minDate: "+0D",
         changeMonth: true,
@@ -101,6 +107,7 @@
           
         }
       });
+      
       $( "#end_date" ).datepicker({
         defaultDate: "#start_date+2D",
         minDate: "#start_date+1D",
@@ -111,7 +118,26 @@
           $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
         }
       });
-    });  
+      $("#accordion").accordion({ header: "h3",          
+                autoheight: true,
+                active: false,
+                alwaysOpen: false,
+                fillspace: false,
+                collapsible: true,
+        //heightStyle: 'content'   //auto, fill, content
+      });
+      
+      $("#dialog").dialog({
+				autoOpen: false
+			});
+			
+			$("#button").on("click", function() {
+				$("#dialog").dialog("open");
+			});
+			
+    }); 
+    
   </script>
+  
 </body>
 </html>
