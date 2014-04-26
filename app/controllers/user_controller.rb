@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+  layout "user"
   before_filter do
     @logged_in_user = User.where(id: session[:logged_in_user_id]).first
     if @logged_in_user != nil && @logged_in_user.was_email_verified != true
