@@ -2,27 +2,27 @@
 
   <%= form_tag "/guest_details" do %>
 
-  <div class="pull-left" style="background-color:orange; padding:20px;">
-    <h4 style="text-align:center">Reservation Summary</h4>
+  <div class="pull-left left-box">
+    <h4 style="text-align:center" class="header-box">Reservation Summary</h4>
     <hr>
     <% @reservation_items.order(:rental_item_id).each do |res_item| %>
         <% rental_type = res_item.rental_item.rental_type %>
         <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+        <p>
         <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: res_item} %>
-
-        <br><br>
-        <%= button_tag "Details", name: "details_res_item_id", value: res_item.id %>&nbsp;&nbsp;
-        <%= button_tag "Change", name: "change_res_item_id", value: res_item.id %>&nbsp;&nbsp;
-        <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id %>
+        </p>
+        <%= button_tag "Details", name: "details_res_item_id", value: res_item.id, class:"btn-sm details-button" %>&nbsp;&nbsp;
+        <%= button_tag "Change", name: "change_res_item_id", value: res_item.id, class:"btn-sm details-button" %>&nbsp;&nbsp;
+        <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id, class:"btn-sm details-button" %>
         <hr>
     <% end %>
   </div>
   
-  <div style="width:830px; margin:20px 20px 20px 300px;">
-  
+  <div style="margin-left:300px" class="box">
+    <%= submit_tag "Continue to Review", class:"btn go-button pull-right" %><br><br>
     <!--<%= error_messages_for @customer %>-->
 
-    <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Guest Details</h4>
+    <h4 class="header-box">Guest Details</h4>
   
     <div style="text-align:left; padding:0px 100px 0px 100px; width:500px;">
    
@@ -98,8 +98,8 @@
       </form>
     </div>
  
-    <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Card Details</h4>
-    <%= submit_tag "Continue to Review" %>
+    <h4 class="header-box">Card Details</h4>
+    <%= submit_tag "Continue to Review", class:"btn go-button pull-right" %><br>
     
   <% end %> <!-- form tag -->
 

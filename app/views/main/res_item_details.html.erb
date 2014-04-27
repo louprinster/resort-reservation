@@ -1,38 +1,39 @@
 <div class="container">
+  <div class="box">
+    <div class="container">
+  
+      <div class="pull-left" style="margin:30px" >
+        <%= image_tag @rental_type.image_filename, {width: 300} %>
+      </div>
 
+      <div style="margin:30px 30px 30px 350px">
 
+        <% if @rental_type.category == "Cabin" %>
+            <h4><%= "#{@rental_type.num_bedrooms} Bedroom #{@rental_type.subcategory} Cabins"  %></h4>                  
+            <p>
+              <b>Maximum Occupancy:</b> <%= @rental_type.max_occupancy %> &nbsp;&nbsp;&nbsp;&nbsp; 
+              <b>No. Baths: </b> <%= @rental_type.num_baths %><br> 
+            </p>
+        <% elsif @rental_type.category == "Boat" %>
+            <h4><%= "#{@rental_type.subcategory} Boats" %></h4>
+            <p>
+              <b>Maximum Occupancy:</b> <%= @rental_type.max_occupancy %> 
+            </p>
+        <% elsif @rental_type.category == "Boat Slip" %>
+            <h4>Boat Slip</h4>
+            <p>
+              <b>Max Length: </b> <%= @rental_type.length %> &nbsp;&nbsp;&nbsp;&nbsp;
+              <b>Max Width: </b> <%= @rental_type.width %> &nbsp;&nbsp;&nbsp;&nbsp; 
+              <b>Max Height: </b> <%= @rental_type.height %>
+            </p>
+        <% end %>
+        <p>
+          <%= @rental_type.description %>
+        </p>
+        <p>  <a href="/add_reservation_item">Back to Reservation Summary</a></p>
 
-
-  <div class="pull-left" style="margin:30px" >
-    <%= image_tag @rental_type.image_filename, {width: 300} %>
+      </div>
+  
+    </div>                        
   </div>
-
-  <div style="margin:30px 30px 30px 350px">
-
-    <% if @rental_type.category == "Cabin" %>
-        <h4><%= "#{@rental_type.num_bedrooms} Bedroom #{@rental_type.subcategory} Cabins"  %></h4>                  
-        <p>
-          <b>Maximum Occupancy:</b> <%= @rental_type.max_occupancy %> &nbsp;&nbsp;&nbsp;&nbsp; 
-          <b>No. Baths: </b> <%= @rental_type.num_baths %><br> 
-        </p>
-    <% elsif @rental_type.category == "Boat" %>
-        <h4><%= "#{@rental_type.subcategory} Boats" %></h4>
-        <p>
-          <b>Maximum Occupancy:</b> <%= @rental_type.max_occupancy %> 
-        </p>
-    <% elsif @rental_type.category == "Boat Slip" %>
-        <h4>Boat Slip</h4>
-        <p>
-          <b>Max Length: </b> <%= @rental_type.length %> &nbsp;&nbsp;&nbsp;&nbsp;
-          <b>Max Width: </b> <%= @rental_type.width %> &nbsp;&nbsp;&nbsp;&nbsp; 
-          <b>Max Height: </b> <%= @rental_type.height %>
-        </p>
-    <% end %>
-    <p>
-      <%= @rental_type.description %>
-    </p>
-    <p>  <a href="/add_reservation_item">Back to Reservation Summary</a></p>
-
-  </div>
-                        
 </div>

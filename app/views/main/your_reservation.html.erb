@@ -3,9 +3,9 @@
   <%= form_tag "/your_reservation" do %>
 
 
-  <div class="pull-left" style="margin:20px; background-color:orange; padding:20px;">
+  <div class="pull-left left-box">
 
-    <h4 style="text-align:center">Reservation</h4>
+    <h4 style="text-align:center" class="header-box">Your Reservation</h4>
     <hr>
   
     <p><div class="form-group <%= @reservation_item.errors[:start_date] != [] && "has-error" %>">
@@ -74,13 +74,13 @@
             <%= select_tag "pets", options_for_select([0,1,2,3], @reservation_item.pets), prompt: "0" %>
         </p>
 
-      <p><%= submit_tag "Check Availability" %></p>
+      <p><%= submit_tag "Check Availability", class:"btn go-button" %></p>
       <p><%= submit_tag "Cancel" %></p>
     <% end %>
     
   </div>
 
-  <div style="padding:20px; margin-left:250px">
+  <div style="padding:20px; margin:20px 20px 20px 280px" class="box">
     
           <% if @available_rental_types != nil %>
 
@@ -88,8 +88,8 @@
               <% @available_rental_types.each do |rental_type, rental_item_ids| %>
                   <tr>
                     <td>
-                      <%= image_tag rental_type.image_filename, {width: 170} %><br><br>
-                      <%= submit_tag "More Photos" %>
+                      <%= image_tag rental_type.image_filename, {width: 220} %><br><br>
+                      <%= submit_tag "More Photos", class:"btn details-button" %>
                     </td>
     
                     <td>
@@ -125,7 +125,7 @@
                         <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: @reservation_item} %>
                       </p>
                       <p>
-                        <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first, class: "btn btn-success" %>
+                        <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first, class: "btn-lg go-button" %>
                       </p>
                     </td>
                   </tr>

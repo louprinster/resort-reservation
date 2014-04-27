@@ -4,14 +4,14 @@
     <% subtotal = subtotal + rate %>
 <% end %>
  
-<table>
+<table style="padding-left: 20px">
   <tr>
     <% if rental_type.category == "Cabin" %>
-      <td>Ave. Nightly Rate: </td>
+      <th>Ave. Nightly Rate: </th>
     <% elsif rental_type.category == "Boat" %>
-      <td>Ave. Daily Rate: </td>
+      <th>Ave. Daily Rate: </th>
     <% elsif rental_type.category == "Boat Slip" %>
-      <td>Ave. Monthly Rate: </td>
+      <th>Ave. Monthly Rate: </th>
     <% end %> 
     
     <% ave = subtotal/res_item.num_of_days %>
@@ -19,24 +19,24 @@
   </tr>
 
   <tr>
-    <td>Subtotal:</td>
+    <th>Subtotal:</th>
     <td>$<%= "#{sprintf('%.2f', subtotal)}" %></td>
   </tr>
   <tr>
-    <td>Tax (17.25%)</td>
+    <th>Tax (17.25%)</th>
     <% tax = subtotal * 0.1725 %>
     <td style="text-align:right">$<%= "#{sprintf('%.2f', tax)}" %></td>
   </tr>
   <tr>
-    <td><b>Total</b></td>
+    <th>Total</th>
     <% total = tax + subtotal %>
     <td><b>$<%= "#{sprintf('%.2f', total)}" %></b></td>
   </tr>
 </table>
-
-<div id="accordion">
+<br>
+<div id="accordion" style="font-size:10pt">
   <h3><a href="#">Rate Breakdown</a></h3>
-  <div>
+    <div>
     <table>
         <% subtotal = 0 %>
         <% (res_item.start_date...res_item.end_date).each do |date| %>
@@ -48,6 +48,6 @@
           </tr>
         <% end %>  
     </table>
-  </div>
+    </div>
 </div>
 

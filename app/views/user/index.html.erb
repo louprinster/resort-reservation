@@ -1,6 +1,6 @@
-<div class="user">
+<div style="width: " class="user">
   <%= form_tag login_path, class: "login" do %>
-    <h2>Login</h2>
+    <h3 class="header-box">Login</h3>
     <p>
       <%= label_tag :email %><br>
       <%= text_field_tag :email %>
@@ -12,7 +12,7 @@
     </p>
 
 
-    <p><%= submit_tag "Login" %></p>
+    <p><%= submit_tag "Login", class:"btn go-button" %></p>
     <p><%= link_to "Create an account.", new_user_path %></p>
     <p><%= link_to "Forgot password?", forgot_password_path %></p>
   <% end %>

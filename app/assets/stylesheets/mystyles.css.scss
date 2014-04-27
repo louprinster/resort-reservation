@@ -5,29 +5,78 @@ body {
 
 /* Move down content because we have a fixed navbar that is 50px tall */
   padding-top: 50px;
-  padding-bottom: 20px;
+  padding-bottom: 100px; /* Height of footer */
 
-/*  width: 760px;
+  background-image: image-url("nickajacklake.jpg");
+  
+  /* width: 760px;
   margin: 20px auto;
   background-color: white;
+  color: #4A3434;
   border: 3px #ccc solid;
-  padding: 30px;
-  font-family: sans-serif;
-  font-size: 16pt; */
+  padding: 30px;*/
+  
+  font-family: Segoe UI,Helvetica,Arial,sans-serif;
+  font-size: 11pt;
 }
 
-.jumbotron {
-    margin-bottom: 0px;
-    background-image: image-url("nickajacklake.jpg");
-    background-position: 0% 25%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: white;
-} 
-
-.nickajack {
-    background-image: image-url('nickajacklake.jpg');
-    background-repeat:no-repeat;
-    background-attachment:fixed;
+.footer {
+   position:relative;
+   padding:30px;
+   bottom:0;
+   width:100%;
+   height:100px;   /* Height of the footer */
+   background-color:#31280A; 
+   color:white
 }
+
+.box {
+  background-color: #ccbb88;
+  border: 1px #ccbb88 solid; 
+  margin: 20px auto 20px auto; 
+  padding:20px;
+  border-radius:6px
+}
+
+.go-button {
+  background-color: #728A1A;
+  color: white;
+  font-weight:normal
+}
+
+.add-button {
+  background-color: #BE8A1C;
+  color: white;
+  font-weight:normal
+}
+
+.change-button {
+  background-color: #ccbb88;
+  color: white;
+  font-weight:normal
+}
+
+
+.details-button {
+  background-color: #3E72B0;
+  color: white;
+  font-weight:normal
+}
+
+.header-box {
+  background-color: #1c160d;
+  border: #695444;
+  color: #9bcc60;
+  border-radius:6px;
+  padding:15px; 
+  text-align:left;
+}
+
+.left-box {
+  background-color: #BE8A1C;
+  border-radius:  6px;
+  padding:  20px;
+}
+
+
 

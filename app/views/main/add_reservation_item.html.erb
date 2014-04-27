@@ -1,48 +1,48 @@
 <div class="container">
 
   <%= form_tag "/add_reservation_item" do %>
+
+  <div style="width:700px" class="box">
   
-
-
-  <div style="width:700px; border: 1px #B06A09 solid; margin: 20px auto 20px auto; padding:20px">
-  <p>
-    <%= submit_tag "Add a cabin reservation", class:"btn btn-warning" %>&nbsp;&nbsp;&nbsp;&nbsp;
-    <%= submit_tag "Add a boat reservation", class:"btn btn-warning" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <%= submit_tag "Continue to Guest Details", class:"pull-right btn btn-success" %>
-  </p> 
-    <h4 style="background:#C9BCAD; padding:15px; text-align:left;">Reservation Summary</h4>
+    <p>
+      <%= submit_tag "Add a cabin reservation", class:"btn add-button" %>&nbsp;&nbsp;&nbsp;&nbsp;
+      <%= submit_tag "Add a boat reservation", class:"btn add-button" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <%= submit_tag "Continue to Guest Details", class:"pull-right btn go-button" %>
+    </p> 
+    <h4 class="header-box">Reservation Summary</h4>
+    
     <table class="table table-condensed">
-    <% @reservation_items.order(:rental_item_id).each do |res_item| %>
-
-      <tr>
-        <% rental_type = res_item.rental_item.rental_type %>
-      
-        <td style="width:200px">
-          <%= image_tag rental_type.image_filename, {width: 170} %><br><br>
-          <%= button_tag "Details", name: "details_res_item_id", value: res_item.id %>&nbsp;&nbsp;
-        </td>
-      
-        <td style="width:200px">
-            <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+      <% @reservation_items.order(:rental_item_id).each do |res_item| %>
+        <tr>
+          <% rental_type = res_item.rental_item.rental_type %>
+          <td style="width:200px">
+            <p>
+              <%= image_tag rental_type.image_filename, {width: 170} %>
+            </p>
             <br>
-            <%= button_tag "Change", name: "change_res_item_id", value: res_item.id %>&nbsp;&nbsp;
-            <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id %>
-        </td>
+            <%= button_tag "Details", name: "details_res_item_id", value: res_item.id, class:"btn details-button" %>&nbsp;&nbsp;
+          </td>
+          <td style="width:200px">
+              <p>
+              <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+              </p>
+              <%= button_tag "Change", name: "change_res_item_id", value: res_item.id, class:"btn add-button" %>&nbsp;&nbsp;
+              <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id, class:"btn add-button" %>
+          </td>
+          <td style="width:250px">
+            <p>
+            <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+            </p>
+            <br>
+          </td>
+         </tr>
         
-        <td style="width:220px">
-          <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: res_item} %>
-          <br>
-        </td>
-        
-       </tr> 
-    <% end %>
+      <% end %><!-- each loop -->
     </table>
     
-  </div>
-
-  <br clear="all"> 
-  
-</div> 
+  </div>  
     
   <% end %><!--form tag-->
+
+</div> 
     
