@@ -283,7 +283,12 @@ end
 
 def guest_details_post
 
-  if params["change_res_item_id"] != nil
+  if params["details_res_item_id"] != nil
+    id = params["details_res_item_id"]
+    @rental_type = ReservationItem.find(id).rental_item.rental_type
+    render :res_item_details and return
+    
+  elsif params["change_res_item_id"] != nil
     @res_item_id = params["change_res_item_id"]
     change_reservation_item
     
