@@ -9,7 +9,6 @@
 
 <div class="container">
 <%= form_tag "/#{@reservation_category}/intro" do %>
-<h2 class="header-box" style="width:400px">Nickajack <%= "#{@reservation_category} Rentals" %></h2>
 
   <div class="pull-left left-box">
   
@@ -18,13 +17,13 @@
   
     <p><div class="form-group <%= @reservation_item.errors[:start_date] != [] && "has-error" %>">
         <%= label_tag :start_date, "Check-in #{@reservation_item.errors[:start_date].join(", ")}", class: "control-label" %><br>
-        <%= text_field_tag :start_date, @reservation_item.start_date.strftime("%a, %b %d, %Y"), class: "datepicker form-control" %>
+        <%= text_field_tag :start_date, @reservation_item.start_date, class: "datepicker form-control" %>
     </div></p>
 
     <% if @reservation_category == "Cabin" %>
         <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
             <%= label_tag :end_date, "Check-out #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
-            <%= text_field_tag :end_date, @reservation_item.end_date.strftime("%a, %b %d, %Y"), class: "datepicker form-control" %>
+            <%= text_field_tag :end_date, @reservation_item.end_date, class: "datepicker form-control" %>
         </div></p>
         <p><b>Select a cabin category:</b></p>
         <p>
@@ -92,8 +91,9 @@
 
   </div>
   
-  <div> 
-    <p>Rental category descriptions to be listed here.</p>
+  <div style="padding:20px; margin:20px 20px 20px 280px" class="box"> 
+    <h4 class="header-box" style="width:400px">Nickajack <%= "#{@reservation_category} Rentals" %></h4>
+    <p>Rental category images & descriptions to be listed here.</p>
   </div>
   
 <% end %> <!-- form tag -->

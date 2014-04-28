@@ -349,6 +349,7 @@ end
 
 if ReservationItem.count == 0
 ReservationItem.create! \
+      category:       "Cabin",
       start_date:     Date.new(2014, 05, 01),
       end_date:       Date.new(2014, 05, 05),
       adults:         2,
@@ -359,6 +360,7 @@ ReservationItem.create! \
       status:         "confirmed"
 
 ReservationItem.create! \
+      category:       "Cabin",
       start_date:     Date.new(2014, 05, 10),
       end_date:       Date.new(2014, 05, 14),
       adults:         2,

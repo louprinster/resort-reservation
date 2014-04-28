@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20140423213913) do
   end
 
   create_table "reservation_items", force: true do |t|
+    t.string  "category"
     t.string  "status"
     t.date    "start_date"
     t.date    "end_date"

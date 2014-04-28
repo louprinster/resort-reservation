@@ -9,14 +9,14 @@
     <hr>
   
     <p><div class="form-group <%= @reservation_item.errors[:start_date] != [] && "has-error" %>">
-        <%= label_tag :start_date, "Start Date #{@reservation_item.errors[:start_date].join(", ")}", class: "control-label" %><br>
+        <%= label_tag :start_date, "Check in #{@reservation_item.errors[:start_date].join(", ")}", class: "control-label" %><br>
         <%= text_field_tag :start_date, @reservation_item.start_date.strftime("%a, %b %d, %Y"), class: "datepicker form-control" %>
     </div></p>
 
 
     <% if @reservation_category == "Cabin" %>
       <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
-        <%= label_tag :end_date, "End Date #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
+        <%= label_tag :end_date, "Check out #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
         <%= text_field_tag :end_date, @reservation_item.end_date.strftime("%a, %b %d, %Y"), class: "datepicker form-control" %>
         </div>
       </p>
@@ -75,7 +75,6 @@
         </p>
 
       <p><%= submit_tag "Check Availability", class:"btn go-button" %></p>
-      <p><%= submit_tag "Cancel" %></p>
     <% end %>
     
   </div>
@@ -96,13 +95,13 @@
                       <% if @reservation_category == "Cabin" %>
                           <h4><%= "#{rental_type.num_bedrooms} Bedroom #{rental_type.subcategory} Cabins"  %></h4>                  
                           <p>
-                            <b>Maximum Occupancy:</b> <%= rental_type.max_occupancy %> &nbsp;&nbsp;&nbsp;&nbsp; 
                             <b>No. Baths: </b> <%= rental_type.num_baths %><br> 
+                            <b>Max Occupancy:</b> <%= rental_type.max_occupancy %> &nbsp;&nbsp;&nbsp;&nbsp; 
                           </p>
                       <% elsif @reservation_category == "Boat" %>
                           <h4><%= "#{rental_type.subcategory} Boats" %></h4>
                           <p>
-                            <b>Maximum Occupancy:</b> <%= rental_type.max_occupancy %> 
+                            <b>Max Occupancy:</b> <%= rental_type.max_occupancy %> 
                           </p>
                       <% elsif @reservation_category == "Boat Slip" %>
                           <h4>Boat Slip</h4>
@@ -125,7 +124,7 @@
                         <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: @reservation_item} %>
                       </p>
                       <p>
-                        <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first, class: "btn-lg go-button" %>
+                        <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first, class: "btn go-button pull-right" %>
                       </p>
                     </td>
                   </tr>

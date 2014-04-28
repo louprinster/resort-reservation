@@ -95,54 +95,49 @@ end
 def intro_post
 
   @reservation_category = session[:reservation_category]
+    
+  if params["reservation_subcategory"] == nil
+    flash.now[:error] = "Please choose a #{@reservation_category} type"
+    render :reservation_intro and return
+    
+  else
+    session[:reservation_subcategory] = params["reservation_subcategory"].capitalize
+    @reservation_subcategory          = params["reservation_subcategory"].capitalize
   
-  @reservation_item = ReservationItem.new
-  @reservation_item.start_date     = params["start_date"]
-  @reservation_item.adults         = params["adults"].to_i
-  @reservation_item.children       = params["children"].to_i
-  @reservation_item.pets           = params["pets"].to_i
-
-  if @reservation_category == "Cabin"
-    @reservation_item.end_date     = params["end_date"]
-    @reservation_item.start_date   = params["start_date"]
-    @reservation_item.num_of_days  = (@reservation_item.start_date...@reservation_item.end_date).count
-  elsif @reservation_category == "Boat"
+    @reservation_item = ReservationItem.new
+    @reservation_item.category       = @reservation_category
+    @reservation_item.start_date     = params["start_date"]
+    @reservation_item.adults         = params["adults"].to_i
+    @reservation_item.children       = params["children"].to_i
+    @reservation_item.pets           = params["pets"].to_i
+    @reservation_item.end_date       = params["end_date"]
     @reservation_item.num_of_days    = params["num_of_days"].to_i
-    @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
-  end
-    
+    @reservation_item.rental_item_id = nil
+    @reservation_item.status         = "in progress"
 
-  if params["commit"] == "Check Availability"
-    if params["reservation_subcategory"] == nil
-      flash.now[:error] = "Please choose a #{@reservation_category} type"
-      render :reservation_intro and return
-    else
-      session[:reservation_subcategory] = params["reservation_subcategory"].capitalize
-      @reservation_subcategory = params["reservation_subcategory"].capitalize
-    
-      @reservation_item.rental_item_id = nil
-      @reservation_item.status         = "in progress"
-
-      if @reservation_item.save 
-        if session[:reservation_id] == nil
-          @reservation = Reservation.new
-          @reservation.status = "in progress"
-          @reservation.save!
-          @reservation_item.reservation_id = @reservation.id
-          session[:reservation_id]      = @reservation.id
-        else
-          @reservation_item.reservation_id = session[:reservation_id]
-        end
-        @reservation_item.save!
-        session[:reservation_item_id] = @reservation_item.id
-        redirect_to "/your_reservation" and return
-      else
-        render :reservation_intro and return
+    if @reservation_item.save
+      if @reservation_category == "Cabin"
+        @reservation_item.num_of_days  = (@reservation_item.start_date...@reservation_item.end_date).count
+      elsif @reservation_category == "Boat"
+        @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
       end
+      if session[:reservation_id] == nil
+        @reservation = Reservation.new
+        @reservation.status = "in progress"
+        @reservation.save!
+        @reservation_item.reservation_id = @reservation.id
+        session[:reservation_id]      = @reservation.id
+      else
+        @reservation_item.reservation_id = session[:reservation_id]
+      end
+      @reservation_item.save!
+      session[:reservation_item_id] = @reservation_item.id
+      redirect_to "/your_reservation" and return
+    else
+      render :reservation_intro and return
     end
-  elsif params["commit"] == "Continue to Guest Details"
-    redirect "/guest_details" and return
   end
+  
 end
 
 #================================================================================
@@ -175,33 +170,51 @@ def reservation_post
     cancel_reservation_item
     
   elsif params["commit"] == "Check Availability"
-    @reservation_category    = session[:reservation_category]
+    @reservation_category             = session[:reservation_category]
     @reservation_subcategory          = params["reservation_subcategory"]
     session[:reservation_subcategory] = params["reservation_subcategory"]  
           
+    @reservation_item.category       = @reservation_category
     @reservation_item.start_date     = params["start_date"]
     @reservation_item.adults         = params["adults"].to_i
     @reservation_item.children       = params["children"].to_i
     @reservation_item.pets           = params["pets"].to_i
-
-    if @reservation_category == "Cabin"
-      @reservation_item.end_date = params["end_date"]
-      @reservation_item.start_date = params["start_date"]
-      @reservation_item.num_of_days    = (@reservation_item.start_date...@reservation_item.end_date).count
-    elsif @reservation_category == "Boat"
-      @reservation_item.num_of_days    = params["num_of_days"].to_i
-      @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
-    end
-
+    @reservation_item.end_date       = params["end_date"]
+    @reservation_item.num_of_days    = params["num_of_days"].to_i
     if @reservation_item.save
-        @rental_types = RentalType.where(category: @reservation_category, subcategory: @reservation_subcategory)
-        @available_rental_types = rental_type_search
-        if @available_rental_types == {}
-          flash.now[:info] = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy."
-        end
+      if @reservation_category == "Cabin"
+        @reservation_item.num_of_days  = (@reservation_item.start_date...@reservation_item.end_date).count
+      elsif @reservation_category == "Boat"
+        @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
+      end
+      @reservation_item.save!
+      @rental_types = RentalType.where(category: @reservation_category, subcategory: @reservation_subcategory)
+      @available_rental_types = rental_type_search
+      if @available_rental_types == {}
+        flash.now[:info] = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy."
+      end
+      render :your_reservation and return
+    else
+      render :your_reservation and return
     end
-    
-    render :your_reservation and return
+
+#     if @reservation_category == "Cabin"
+#       @reservation_item.end_date = params["end_date"]
+#       @reservation_item.start_date = params["start_date"]
+#       @reservation_item.num_of_days    = (@reservation_item.start_date...@reservation_item.end_date).count
+#     elsif @reservation_category == "Boat"
+#       @reservation_item.num_of_days    = params["num_of_days"].to_i
+#       @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
+#     end
+# 
+#     if @reservation_item.save
+#         @rental_types = RentalType.where(category: @reservation_category, subcategory: @reservation_subcategory)
+#         @available_rental_types = rental_type_search
+#         if @available_rental_types == {}
+#           flash.now[:info] = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy."
+#         end
+#     end
+#     render :your_reservation and return
                       
   elsif params["rental_item_id"] != nil
 

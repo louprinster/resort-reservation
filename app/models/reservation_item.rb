@@ -19,7 +19,18 @@ class ReservationItem < ActiveRecord::Base
                 
   validates :start_date, presence: true
   validate  :start_must_be_today_or_after
-#   validate  :end_must_be_after_start_date
+  validates :end_date, presence: true, if: :cabin?
+  validate  :end_must_be_after_start_date, if: :cabin?
+  
+  validate  :num_of_days, presence: true, if: :boat?
+  
+  def cabin?
+    self.category == "Cabin"
+  end
+  
+  def boat?
+    self.category == "Boat"
+  end
   
   def start_must_be_today_or_after
     if self.start_date != nil
@@ -29,15 +40,12 @@ class ReservationItem < ActiveRecord::Base
     end
   end
   
-#   def end_must_be_after_start_date
-#   # allow 1 day rental for boats
-#     if (self.num_of_days != nil) || (self.num_of_days != 1)
-#       if self.end_date != nil
-#         if self.end_date <= self.start_date
-#           errors.add(:end_date, "must be after Check-in")
-#         end
-#       end
-#     end
-#   end
+  def end_must_be_after_start_date
+    if self.end_date != nil
+      if self.end_date <= self.start_date
+        errors.add(:end_date, "must be after Check-in")
+      end
+    end
+  end
   
 end
