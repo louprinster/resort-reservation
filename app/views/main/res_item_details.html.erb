@@ -30,7 +30,7 @@
         <p>
           <%= @rental_type.description %>
         </p>
-        <p>  <a href="/add_reservation_item">Back to Reservation Summary</a></p>
+        <p>  <a href="<%= "#{session[:original_route]}" %>">Back</a></p>
 
       </div>
   
