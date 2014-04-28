@@ -2,7 +2,6 @@
 
   <%= form_tag "/your_reservation" do %>
 
-
   <div class="pull-left left-box">
 
     <h4 style="text-align:center" class="header-box">Your Reservation</h4>
@@ -10,14 +9,14 @@
   
     <p><div class="form-group <%= @reservation_item.errors[:start_date] != [] && "has-error" %>">
         <%= label_tag :start_date, "Check in #{@reservation_item.errors[:start_date].join(", ")}", class: "control-label" %><br>
-        <%= text_field_tag :start_date, @reservation_item.start_date.strftime("%a, %b %d, %Y"), class: "datepicker form-control" %>
+        <%= text_field_tag :start_date, @reservation_item.start_date, class: "datepicker form-control" %>
     </div></p>
 
 
     <% if @reservation_category == "Cabin" %>
       <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
         <%= label_tag :end_date, "Check out #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
-        <%= text_field_tag :end_date, @reservation_item.end_date.strftime("%a, %b %d, %Y"), class: "datepicker form-control" %>
+        <%= text_field_tag :end_date, @reservation_item.end_date, class: "datepicker form-control" %>
         </div>
       </p>
       <p><b>Select a cabin type: </b></p>
@@ -81,60 +80,61 @@
 
   <div style="padding:20px; margin:20px 20px 20px 280px" class="box">
     
-          <% if @available_rental_types != nil %>
+    <% if @available_rental_types != nil %>
 
-            <table class="table">    
-              <% @available_rental_types.each do |rental_type, rental_item_ids| %>
-                  <tr>
-                    <td>
-                      <%= image_tag rental_type.image_filename, {width: 220} %><br><br>
-                      <%= submit_tag "More Photos", class:"btn details-button" %>
-                    </td>
-    
-                    <td>
-                      <% if @reservation_category == "Cabin" %>
-                          <h4><%= "#{rental_type.num_bedrooms} Bedroom #{rental_type.subcategory} Cabins"  %></h4>                  
-                          <p>
-                            <b>No. Baths: </b> <%= rental_type.num_baths %><br> 
-                            <b>Max Occupancy:</b> <%= rental_type.max_occupancy %> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          </p>
-                      <% elsif @reservation_category == "Boat" %>
-                          <h4><%= "#{rental_type.subcategory} Boats" %></h4>
-                          <p>
-                            <b>Max Occupancy:</b> <%= rental_type.max_occupancy %> 
-                          </p>
-                      <% elsif @reservation_category == "Boat Slip" %>
-                          <h4>Boat Slip</h4>
-                          <p>
-                            <b>Max Length: </b> <%= rental_type.length %> &nbsp;&nbsp;&nbsp;&nbsp;
-                            <b>Max Width: </b> <%= rental_type.width %> &nbsp;&nbsp;&nbsp;&nbsp; 
-                            <b>Max Height: </b> <%= rental_type.height %>
-                          </p>
-                      <% end %>
-                      <p>
-                        <%= rental_type.description %>
-                      </p>
-                      <p>
-                        <b><%= "#{rental_item_ids.length} available" %></b>
-                      </p>
-                    </td>
-    
-                    <td style="width:250px;">
-                      <p>
-                        <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: @reservation_item} %>
-                      </p>
-                      <p>
-                        <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first, class: "btn go-button pull-right" %>
-                      </p>
-                    </td>
-                  </tr>
-              <% end %>
-            </table>
-        
-          <% end %><!-- if available rental types -->
+      <table class="table">    
+        <% @available_rental_types.each do |rental_type, rental_item_ids| %>
+            <tr>
+              <td>
+                <%= image_tag rental_type.image_filename, {width: 220} %><br><br>
+                <%= submit_tag "More Photos", class:"btn details-button" %>
+              </td>
+
+              <td>
+                <% if @reservation_category == "Cabin" %>
+                    <h4><%= "#{rental_type.num_bedrooms} Bedroom #{rental_type.subcategory} Cabins"  %></h4>                  
+                    <p>
+                      <b>No. Baths: </b> <%= rental_type.num_baths %><br> 
+                      <b>Max Occupancy:</b> <%= rental_type.max_occupancy %> &nbsp;&nbsp;&nbsp;&nbsp; 
+                    </p>
+                <% elsif @reservation_category == "Boat" %>
+                    <h4><%= "#{rental_type.subcategory} Boats" %></h4>
+                    <p>
+                      <b>Max Occupancy:</b> <%= rental_type.max_occupancy %> 
+                    </p>
+                <% elsif @reservation_category == "Boat Slip" %>
+                    <h4>Boat Slip</h4>
+                    <p>
+                      <b>Max Length: </b> <%= rental_type.length %> &nbsp;&nbsp;&nbsp;&nbsp;
+                      <b>Max Width: </b> <%= rental_type.width %> &nbsp;&nbsp;&nbsp;&nbsp; 
+                      <b>Max Height: </b> <%= rental_type.height %>
+                    </p>
+                <% end %>
+                <p>
+                  <%= rental_type.description %>
+                </p>
+                <p>
+                  <b><%= "#{rental_item_ids.length} available" %></b>
+                </p>
+              </td>
+
+              <td style="width:250px;">
+                <p>
+                  <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: @reservation_item} %>
+                </p>
+                <p>
+                  <%= button_tag "Reserve", name: "rental_item_id", value: rental_item_ids.first, class: "btn go-button pull-right" %>
+                </p>
+              </td>
+            </tr>
+        <% end %>
+      </table>
+  
+    <% end %><!-- if available rental types -->
           
-    </div><!-- container -->
-  </div>
+    </div>
+    
+  
   <% end %> <!-- form tag -->
 </div><!-- container -->
 
