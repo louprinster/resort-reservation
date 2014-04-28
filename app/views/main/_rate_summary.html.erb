@@ -34,15 +34,14 @@
   </tr>
 </table>
 <br>
-<div id="accordion" style="font-size:10pt">
-  <h3><a href="#">Rate Breakdown</a></h3>
+<div id="accordion" style="font-size:9pt">
+  <h3>Rate Breakdown</h3>
     <div>
     <table>
         <% subtotal = 0 %>
         <% (res_item.start_date...res_item.end_date).each do |date| %>
           <tr>
             <% rate = rate_helper(rental_type, date) %>
-            <% subtotal = subtotal + rate %>
             <td><%= date.strftime("%a, %b %d, %Y") %></td>
             <td><%= "$#{sprintf('%.2f', rate)}" %></td>
           </tr>
