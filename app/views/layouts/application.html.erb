@@ -109,10 +109,8 @@
         dateFormat:"DD, d M, yy",
         onClose: function( selectedDate ) {
           $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
-          
         }
-      });
-      
+      });      
       $( "#end_date" ).datepicker({
         defaultDate: "#start_date+2D",
         minDate: "#start_date+1D",
@@ -131,11 +129,9 @@
                 collapsible: true,
         //heightStyle: 'content'   //auto, fill, content
       });
-      
       $("#dialog").dialog({
 				autoOpen: false
 			});
-			
 			$("#button").on("click", function() {
 				$("#dialog").dialog("open");
 			});
