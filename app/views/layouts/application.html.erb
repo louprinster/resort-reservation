@@ -79,7 +79,7 @@
             Please click the link in the email you were sent to verify your email address.
             <%= form_tag resend_verification_email_path do %>
               <!--<%= hidden_field_tag :afterwards_go_to, request.path_info %>-->
-              <%= submit_tag "Resend email" %>
+              <%= submit_tag "Resend email", class:"btn details-button" %>
             <% end %>
           </div>
         <% end %>
