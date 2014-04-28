@@ -10,7 +10,7 @@
       <%= submit_tag "Continue to Guest Details", class:"pull-right btn go-button" %>
     </p> 
     <h4 class="header-box">Reservation Summary</h4>
-    
+
     <table class="table table-condensed">
       <% @reservation_items.order(:rental_item_id).each do |res_item| %>
         <tr>
