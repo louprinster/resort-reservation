@@ -1,0 +1,26 @@
+// Place all the styles related to the admin controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+html {
+  background-color: #eee;
+}
+body {
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+  padding-top: 50px;
+  padding-bottom: 200px; /* Height of footer */
+
+  font-family: Segoe UI,Helvetica,Arial,sans-serif;
+  font-size: 11pt;
+}
+
+
+
+.admin-box {
+  background-color: orange;
+  border: 1px #ccbb88 solid; 
+  margin: 20px auto 20px auto; 
+  padding:20px;
+  border-radius:6px
+}

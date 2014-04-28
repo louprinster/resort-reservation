@@ -13,6 +13,9 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+Admin.create! username: "tom", password: "123", password_confirmation: "123"
+Admin.create! username: "deb", password: "234", password_confirmation: "234"
+
 if RentalType.count == 0
 RentalType.create! \
       category:           "Cabin",

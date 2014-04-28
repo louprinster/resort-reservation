@@ -36,6 +36,27 @@ ResortReservation::Application.routes.draw do
   post "/users/reset_password" => "user#reset_password_post",
     as: "reset_password_post"
 
+#   resources "sessions", path: "/sessions", controller: "sessions",
+#     only: [:new, :create, :destroy]
+#   # The above resources lines expand to:
+#   #   get    "/sessions/new" => "sessions#new"
+#   #   post   "/sessions"     => "sessions#create"
+#   #   delete "/sessions"     => "sessions#destroy"
+  
+  get  "/admin/login"         => "sessions#login"
+  post "/admin/login"         => "sessions#login_post"
+  post "/admin/logout"        => "sessions#logout"
+
+  resources "admin", path: "/admin", controller: "admin",
+    only: [:index, :new, :create, :edit, :update, :destroy]
+  # The above resources lines expand to:
+  #   get    "/admin"          => "admin#index"
+  #   get    "/admin/new"      => "admin#new"
+  #   post   "/admin"          => "admin#create"
+  #   get    "/admin/:id/edit" => "admin#edit"
+  #   put    "/admin/:id"      => "admin#update"
+  #   delete "/admin/:id"      => "admin#destroy"
+
 
 end
 
