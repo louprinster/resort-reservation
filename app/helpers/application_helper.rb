@@ -13,9 +13,9 @@ module ApplicationHelper
   def rate_helper(rental_type, date)
 
     if (date.strftime("%u").to_i == 5) || (date.strftime("%u").to_i == 6) 
-      rate = rental_type.weekday_rate
-    else
       rate = rental_type.weekend_rate
+    else
+      rate = rental_type.weekday_rate
     end
 
   end
