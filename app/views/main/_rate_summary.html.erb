@@ -15,12 +15,12 @@
     <% end %> 
     
     <% ave = subtotal/res_item.num_of_days %>
-    <td>$<%= "#{sprintf('%.2f', ave)}" %></td>
+    <td style="text-align:right">$<%= "#{sprintf('%.2f', ave)}" %></td>
   </tr>
 
   <tr>
     <th>Subtotal:</th>
-    <td>$<%= "#{sprintf('%.2f', subtotal)}" %></td>
+    <td style="text-align:right">$<%= "#{sprintf('%.2f', subtotal)}" %></td>
   </tr>
   <tr>
     <th>Tax (17.25%)</th>
@@ -30,11 +30,11 @@
   <tr>
     <th>Total</th>
     <% total = tax + subtotal %>
-    <td><b>$<%= "#{sprintf('%.2f', total)}" %></b></td>
+    <td style="text-align:right"><b>$<%= "#{sprintf('%.2f', total)}" %></b></td>
   </tr>
 </table>
 <br>
-<div id="accordion" style="font-size:9pt">
+<div class="ui-accordion" style="font-size:9pt">
   <h3>Rate Breakdown</h3>
     <div>
     <table>
@@ -43,7 +43,7 @@
           <tr>
             <% rate = rate_helper(rental_type, date) %>
             <td><%= date.strftime("%a, %b %d, %Y") %></td>
-            <td><%= "$#{sprintf('%.2f', rate)}" %></td>
+            <td style="text-align:right"><%= "$#{sprintf('%.2f', rate)}" %></td>
           </tr>
         <% end %>  
     </table>
