@@ -18,14 +18,12 @@ class SessionsController < ApplicationController
       render :admin_login and return
     else 
       session[:admin_id] = admin.id
-#       redirect_to "/admin" and return
       redirect_to "/admin" and return
     end
   end
 
   def logout
     session.clear
-#     redirect_to "/sessions/new" and return
     redirect_to "/admin" and return
   end
 

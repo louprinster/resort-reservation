@@ -88,7 +88,6 @@ class UserController < ApplicationController
         flash[:error] = "Wrong email verification token"
       end
       determine_route
-#       redirect_to user_index_path and return
     else
       flash[:error] = "Couldn't find user with that ID"
     end
@@ -102,7 +101,6 @@ class UserController < ApplicationController
 #{verify_email_url(@logged_in_user.id, @logged_in_user.email_verification_token)}"
     )
     flash[:success] = "Verification email sent."
-#       determine_route
       redirect_to user_index_path and return
   end
 
