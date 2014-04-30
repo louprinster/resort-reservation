@@ -44,7 +44,7 @@
          <% else %>
             <%= form_tag "/sessions/logout" do %>
               You are logged in as <b><%= Admin.where(id: session[:admin_id]).first.username %>&nbsp;&nbsp;
-              <button type="submit" class="btn btn-info navbar-btn">Logout</button>
+              <button type="submit" class="btn details-button navbar-btn">Logout</button>
             <% end %>
         <% end %>
       </div>   
