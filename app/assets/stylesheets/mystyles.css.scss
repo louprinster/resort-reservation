@@ -5,7 +5,7 @@ body {
 
 /* Move down content because we have a fixed navbar that is 50px tall */
   padding-top: 50px;
-  padding-bottom: 100px; /* Height of footer */
+  padding-bottom: 200px; /* Height of footer */
 
   background-image: image-url("nickajacklake.jpg");
   background-repeat: no-repeat;
@@ -40,6 +40,15 @@ body {
   padding:20px;
   border-radius:6px
 }
+
+.admin-box {
+  background-color: white;
+  border: 1px #ccbb88 solid; 
+  margin: 20px auto 20px auto; 
+  padding:20px;
+  border-radius:6px
+}
+
 
 .go-button {
   background-color: #728A1A;
@@ -79,7 +88,9 @@ body {
   background-color: #BE8A1C;
   border-radius:  6px;
   padding:  20px;
+/*  position: fixed */
 }
+
 
 
 
