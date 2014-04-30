@@ -36,27 +36,30 @@ ResortReservation::Application.routes.draw do
   post "/users/reset_password" => "user#reset_password_post",
     as: "reset_password_post"
 
-#   resources "sessions", path: "/sessions", controller: "sessions",
-#     only: [:new, :create, :destroy]
-#   # The above resources lines expand to:
-#   #   get    "/sessions/new" => "sessions#new"
-#   #   post   "/sessions"     => "sessions#create"
-#   #   delete "/sessions"     => "sessions#destroy"
+  get  "/sessions/login"       => "sessions#login"
+  post "/sessions/login"       => "sessions#login_post"
+  post "/sessions/logout"      => "sessions#logout"
+
+  get  "/admin"             => "admin#index"
+  post "/admin"             => "admin#index_post"
   
-  get  "/admin/login"         => "sessions#login"
-  post "/admin/login"         => "sessions#login_post"
-  post "/admin/logout"        => "sessions#logout"
-
-  resources "admin", path: "/admin", controller: "admin",
-    only: [:index, :new, :create, :edit, :update, :destroy]
-  # The above resources lines expand to:
-  #   get    "/admin"          => "admin#index"
-  #   get    "/admin/new"      => "admin#new"
-  #   post   "/admin"          => "admin#create"
-  #   get    "/admin/:id/edit" => "admin#edit"
-  #   put    "/admin/:id"      => "admin#update"
-  #   delete "/admin/:id"      => "admin#destroy"
-
+  get  "/admin/customers"   => "admin#customers_index"
+  post "/admin/customers"   => "admin#customers_index_post"
+  
+  get  "/customer/:id/edit"     => "admin#customer_edit"
+  post "/customer/:id/update"   => "admin#customer_update"
+  
+  get  "/customer/new"      => "admin#customer_new"
+  post "/customer/create"   => "admin#customer_create"
+  
+  get "customer/:id/reservations" => "admin#customer_reservations"
+    
+  get  "/admin/reservations" => "admin#reservations_index"
+  post "/admin/reservations" => "admin#reservations_index_post"
+  
+  get "/reservation/:id/edit" => "admin#reservation_edit"
+  
+  get  "/admin/rentaltypes"  => "admin#rentaltypes_index"
 
 end
 
