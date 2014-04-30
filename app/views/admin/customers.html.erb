@@ -14,14 +14,14 @@
               <%= c.email %>
           </td>
           <td>              
-              <a type="button" class="btn go-button" href="/customer/<%= "#{c.id}" %>/reservations">Reservations</a>
+              <a type="button" class="btn details-button" href="/customer/<%= "#{c.id}" %>/reservations">Reservations</a>
               &nbsp;&nbsp;
               
               <a type="button" class="btn go-button" href="/customer/<%= "#{c.id}" %>/edit">Edit</a>
               &nbsp;&nbsp;
               
               <%= hidden_field_tag "customer_id", c.id %>
-              <%= submit_tag "Delete", class: "btn details-button", data: { confirm: 'Are you sure?' } %>
+              <%= submit_tag "Delete", class: "btn stop-button", data: { confirm: 'Are you sure?' } %>
           </td>
         </tr>
       <% end %>
