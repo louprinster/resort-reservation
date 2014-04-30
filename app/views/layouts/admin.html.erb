@@ -39,10 +39,10 @@
         
         <div class="navbar-right" style="color:silver">
           <% if session[:admin_id] == nil %>
-              <a type="button" class="btn go-button navbar-btn" href="/admin/login">Login</a>
+              <a type="button" class="btn go-button navbar-btn" href="/sessions/login">Login</a>
 
          <% else %>
-            <%= form_tag "/admin/logout" do %>
+            <%= form_tag "/sessions/logout" do %>
               You are logged in as <b><%= Admin.where(id: session[:admin_id]).first.username %>&nbsp;&nbsp;
               <button type="submit" class="btn btn-info navbar-btn">Logout</button>
             <% end %>
