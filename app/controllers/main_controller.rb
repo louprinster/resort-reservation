@@ -104,7 +104,11 @@ def intro_post
     session[:reservation_subcategory] = params["reservation_subcategory"].capitalize
     @reservation_subcategory          = params["reservation_subcategory"].capitalize
   
-    @reservation_item = ReservationItem.new
+    if session[:reservation_id] == nil
+      @reservation_item = ReservationItem.new
+    else
+      @reservation_item = ReservationItem.find(session[:reservation_item_id])
+    end
     @reservation_item.category       = @reservation_category
     @reservation_item.start_date     = params["start_date"]
     @reservation_item.adults         = params["adults"].to_i
