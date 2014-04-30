@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css" type="text/css" media="all">
 
 	<link href="css/mint-choc/jquery-ui-1.10.4.custom.css" rel="stylesheet">
-	<script src="js/jquery-1.10.2.js"></script>
+	<!--<script src="js/jquery-1.10.2.js"></script>-->
 	<script src="js/jquery-ui-1.10.4.custom.js"></script>
   <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.2/themes/mint-choc/jquery-ui.css" />
 </head>
@@ -81,7 +81,6 @@
           <div class="alert alert-info">
             Please click the link in the email you were sent to verify your email address.
             <%= form_tag resend_verification_email_path do %>
-              <!--<%= hidden_field_tag :afterwards_go_to, request.path_info %>-->
               <%= submit_tag "Resend email", class:"btn details-button" %>
             <% end %>
           </div>
@@ -122,7 +121,7 @@
           $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
         }
       });
-      $("#accordion").accordion({ header: "h3",          
+      $(".accordion").accordion({ header: "h3",          
                 autoheight: true,
                 active: false,
                 alwaysOpen: false,
@@ -130,14 +129,14 @@
                 collapsible: true,
         //heightStyle: 'content'   //auto, fill, content
       });
-      $("#dialog").dialog({
+      $(".dialog").dialog({
 				autoOpen: false
 			});
-			$("#button").on("click", function() {
-				$("#dialog").dialog("open");
+			$(".button").on("click", function() {
+				$(".dialog").dialog("open");
 			});
 			
-    }); 
+    });
     
   </script>
   
