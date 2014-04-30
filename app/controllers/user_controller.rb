@@ -96,7 +96,7 @@ class UserController < ApplicationController
   def resend_verification_email
     Pony.mail(
       to:      @logged_in_user.email,
-      subject: "Thanks for registering",
+      subject: "Nickajack Marina & Resort Registration",
       body:    "Please click the following link to verify your email address:
 #{verify_email_url(@logged_in_user.id, @logged_in_user.email_verification_token)}"
     )
