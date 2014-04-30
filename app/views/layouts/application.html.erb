@@ -106,7 +106,7 @@
         minDate: "+0D",
         changeMonth: true,
         numberOfMonths: 2,
-        dateFormat:"DD, d M, yy",
+        dateFormat:"D, d M, yy",
         onClose: function( selectedDate ) {
           $( "#end_date" ).datepicker( "option", "minDate", selectedDate );
         }
@@ -116,7 +116,7 @@
         minDate: "#start_date+1D",
         changeMonth: true,
         numberOfMonths: 2,
-        dateFormat:"DD, d M, yy",
+        dateFormat:"D, d M, yy",
         onClose: function( selectedDate ) {
           $( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
         }

@@ -17,13 +17,13 @@
   
     <p><div class="form-group <%= @reservation_item.errors[:start_date] != [] && "has-error" %>">
         <%= label_tag :start_date, "Check-in #{@reservation_item.errors[:start_date].join(", ")}", class: "control-label" %><br>
-        <%= text_field_tag :start_date, @reservation_item.start_date, class: "datepicker form-control" %>
+        <%= text_field_tag :start_date, @start_date, class: "datepicker form-control" %>
     </div></p>
 
     <% if @reservation_category == "Cabin" %>
         <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
             <%= label_tag :end_date, "Check-out #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
-            <%= text_field_tag :end_date, @reservation_item.end_date, class: "datepicker form-control" %>
+            <%= text_field_tag :end_date, @end_date, class: "datepicker form-control" %>
         </div></p>
         <p><b>Select a cabin category:</b></p>
         <p>
