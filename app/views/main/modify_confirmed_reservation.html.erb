@@ -1,7 +1,7 @@
-<div style="container">
+<div class="container">
 
   <%= form_tag "/modify_confirmed_reservation" do %>
-  <div style="padding:30px">
+  <div class="box" style="padding:30px; width:500px">
       <p>
         <%= label_tag :last_name, "Last Name: " %>&nbsp;&nbsp;
         <%= text_field_tag :last_name, @last_name, size: 20 %>
@@ -11,7 +11,7 @@
         <%= text_field_tag  :confirmation_num, @confirmation_num, size: 10 %>
       </p>
       <p>
-        <%= submit_tag "Find reservation" %>
+        <%= submit_tag "Find reservation", class:"btn details-button" %>
       </p>
   </div>
   <% end %>

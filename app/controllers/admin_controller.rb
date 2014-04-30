@@ -99,28 +99,48 @@ class AdminController < ApplicationController
     render :reservations and return
   end
 
+#========================================================================
+
   def reservations_index
     @customers = Customer.all
     render :reservations and return
   end
   
   def reservations_index_post
+    if params[:commit] == "Delete"
+      reservation = Reservation.find(params[:reservation_id])
+      reservation.destroy!
+      flash[:success] = "Reservation deleted"
+      redirect_to "/admin/reservations" and return
+    end
   end
   
   def reservation_edit
-    link = modify_confirmed_reservation_url(customer.last_name, reservation.confirmation_num)
-
+    session[:reservation_id] = params[:id]
+    customer = Reservation.find(params[:id]).customer
+    session[:customer_id] = customer.id
+    redirect_to "/add_reservation_item" and return
   end
   
-  def reservation_update
+#=======================================================================  
+  
+  def rentaltypes_index
+    @rental_types = RentalType.where(category: "Cabin")
+    render :rentaltypes and return 
   end
   
-  def reservation_new
+  def rentaltypes_index_post
+    if params[:commit] == "Delete"
+      rental_type = RentalType.find(params[:rental_type_id])
+      rental_type.destroy!
+      flash[:success] = "Rental Type deleted"
+      redirect_to "/admin/rentaltypes" and return
+    end    
   end
   
-  def reservation_create
+  def rentaltype_edit
+    @rental_type = RentalType.find(params[:id])
+    render :rentaltype_edit and return
   end
-  
-  
 
 end

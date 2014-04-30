@@ -60,6 +60,10 @@ ResortReservation::Application.routes.draw do
   get "/reservation/:id/edit" => "admin#reservation_edit"
   
   get  "/admin/rentaltypes"  => "admin#rentaltypes_index"
+  post "/admin/rentaltypes"  => "admin#rentaltypes_index_post"
+  
+  get  "/rentaltype/:id/edit" => "admin#rentaltype_edit"
+  
 
 end
 

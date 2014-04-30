@@ -1,0 +1,42 @@
+<div class="admin-box">
+
+<%= form_tag "/admin/rentaltypes" do %>  
+
+<h3>Manage Cabin Rentals</h3>
+  
+  <table class="table table-bordered">
+    <tr class="success">
+      <th>Subcat</th>
+      <th>Bdrms</th>
+      <th>Baths</th>
+      <th>Max<br>Occ</th>
+      <th style="width:400px">Description</th>
+      <th>Weekday<br>Rate</th>
+      <th>Weekend<br>Rate</th>
+      <th></th>
+    </tr>
+      
+    <% @rental_types.order(:subcategory, :max_occupancy).each do |r| %>
+
+      <tr>
+        <td><%= r.subcategory %></td>
+        <td><%= r.num_bedrooms %></td>
+        <td><%= r.num_baths %></td>
+        <td><%= r.max_occupancy %></td>
+        <td style="width:400px"><%= r.description %></td>
+        <td><%= r.weekday_rate %></td>
+        <td><%= r.weekend_rate %></td>
+        <td>
+          <p><a type="button" class="btn-sm details-button" href="/rentalitems_index/<%= "#{r.id}" %>">View Rental Items</a></p>
+          <p><a type="button" class="btn-sm go-button" href="/rentaltype/<%= "#{r.id}" %>/edit" %>Edit Rental type</a></p>
+          <%= hidden_field_tag "reservation_id", r.id %>
+          <p><%= submit_tag "Delete", class: "btn-sm stop-button", data: { confirm: 'Are you sure?' } %></p>
+        </td>
+      </tr>
+
+    <% end %>
+  </table>
+  <a type="button" class="btn go-button" href="/rentaltype/new">Add New Cabin Rental</a>
+  
+<% end %>
+</div>

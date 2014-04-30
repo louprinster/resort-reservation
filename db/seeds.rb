@@ -340,10 +340,12 @@ end
 
 if Reservation.count == 0
 Reservation.create! \
+      confirmation_num: rand(99999999)+1,
       customer_id:    1,
       status:         "confirmed"
 
 Reservation.create! \
+      confirmation_num: rand(99999999)+1,
       customer_id:    1,
       status:         "confirmed"
 else
@@ -355,9 +357,14 @@ ReservationItem.create! \
       category:       "Cabin",
       start_date:     Date.new(2014, 05, 01),
       end_date:       Date.new(2014, 05, 05),
+      num_of_days:    4,
       adults:         2,
       children:       2,
       pets:           1,
+      ave_rate:       100.0,
+      subtotal:       400.0,
+      tax:            10,
+      total:          410.0,
       rental_item_id: 1,
       reservation_id: 1,
       status:         "confirmed"
@@ -366,9 +373,14 @@ ReservationItem.create! \
       category:       "Cabin",
       start_date:     Date.new(2014, 05, 10),
       end_date:       Date.new(2014, 05, 14),
+      num_of_days:    3,
       adults:         2,
       children:       2,
       pets:           1,
+      ave_rate:       100.0,
+      subtotal:       300.0,
+      tax:            10,
+      total:          310.0,
       rental_item_id: 1,
       reservation_id: 2,
       status:         "confirmed"
@@ -376,6 +388,41 @@ ReservationItem.create! \
 else
   puts "Already created reservation items"
 end
+
+if Rate.count == 0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 05, 01),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 05, 02),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 05, 03),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 05, 04),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 2,
+      date:     Date.new(2014, 05, 10),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 2,
+      date:     Date.new(2014, 05, 11),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 2,
+      date:     Date.new(2014, 05, 12),
+      amount:   100.0
+
+else 
+  puts "Already created rates"
+end
+
 
 if Customer.count == 0
 Customer.create! \
@@ -390,6 +437,19 @@ Customer.create! \
       phone1:     "1231231234",
       phone2:     nil,
       email:      "sueblue@gmail.com"
+      
+Customer.create! \
+      title:      "Mr.",
+      first_name: "Joe",
+      last_name:  "Smith",
+      address1:   "555 Maple St.",
+      address2:   nil,
+      city:       "Pasadena",
+      state:      "CA",
+      zipcode:    "91107",
+      phone1:     "1231231234",
+      phone2:     nil,
+      email:      "joesmith@gmail.com"      
 else
   puts "Already created customer"
 end

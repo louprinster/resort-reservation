@@ -1,0 +1,46 @@
+<div class="admin-box">
+
+<h3>Edit Cabin Rental</h3>
+
+  <b>Category: </b>
+  <%= radio_button_tag "category", "Cabin", @rental_type.category == "Cabin" %>
+  <%= label_tag "category_Cabin", "Cabin" %>
+  <%= radio_button_tag "category", "Boat", @rental_type.category == "Boat" %>
+  <%= label_tag "category_Cabin", "Boat" %>
+  <p>
+    <%= label_tag "subcategory", "Subcategory" %>
+    <%= select_tag "subcategory", 
+        options_for_select(["Land", "Floating"],
+        @rental_type.subcategory),
+        prompt: "Choose a subcategory..." %>
+  </p>
+  <p>
+    <%= label_tag "num_bedrooms", "No. of Bedrooms" %>
+    <%= text_field_tag "num_bedrooms" %>
+  </p>
+  <p>
+    <%= label_tag "num_baths", "No. of Bathrooms" %>
+    <%= text_field_tag "num_baths" %>
+  </p>
+  <p>    
+    <%= label_tag "max_occupancy", "Maximum Occupancy" %>
+    <%= text_field_tag "max_occupancy" %>
+  </p>
+  <p>    
+    <%= label_tag "weekday_rate", "Weekday Rate" %>
+    $ <%= text_field_tag "weekday_rate" %>
+  </p>
+  <p>    
+    <%= label_tag "weekend_rate", "Weekend Rate" %>
+    $ <%= text_field_tag "weekend_rate" %>
+  </p>
+  
+  
+  <p>
+    <%= label_tag "description", "Description" %><br>
+    <%= text_area_tag "description" %>
+  </p>
+  
+      
+  
+</div>
