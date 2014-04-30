@@ -1,0 +1,15 @@
+
+
+  <h3 class="header-box">Edit Reservations</h3>
+    
+  <%= error_messages_for @reservation %>
+
+  <form class="form-horizontal" role="form">  
+    <p>
+      <div class="form-group <%= @reservation.errors[:status] != [] && "has-error" %>">
+        <%= label_tag :status, "Status #{@reservation.errors[:status].join(", ")}", class: "control-label" %>
+        <%= select_tag "title", options_for_select(["active", "in progress", "cancelled"], @reservation.status), class: "form-control" %>
+      </div>
+    </p>
+  
+  </form>

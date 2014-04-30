@@ -1,0 +1,35 @@
+<div class="container">
+<div class="admin-box" style="width:700px">
+
+<%= form_tag "/admin/customers" do %>
+
+  <h1> Manage Customers </h1>
+    <table class="table">
+      <% @customers.order(:last_name).each do |c| %>
+        <tr>
+          <td><%= c.last_name %>, <%= c.title %><%= c.first_name %><br>
+              <%= c.address1 %><br>
+              <%= c.city %>, <%= c.state %>&nbsp;&nbsp;<%= c.zipcode %><br>
+              <%= c.phone1 %>&nbsp;&nbsp;<%= c.phone2 %><br>
+              <%= c.email %>
+          </td>
+          <td>              
+              <a type="button" class="btn go-button" href="/customer/<%= "#{c.id}" %>/reservations">Reservations</a>
+              &nbsp;&nbsp;
+              
+              <a type="button" class="btn go-button" href="/customer/<%= "#{c.id}" %>/edit">Edit</a>
+              &nbsp;&nbsp;
+              
+              <%= hidden_field_tag "customer_id", c.id %>
+              <%= submit_tag "Delete", class: "btn details-button", data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+    <br>
+    <a type="button" class="btn go-button" href="/customer/new">Add New Customer</a>
+
+<% end %>
+
+</div>
+</div>

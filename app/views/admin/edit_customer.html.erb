@@ -1,0 +1,20 @@
+<%= form_tag "/customer/#{@customer.id}/update" do %>
+
+
+<div class="container">
+  <div class="admin-box">
+
+
+    <h3 class="header-box">Edit Customer</h3>
+    
+    <%= error_messages_for @customer %>
+    
+    <%= render partial: "customer_form" %>
+
+    <p><%= submit_tag "Update", class:"btn go-button" %></p>
+    
+  
+  </div>
+</div>
+
+<% end %>

@@ -1,0 +1,18 @@
+<%= form_tag "/customer/create" do %>
+
+<div class="container">
+  <div class="admin-box">
+  
+    <h1>Add New Customer</h1>
+
+    <%= error_messages_for @customer %>
+
+    <%= render partial: "customer_form" %>
+    
+    <%= submit_tag "Create Customer" %>
+
+
+  </div>
+</div>
+
+<% end %>
