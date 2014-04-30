@@ -12,6 +12,13 @@
           <div class="row">
             <div class="col-md-4">&nbsp;&nbsp;&nbsp;&nbsp;<b>Reservation Confirmation No: <%= r.confirmation_num %></b></div>
             <div class="col-md-4">&nbsp;&nbsp;&nbsp;&nbsp;<b>Status: <%= r.status %></b></div>
+            <div class="col-md-4">
+              <a type="button" class="btn go-button" href="/reservation/<%= "#{r.id}" %>/edit">Edit</a>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <%= hidden_field_tag "reservation_id", r.id %>
+              <%= submit_tag "Delete", class: "btn details-button", data: { confirm: 'Are you sure?' } %>
+            </div>
+
           </div></p>
           <% r.reservation_items.order(:id).each do |res_item| %>
               <% rental_type = res_item.rental_item.rental_type %>
@@ -54,12 +61,6 @@
                     <tr><th>Tax: </th><td style="text-align:right"><%= res_item.tax %></td></tr>
                     <tr style="background-color:yellow"><th>Total: </th><td style="text-align:right"><%= res_item.total %></td></tr>
                   </table>
-                </div>
-                <div class="col-md-2">
-                    <a type="button" class="btn go-button" href="/res_item/<%= "#{res_item.id}" %>/edit">Edit</a>
-                    <br><br>
-                    <%= hidden_field_tag "res_item_id", res_item.id %>
-                    <%= submit_tag "Delete", class: "btn details-button", data: { confirm: 'Are you sure?' } %>
                 </div>
             
               </div>
