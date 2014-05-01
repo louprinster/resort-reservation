@@ -70,7 +70,7 @@ def intro_get
   if params["reservation_category"] == "boat_slip"
     @reservation_category = "Boat Slip"
   else
-    @reservation_category = params["reservation_category"].capitalize
+    @reservation_category = params["reservation_category"].titleize
   end
   
   session[:reservation_category] = @reservation_category
@@ -92,23 +92,34 @@ def intro_get
 end
 
 def intro_post
-
   @reservation_category = session[:reservation_category]
     
   if params["reservation_subcategory"] == nil
-
+    @reservation_item = ReservationItem.new
+    @start_date = params["start_date"].to_date.strftime("%a, %b %d, %Y")
+    @reservation_item.adults     = params["adults"].to_i
+    @reservation_item.children   = params["children"].to_i
+    @reservation_item.pets       = params["pets"].to_i
+  
+    if @reservation_category == "Boat"
+      @reservation_item.num_of_days = 1
+    elsif @reservation_category == "Cabin"
+      @end_date   = params["end_date"].to_date.strftime("%a, %b %d, %Y")
+    elsif @reservation_category == "Boat Slip"
+      @end_date == params["end_date"].to_date.strftime("%a, %b %d, %Y")
+    end    
+    
     flash.now[:error] = "Please choose a #{@reservation_category} type"
     render :reservation_intro and return
     
   else
-    session[:reservation_subcategory] = params["reservation_subcategory"].capitalize
-    @reservation_subcategory          = params["reservation_subcategory"].capitalize
+    @reservation_category = session[:reservation_category]
+
   
     if session[:reservation_id] == nil
       @reservation = Reservation.new
       @reservation.status = "in progress"
       @reservation.save!
-      @reservation_item.reservation_id = @reservation.id
       session[:reservation_id]      = @reservation.id
     else
       @reservation = Reservation.find(session[:reservation_id])
@@ -119,6 +130,7 @@ def intro_post
       @reservation_item = ReservationItem.find(session[:reservation_item_id])
     end
     @reservation_item.category       = @reservation_category
+    @reservation_item.subcategory    = params["reservation_subcategory"]
     @reservation_item.start_date     = params["start_date"]
     @reservation_item.adults         = params["adults"].to_i
     @reservation_item.children       = params["children"].to_i
@@ -136,6 +148,7 @@ def intro_post
         @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
       end
       @reservation_item.save!
+      session[:reservation_subcategory] = @reservation_item.subcategory
       session[:reservation_item_id] = @reservation_item.id
       redirect_to "/your_reservation" and return
     else
@@ -157,7 +170,6 @@ def reservation_get
     @end_date   = @reservation_item.end_date.strftime("%a, %b %d, %Y")
 
     @rental_types = RentalType.where(category: @reservation_category, subcategory: @reservation_subcategory)
-   
     @available_rental_types = rental_type_search
     
     if @available_rental_types == {}
@@ -179,7 +191,7 @@ def reservation_post
   elsif params["commit"] == "Check Availability"
     @reservation_category             = session[:reservation_category]
     @reservation_subcategory          = params["reservation_subcategory"]
-    session[:reservation_subcategory] = params["reservation_subcategory"]  
+    session[:reservation_subcategory] = params["reservation_subcategory"].titleize
           
     @reservation_item.category       = @reservation_category
     @reservation_item.start_date     = params["start_date"]
@@ -272,19 +284,8 @@ def guest_details_get
 
   @reservation_items = Reservation.find(session[:reservation_id]).reservation_items
   @u_s_states  = USState.order(:name).all
-  
-  if session[:customer_id] != nil 
-    @customer = Customer.find(session[:customer_id])
-  elsif session[:logged_in_user_id] != nil
-    user = User.find(session[:logged_in_user_id])
-    @customer = Customer.find_by(email: user.email)
-    if @customer == nil
-      @customer = Customer.new
-    end
-  else
-    @customer = Customer.new
-  end
-
+  @email = nil
+  find_customer
   render :guest_details and return
 
 end
@@ -305,7 +306,8 @@ def guest_details_post
     cancel_reservation_item
         
   elsif params["commit"] == "Continue to Review"
-      @customer = Customer.new
+      @email = params["email"] # used to try to match against existing customer records
+      find_customer
       @customer.title       = params["title"]
       @customer.first_name  = params["first_name"]
       @customer.last_name   = params["last_name"]
@@ -340,7 +342,12 @@ end
 
 def review_post
 
-  if params["change_res_item_id"] != nil
+  if params["details_res_item_id"] != nil
+    id = params["details_res_item_id"]
+    @rental_type = ReservationItem.find(id).rental_item.rental_type
+    render :res_item_details and return
+
+  elsif params["change_res_item_id"] != nil
     @res_item_id = params["change_res_item_id"]
     change_reservation_item
 
@@ -495,6 +502,26 @@ def contact
 end
 
 # SUBROUTINES =======================================================================
+
+def find_customer
+  if session[:customer_id] != nil 
+    @customer = Customer.find(session[:customer_id])
+  elsif session[:logged_in_user_id] != nil
+    user = User.find(session[:logged_in_user_id])
+    @customer = Customer.find_by(email: user.email)
+    session[:customer_id] = @customer.id
+    if @customer == nil
+      @customer = Customer.new
+    end
+  elsif @email != nil
+    @customer = Customer.find_by(email: @email)
+    if @customer == nil
+      @customer = Customer.new
+    end
+  else
+    @customer = Customer.new
+  end
+end
 
 
 def assign_rates
