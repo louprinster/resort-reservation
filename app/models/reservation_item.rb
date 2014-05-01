@@ -17,8 +17,6 @@ class ReservationItem < ActiveRecord::Base
 #   ReservationItem.find(1).rental_item
 #   ReservationItem.find(1).rates
                 
-  validates :category, presence: true
-  validates :subcategory, presence: true
   validates :start_date, presence: true
   validate  :start_must_be_today_or_after
   validates :end_date, presence: true, if: :cabin?
