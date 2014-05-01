@@ -105,6 +105,15 @@ def intro_post
     @reservation_subcategory          = params["reservation_subcategory"].capitalize
   
     if session[:reservation_id] == nil
+      @reservation = Reservation.new
+      @reservation.status = "in progress"
+      @reservation.save!
+      @reservation_item.reservation_id = @reservation.id
+      session[:reservation_id]      = @reservation.id
+    else
+      @reservation = Reservation.find(session[:reservation_id])
+    end
+    if session[:reservation_item_id] == nil    
       @reservation_item = ReservationItem.new
     else
       @reservation_item = ReservationItem.find(session[:reservation_item_id])
@@ -118,6 +127,7 @@ def intro_post
     @reservation_item.num_of_days    = params["num_of_days"].to_i
     @reservation_item.rental_item_id = nil
     @reservation_item.status         = "in progress"
+    @reservation_item.reservation_id = session[:reservation_id]
 
     if @reservation_item.save
       if @reservation_category == "Cabin"
@@ -125,20 +135,10 @@ def intro_post
       elsif @reservation_category == "Boat"
         @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
       end
-      if session[:reservation_id] == nil
-        @reservation = Reservation.new
-        @reservation.status = "in progress"
-        @reservation.save!
-        @reservation_item.reservation_id = @reservation.id
-        session[:reservation_id]      = @reservation.id
-      else
-        @reservation_item.reservation_id = session[:reservation_id]
-      end
       @reservation_item.save!
       session[:reservation_item_id] = @reservation_item.id
       redirect_to "/your_reservation" and return
     else
-
       render :reservation_intro and return
     end
   end
@@ -215,7 +215,7 @@ def reservation_post
     @reservation_item.status         = "in progress"
     @reservation_item.save!
     assign_rates
-    
+    session[:reservation_item_id] = nil
     redirect_to "/add_reservation_item" and return
   end
   
@@ -248,6 +248,7 @@ def add_reservation_item_post
     @reservation_category = "Cabin"
     session[:reservation_category] = "Cabin"
     session[:reservation_subcategory] = nil
+    session[:reservation_item_id] = nil
     flash[:info] = "Add a cabin to your existing reservation"
     redirect_to "/cabin/intro" and return
     
@@ -255,6 +256,7 @@ def add_reservation_item_post
     @reservation_category = "Boat"
     session[:reservation_category] = "Boat"
     session[:reservation_subcategory] = nil
+    session[:reservation_item_id] = nil
     flash[:info] = "Add a boat to your existing reservation"
     redirect_to "/boat/intro" and return
     
@@ -452,15 +454,11 @@ def review_post
                   </div>".html_safe)
     flash[:success] = "Your reservation confirmation no. is #{reservation.confirmation_num} . An email regarding your reservation has been sent."
 
-    if session[:logged_in_user_id] == nil
-      session.clear
-    else
-      session[:reservation_category] = nil
-      session[:reservation_subcategory] = nil
-      session[:reservation_id] = nil
-      session[:reservation_item_id] = nil
-      session[:customer_id] = nil
-    end
+    session[:reservation_category] = nil
+    session[:reservation_subcategory] = nil
+    session[:reservation_id] = nil
+    session[:reservation_item_id] = nil
+    session[:customer_id] = nil
     redirect_to "/" and return
   end
   
@@ -529,8 +527,9 @@ def assign_rates
 end
 
 def change_reservation_item
-# This subroutine is called from the "add reservation item", "guest details" and "review" pages.
-# It accepts @res_item_id, saves search criteria in sessions after user requests a change to existing res item
+# This subroutine is called from the "add reservation item", "guest details" 
+#     and "review" pages after user requests a change to existing res item.
+# It accepts @res_item_id, 
 # It then redirects to the "/your reservation" page
 
     reservation_item = ReservationItem.find(@res_item_id)
@@ -558,11 +557,15 @@ def cancel_reservation_item
     res_item.destroy!
     @reservation_items = Reservation.find(session[:reservation_id]).reservation_items
     if @reservation_items.count > 0
+      session[:reservation_item_id] = nil
       flash[:info] = "Reservation item cancelled"
       redirect_to "/add_reservation_item" and return
     else 
       Reservation.find(session[:reservation_id]).destroy!
-      session.clear
+      session[:reservation_category] = nil
+      session[:reservation_subcategory] = nil
+      session[:reservation_id] = nil
+      session[:reservation_item_id] = nil
       flash[:info] = "Your reservation has been cancelled."
       redirect_to "/" and return
     end
