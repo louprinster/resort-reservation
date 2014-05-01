@@ -2,7 +2,7 @@
 
   <%= form_tag "/add_reservation_item" do %>
 
-  <div style="width:700px" class="box">
+  <div style="width:800px" class="box">
   
     <p>
       <%= submit_tag "Add a cabin reservation", class:"btn add-button" %>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -15,14 +15,13 @@
       <% @reservation_items.order(:rental_item_id).each do |res_item| %>
         <tr>
           <% rental_type = res_item.rental_item.rental_type %>
-          <td style="width:200px">
+          <td style="width:225px;padding:20px">
             <p>
-              <%= image_tag rental_type.image_filename, {width: 170} %>
+              <%= image_tag rental_type.image_filename, {width:200} %>
             </p>
-            <br>
             <%= button_tag "Details", name: "details_res_item_id", value: res_item.id, class:"btn details-button" %>&nbsp;&nbsp;
           </td>
-          <td style="width:200px">
+          <td style="width:250px;padding-left:20px">
               <p>
               <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
               </p>
