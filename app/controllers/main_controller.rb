@@ -202,10 +202,10 @@ def reservation_post
     @reservation_item.num_of_days    = params["num_of_days"].to_i
 
     @start_date = @reservation_item.start_date.strftime("%a, %b %d, %Y")
-    @end_date   = @reservation_item.end_date.strftime("%a, %b %d, %Y")
 
     if @reservation_item.save
       if @reservation_category == "Cabin"
+        @end_date   = @reservation_item.end_date.strftime("%a, %b %d, %Y")
         @reservation_item.num_of_days  = (@reservation_item.start_date...@reservation_item.end_date).count
       elsif @reservation_category == "Boat"
         @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
