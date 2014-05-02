@@ -543,9 +543,9 @@ def assign_rates
 
   (@reservation_item.start_date...@reservation_item.end_date).each do |date|
       if (date.strftime("%u").to_i == 5) || (date.strftime("%u").to_i == 6) 
-        item_rate = rental_type.weekday_rate
-      else
         item_rate = rental_type.weekend_rate
+      else
+        item_rate = rental_type.weekday_rate
       end
       rate = Rate.new
       rate.reservation_item_id = @reservation_item.id
