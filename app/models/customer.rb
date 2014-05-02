@@ -10,6 +10,15 @@ class Customer < ActiveRecord::Base
   validates :phone1,        length: { is: 10 }
 #   validates :phone2,        length: { is: 10 }, allow_nil: true       
   validates :email,         presence: true
+#   validates :cc_type,       presence: true
+#   validates :cc_number1,    length: { minimum: 4, message: "can't be blank" }
+#   validates :cc_number2,    length: { minimum: 4, message: "can't be blank" }
+#   validates :cc_number3,    length: { minimum: 4, message: "can't be blank" }
+#   validates :cc_number4,    length: { minimum: 4, message: "can't be blank" }
+# 
+#   validates :cc_expiry_month, presence: true
+#   validates :cc_expiry_year,  presence: true
+#   validates :cardholder_name, presence: true
 
   has_many :reservations, class_name: "Reservation", foreign_key: "customer_id"
 
