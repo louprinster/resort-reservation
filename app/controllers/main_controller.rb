@@ -92,69 +92,68 @@ def intro_get
 end
 
 def intro_post
-  @reservation_category = session[:reservation_category]
-    
-  if params["reservation_subcategory"] == nil
-    @reservation_item = ReservationItem.new
-    @start_date = params["start_date"].to_date.strftime("%a, %b %d, %Y")
-    @reservation_item.adults     = params["adults"].to_i
-    @reservation_item.children   = params["children"].to_i
-    @reservation_item.pets       = params["pets"].to_i
-  
-    if @reservation_category == "Boat"
-      @reservation_item.num_of_days = 1
-    elsif @reservation_category == "Cabin"
-      @end_date   = params["end_date"].to_date.strftime("%a, %b %d, %Y")
-    elsif @reservation_category == "Boat Slip"
-      @end_date == params["end_date"].to_date.strftime("%a, %b %d, %Y")
-    end    
-    
-    flash.now[:error] = "Please choose a #{@reservation_category} type"
-    render :reservation_intro and return
-    
-  else
+
+  if params[:commit] == "Back to Reservation Summary"
+    redirect_to "/add_reservation_item" and return
+  elsif params[:commit] == "Check Availability"
     @reservation_category = session[:reservation_category]
-
-  
-    if session[:reservation_id] == nil
-      @reservation = Reservation.new
-      @reservation.status = "in progress"
-      @reservation.save!
-      session[:reservation_id]      = @reservation.id
-    else
-      @reservation = Reservation.find(session[:reservation_id])
-    end
-    if session[:reservation_item_id] == nil    
+    if params["reservation_subcategory"] == nil
       @reservation_item = ReservationItem.new
-    else
-      @reservation_item = ReservationItem.find(session[:reservation_item_id])
-    end
-    @reservation_item.category       = @reservation_category
-    @reservation_item.subcategory    = params["reservation_subcategory"]
-    @reservation_item.start_date     = params["start_date"]
-    @reservation_item.adults         = params["adults"].to_i
-    @reservation_item.children       = params["children"].to_i
-    @reservation_item.pets           = params["pets"].to_i
-    @reservation_item.end_date       = params["end_date"]
-    @reservation_item.num_of_days    = params["num_of_days"].to_i
-    @reservation_item.rental_item_id = nil
-    @reservation_item.status         = "in progress"
-    @reservation_item.reservation_id = session[:reservation_id]
-
-    if @reservation_item.save
-      if @reservation_category == "Cabin"
-        @reservation_item.num_of_days  = (@reservation_item.start_date...@reservation_item.end_date).count
-      elsif @reservation_category == "Boat"
-        @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
-      end
-      @reservation_item.save!
-      session[:reservation_subcategory] = @reservation_item.subcategory
-      session[:reservation_item_id] = @reservation_item.id
-      redirect_to "/your_reservation" and return
-    else
+      @start_date = params["start_date"].to_date.strftime("%a, %b %d, %Y")
+      @reservation_item.adults     = params["adults"].to_i
+      @reservation_item.children   = params["children"].to_i
+      @reservation_item.pets       = params["pets"].to_i
+      if @reservation_category == "Boat"
+        @reservation_item.num_of_days = 1
+      elsif @reservation_category == "Cabin"
+        @end_date   = params["end_date"].to_date.strftime("%a, %b %d, %Y")
+      elsif @reservation_category == "Boat Slip"
+        @end_date == params["end_date"].to_date.strftime("%a, %b %d, %Y")
+      end    
+      flash.now[:error] = "Please choose a #{@reservation_category} type"
       render :reservation_intro and return
+    else
+        @reservation_category = session[:reservation_category]
+        if session[:reservation_id] == nil
+          @reservation = Reservation.new
+          @reservation.status = "in progress"
+          @reservation.save!
+          session[:reservation_id]      = @reservation.id
+        else
+          @reservation = Reservation.find(session[:reservation_id])
+        end
+        if session[:reservation_item_id] == nil    
+          @reservation_item = ReservationItem.new
+        else
+          @reservation_item = ReservationItem.find(session[:reservation_item_id])
+        end
+        @reservation_item.category       = @reservation_category
+        @reservation_item.subcategory    = params["reservation_subcategory"]
+        @reservation_item.start_date     = params["start_date"]
+        @reservation_item.adults         = params["adults"].to_i
+        @reservation_item.children       = params["children"].to_i
+        @reservation_item.pets           = params["pets"].to_i
+        @reservation_item.end_date       = params["end_date"]
+        @reservation_item.num_of_days    = params["num_of_days"].to_i
+        @reservation_item.rental_item_id = nil
+        @reservation_item.status         = "in progress"
+        @reservation_item.reservation_id = session[:reservation_id]
+        if @reservation_item.save
+          if @reservation_category == "Cabin"
+            @reservation_item.num_of_days  = (@reservation_item.start_date...@reservation_item.end_date).count
+          elsif @reservation_category == "Boat"
+            @reservation_item.end_date = @reservation_item.start_date + @reservation_item.num_of_days
+          end
+          @reservation_item.save!
+          session[:reservation_subcategory] = @reservation_item.subcategory
+          session[:reservation_item_id] = @reservation_item.id
+          redirect_to "/your_reservation" and return
+        else
+          render :reservation_intro and return
+        end
+      end
+      
     end
-  end
   
 end
 
