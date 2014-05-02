@@ -360,7 +360,9 @@ def review_post
     
   elsif params["commit"] == "Confirm"
     reservation = Reservation.find(session[:reservation_id])
-    reservation.confirmation_num = rand(99999999) + 1
+    if reservation.confirmation_num == nil
+      reservation.confirmation_num = rand(99999999) + 1
+    end
     reservation.status = "confirmed"
     reservation.customer_id = session[:customer_id]
     reservation.save!
