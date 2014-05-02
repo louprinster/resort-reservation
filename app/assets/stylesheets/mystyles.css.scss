@@ -1,18 +1,24 @@
+* {
+	margin: 0;
+}
+
 html {
   background-color: #eee;
 }
 body {
 
-/* Move down content because we have a fixed navbar that is 50px tall */
+/* Move down content because the fixed navbar is 50px tall */
   padding-top: 50px;
-  padding-bottom: 200px; /* Height of footer */
 
+  
+  height: 100%;
+  
+  /* 
   background-image: image-url("nickajacklake.jpg");
   background-repeat: no-repeat;
   background-position: top left;
   background-attachment: fixed;
-  
-  /* width: 760px;
+  width: 760px;
   margin: 20px auto;
   background-color: white;
   color: #4A3434;
@@ -21,16 +27,6 @@ body {
   
   font-family: Segoe UI,Helvetica,Arial,sans-serif;
   font-size: 11pt;
-}
-
-.footer {
-   position:relative;
-   padding:30px;
-   bottom:0;
-   width:100%;
-   height:200px;   /* Height of the footer */
-   background-color:#31280A; 
-   color:white
 }
 
 .box {
@@ -98,6 +94,41 @@ body {
 /*  position: fixed */
 }
 
+.error_message {
+  color: #A8142D;
+  margin-left: 50px;
+}
+
+/* footer css from css-tricks.com/snippets/css/sticky-footer */
+
+.page-wrap {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -142px; 
+}
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+.site-footer, .page-wrap:after {
+  /* .push must be the same height as footer */
+  height: 142px; 
+}
+.site-footer {
+   background: #31280A;
+   color:white;
+   padding:30px;
+}
+   
+/* .footer      {
+   position:relative;
+   padding:30px;
+   bottom:0;
+   width:100%;
+   height:142px; 
+   background:#31280A; 
+   color:white
+} */
 
 
 
