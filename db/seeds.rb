@@ -101,7 +101,10 @@ RentalType.create! \
       category:           "Boat",
       subcategory:        "Deck",
       max_occupancy:  6,
-      description:    "Deck boat description here...",
+      description:    "Take the entire gang out for some celebratory festivities, or simply bring rod and reel for your 
+           chance to lure in some catches of the day. The plush, cushioned seating surrounding the deck, 
+           the tall canopy top to keep out the sun, and the roaring engine are just a few amenities that 
+           come with our deck boat rentals.",
       image_filename: "deckboat.jpg",
       image_alt:      "Deck Boat Rental",
       num_bedrooms:   nil,
@@ -117,7 +120,10 @@ RentalType.create! \
       category:           "Boat",
       subcategory:        "Pontoon",
       max_occupancy:  10,
-      description:    "Pontoon boat description here...",
+      description:    "Our pontoon boat rentals allow everyone on board to enjoy the sun, waves and fresh air. 
+          A pontoon boat is the perfect way to explore the lake on a lazy day or to tube or water 
+          ski behind for a high-speed, adrenaline-racing adventure!  The 24-foot Leisure Kraft 
+          has room for 10 people, an awning and a 115 hp, 4-stroke engine.",
       image_filename: "pontoon.jpg",
       image_alt:      "Pontoon Boat Rental",
       num_bedrooms:   nil,
@@ -133,7 +139,10 @@ RentalType.create! \
       category:           "Boat",
       subcategory:        "Double Decker Pontoon",
       max_occupancy:  14,
-      description:    "Double Decker Pontoon boat description here...",
+      description:    "Our pontoon boat rentals allow everyone on board to enjoy the sun, waves and fresh air. 
+          A pontoon boat is the perfect way to explore the lake on a lazy day or to tube or water 
+          ski behind for a high-speed, adrenaline-racing adventure! The double-decker pontoon boat rental can hold up to 14 people and also 
+          includes an AM/FM/CD player, ski tow bar, and life jackets.",
       image_filename: "dbldeckerpontoon.jpg",
       image_alt:      "Double Decker Pontoon Boat Rental",
       num_bedrooms:   nil,
@@ -355,8 +364,8 @@ end
 if ReservationItem.count == 0
 ReservationItem.create! \
       category:       "Cabin",
-      start_date:     Date.new(2014, 05, 01),
-      end_date:       Date.new(2014, 05, 05),
+      start_date:     Date.new(2014, 06, 01),
+      end_date:       Date.new(2014, 06, 05),
       num_of_days:    4,
       adults:         2,
       children:       2,
@@ -371,8 +380,8 @@ ReservationItem.create! \
 
 ReservationItem.create! \
       category:       "Cabin",
-      start_date:     Date.new(2014, 05, 10),
-      end_date:       Date.new(2014, 05, 14),
+      start_date:     Date.new(2014, 06, 10),
+      end_date:       Date.new(2014, 06, 14),
       num_of_days:    3,
       adults:         2,
       children:       2,
@@ -392,31 +401,31 @@ end
 if Rate.count == 0
 Rate.create! \
       reservation_item_id: 1,
-      date:     Date.new(2014, 05, 01),
+      date:     Date.new(2014, 06, 01),
       amount:   100.0
 Rate.create! \
       reservation_item_id: 1,
-      date:     Date.new(2014, 05, 02),
+      date:     Date.new(2014, 06, 02),
       amount:   100.0
 Rate.create! \
       reservation_item_id: 1,
-      date:     Date.new(2014, 05, 03),
+      date:     Date.new(2014, 06, 03),
       amount:   100.0
 Rate.create! \
       reservation_item_id: 1,
-      date:     Date.new(2014, 05, 04),
+      date:     Date.new(2014, 06, 04),
       amount:   100.0
 Rate.create! \
       reservation_item_id: 2,
-      date:     Date.new(2014, 05, 10),
+      date:     Date.new(2014, 06, 10),
       amount:   100.0
 Rate.create! \
       reservation_item_id: 2,
-      date:     Date.new(2014, 05, 11),
+      date:     Date.new(2014, 06, 11),
       amount:   100.0
 Rate.create! \
       reservation_item_id: 2,
-      date:     Date.new(2014, 05, 12),
+      date:     Date.new(2014, 06, 12),
       amount:   100.0
 
 else 

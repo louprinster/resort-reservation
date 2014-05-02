@@ -4,7 +4,7 @@ class RentalTypes < ActiveRecord::Migration
       t.string  :category
       t.string  :subcategory
       t.integer :max_occupancy
-      t.string  :description
+      t.text    :description
       t.string  :image_filename
       t.string  :image_alt
       t.integer :num_bedrooms

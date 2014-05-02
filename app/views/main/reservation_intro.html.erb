@@ -91,10 +91,8 @@
 
   </div>
   
-  <div style="padding:20px; margin:20px 20px 20px 280px" class="box"> 
-    <h4 class="header-box" style="width:400px">Nickajack <%= "#{@reservation_category} Rentals" %></h4>
-    <p>Rental category images & descriptions to be listed here.</p>
-  </div>
+    <!--<h4 class="header-box" style="width:400px">Nickajack <%= "#{@reservation_category} Rentals" %></h4>-->
+    <%= render partial: "rental_type_intro", locals: {category: @reservation_category} %>
   
 <% end %> <!-- form tag -->
 </div> <!-- main container -->
