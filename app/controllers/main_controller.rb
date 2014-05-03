@@ -585,7 +585,7 @@ def cancel_reservation_item
     if @reservation_items.count > 0
       session[:reservation_item_id] = nil
       flash[:info] = "Reservation item cancelled"
-      redirect_to "/add_reservation_item" and return
+      redirect_to request.path_info and return
     else 
       Reservation.find(session[:reservation_id]).destroy!
       session[:reservation_category] = nil
