@@ -443,7 +443,7 @@ Customer.create! \
       city:       "Pasadena",
       state:      "CA",
       zipcode:    "91107",
-      phone1:     "1231231234",
+      phone1:     "123-123-1234",
       phone2:     nil,
       email:      "sueblue@gmail.com"
       
@@ -456,7 +456,7 @@ Customer.create! \
       city:       "Pasadena",
       state:      "CA",
       zipcode:    "91107",
-      phone1:     "1231231234",
+      phone1:     "123-123-1234",
       phone2:     nil,
       email:      "joesmith@gmail.com"      
 else
