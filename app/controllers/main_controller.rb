@@ -260,7 +260,6 @@ def add_reservation_item_post
     session[:reservation_category] = "Cabin"
     session[:reservation_subcategory] = nil
     session[:reservation_item_id] = nil
-    flash[:info] = "Add a cabin to your existing reservation"
     redirect_to "/cabin/intro" and return
     
   elsif params["commit"] == "Add a boat reservation"
@@ -268,7 +267,6 @@ def add_reservation_item_post
     session[:reservation_category] = "Boat"
     session[:reservation_subcategory] = nil
     session[:reservation_item_id] = nil
-    flash[:info] = "Add a boat to your existing reservation"
     redirect_to "/boat/intro" and return
     
   elsif params["commit"] == "Continue to Guest Details"
