@@ -25,12 +25,12 @@
             <%= label_tag :end_date, "Check-out #{@reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
             <%= text_field_tag :end_date, @end_date, class: "datepicker form-control" %>
         </div></p>
-        <p><b>Select a cabin category:</b></p>
+        <p><b>Select a Cabin Type:</b></p>
         <p><div class="form-group <%= @reservation_item.errors[:sub_category] != [] && "has-error" %>">
             <%= radio_button_tag "reservation_subcategory", "Land", @reservation_item.subcategory == "Land" %>&nbsp;
             <%= label_tag "reservation_subcategory_land", "Land Cabin"  %><br>
             <%= radio_button_tag "reservation_subcategory", "Floating", @reservation_item.subcategory == "Floating" %>&nbsp;
-            <%= label_tag "reservation_subcategory_floating", "Floating Cabin"  %><br>
+            <%= label_tag "reservation_subcategory_floating", "Floating Cabin"  %>
         </div></p>
 
     <% elsif @reservation_category == "Boat" %>
@@ -38,14 +38,14 @@
           <%= label_tag "num_of_days", "Number of days" %>
           <%= select_tag "num_of_days", options_for_select([1,2,3,4,5,6,7,8,9,10], @reservation_item.num_of_days) %>
         </p>
-        <p><b>Select a boat category:</b></p>
+        <p><b>Select a Boat Type:</b></p>
         <p>
             <%= radio_button_tag "reservation_subcategory", "Deck", @reservation_item.subcategory == "Deck" %>&nbsp;
             <%= label_tag "reservation_subcategory_deck", "Deck Boat"  %><br>
             <%= radio_button_tag "reservation_subcategory", "Pontoon", @reservation_item.subcategory == "Pontoon" %>&nbsp;
             <%= label_tag "reservation_subcategory_pontoon", "Pontoon Boat"  %><br>
             <%= radio_button_tag "reservation_subcategory", "Double Decker Pontoon", @reservation_subcategory == "Double Decker Pontoon" %>&nbsp;
-            <%= label_tag "reservation_subcategory_dblpontoon", "Double Decker Pontoon"  %><br>
+            <%= label_tag "reservation_subcategory_dblpontoon", "Double Decker Pontoon"  %>
          </p>
     <% elsif @reservation_category == "Boat Slip" %>
         <p><div class="form-group <%= @reservation_item.errors[:end_date] != [] && "has-error" %>">
@@ -63,7 +63,6 @@
     
     <% if @reservation_category == "Boat Slip" %>
       Add vessel dimension entry here<br>
-    
     
     <% else %>
         <p>

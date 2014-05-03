@@ -19,14 +19,14 @@
             <p>
               <%= image_tag rental_type.image_filename, {width:200} %>
             </p>
-            <%= button_tag "Details", name: "details_res_item_id", value: res_item.id, class:"btn details-button" %>&nbsp;&nbsp;
+            <%= button_tag "Details", name: "details_res_item_id", value: res_item.id, class:"btn-sm details-button" %>&nbsp;&nbsp;
           </td>
           <td style="width:250px;padding-left:20px">
               <p>
               <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
               </p>
-              <%= button_tag "Change", name: "change_res_item_id", value: res_item.id, class:"btn add-button" %>&nbsp;&nbsp;
-              <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id, class:"btn add-button" %>
+              <%= button_tag "Change", name: "change_res_item_id", value: res_item.id, class:"btn-sm add-button" %>&nbsp;&nbsp;
+              <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id, class:"btn-sm add-button" %>
           </td>
           <td style="width:250px">
             <p>
