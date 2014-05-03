@@ -35,36 +35,38 @@ ResortReservation::Application.routes.draw do
     as: "reset_password"
   post "/users/reset_password" => "user#reset_password_post",
     as: "reset_password_post"
+ 
+  get  "/sessions/login"        => "sessions#login"
+  post "/sessions/login"        => "sessions#login_post"
+  post "/sessions/logout"       => "sessions#logout"
 
-  get  "/sessions/login"       => "sessions#login"
-  post "/sessions/login"       => "sessions#login_post"
-  post "/sessions/logout"      => "sessions#logout"
-
-  get  "/admin"             => "admin#index"
-  post "/admin"             => "admin#index_post"
+  get  "/admin"                 => "admin#index"
+  post "/admin"                 => "admin#index_post"
   
-  get  "/admin/customers"   => "admin#customers_index"
-  post "/admin/customers"   => "admin#customers_index_post"
+  get  "/admin/customers"       => "admin#customers_index"
+  post "/admin/customers"       => "admin#customers_index_post"
   
   get  "/customer/:id/edit"     => "admin#customer_edit"
   post "/customer/:id/update"   => "admin#customer_update"
   
-  get  "/customer/new"      => "admin#customer_new"
-  post "/customer/create"   => "admin#customer_create"
+  get  "/customer/new"          => "admin#customer_new"
+  post "/customer/create"       => "admin#customer_create"
   
   get "customer/:id/reservations" => "admin#customer_reservations"
     
-  get  "/admin/reservations" => "admin#reservations_index"
-  post "/admin/reservations" => "admin#reservations_index_post"
+  get  "/admin/reservations"    => "admin#reservations_index"
+  post "/admin/reservations"    => "admin#reservations_index_post"
   
-  get "/reservation/:id/edit" => "admin#reservation_edit"
+  get "/reservation/:id/edit"   => "admin#reservation_edit"
   
-  get  "/admin/rentaltypes"  => "admin#rentaltypes_index"
-  post "/admin/rentaltypes"  => "admin#rentaltypes_index_post"
+  get  "/admin/:category"     => "admin#category_index"
+  post "/admin/:category"     => "admin#category_index_post"
   
-  get  "/rentaltype/:id/edit" => "admin#rentaltype_edit"
+  get  "/:category/:id/edit"   => "admin#category_edit"
+  post "/:category/:id/update" => "admin#category_update"
   
-
+  get  "/:category/new"        => "admin#category_new"
+  post "/:category/create"      => "admin#category_create"
 end
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,53 @@
+<div class="admin-box">
+
+<%= form_tag @post_route do %>
+
+<h3>Add/Edit <%= "#{@rental_type.category}" %> Rental</h3>
+
+<%= error_messages_for @rental_type %>
+
+    <%= label_tag "subcategory", "Subcategory" %>
+    <% if @rental_type.category == "Cabin" %>
+      <p>
+        <%= select_tag "subcategory", 
+            options_for_select(["Land", "Floating"],
+            @rental_type.subcategory),
+            prompt: "Choose a subcategory..." %>
+      </p>
+      <p>
+        <%= label_tag "num_bedrooms", "No. of Bedrooms" %>
+        <%= text_field_tag "num_bedrooms", @rental_type.num_bedrooms, size: 4 %>
+      </p>
+      <p>
+        <%= label_tag "num_baths", "No. of Bathrooms" %>
+        <%= text_field_tag "num_baths", @rental_type.num_baths, size: 4 %>
+      </p>
+    <% elsif @rental_type.category == "Boat" %>
+      <p>
+        <%= select_tag "subcategory", 
+            options_for_select(["Deck", "Pontoon", "Double Decker Pontoon"],
+            @rental_type.subcategory),
+            prompt: "Choose a subcategory..." %>
+      </p>
+    <% end %>
+    <p>    
+      <%= label_tag "max_occupancy", "Maximum Occupancy" %>
+      <%= text_field_tag "max_occupancy", @rental_type.max_occupancy, size: 4 %>
+    </p>
+    <p>    
+      <%= label_tag "weekday_rate", "Weekday Rate" %>
+      $ <%= text_field_tag "weekday_rate", @rental_type.weekday_rate, size: 8 %>
+    </p>
+    <p>    
+      <%= label_tag "weekend_rate", "Weekend Rate" %>
+      $ <%= text_field_tag "weekend_rate", @rental_type.weekend_rate, size: 8 %>
+    </p>
+  
+    <p>
+      <%= label_tag "description", "Description" %><br>
+      <%= text_area_tag "description", @rental_type.description, size: "75x10" %>
+    </p>
+  
+    <%= submit_tag "Update / Create" %>
+<% end %>  
+</div>

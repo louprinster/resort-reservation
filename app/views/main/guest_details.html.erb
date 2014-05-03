@@ -7,14 +7,16 @@
     <hr>
     <% @reservation_items.order(:rental_item_id).each do |res_item| %>
         <% rental_type = res_item.rental_item.rental_type %>
-        <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
-        <p>
-        <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: res_item} %>
-        </p>
-        <%= button_tag "Details", name: "details_res_item_id", value: res_item.id, class:"btn-sm details-button" %>&nbsp;&nbsp;
-        <%= button_tag "Change", name: "change_res_item_id", value: res_item.id, class:"btn-sm details-button" %>&nbsp;&nbsp;
-        <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id, class:"btn-sm details-button" %>
-        <hr>
+
+          <b><%= "#{rental_type.subcategory} #{rental_type.category}" %> No. <%= res_item.rental_item.name %></b></br>
+          <%= render partial: "reservation_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+          <p>
+          <%= render partial: "rate_summary", locals: {rental_type: rental_type, res_item: res_item} %>
+          </p>
+          <%= button_tag "Details", name: "details_res_item_id", value: res_item.id, class:"btn-sm details-button" %>&nbsp;&nbsp;
+          <%= button_tag "Change", name: "change_res_item_id", value: res_item.id, class:"btn-sm details-button" %>&nbsp;&nbsp;
+          <%= button_tag "Cancel", name: "cancel_res_item_id", value: res_item.id, class:"btn-sm details-button" %>
+          <hr>
     <% end %>
   </div>
   

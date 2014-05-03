@@ -1,14 +1,16 @@
 <div class="admin-box">
 
-<%= form_tag "/admin/rentaltypes" do %>  
+<%= form_tag "/admin/#{@category}" do %>  
 
-<h3>Manage Cabin Rentals</h3>
+<h3>Manage <%= "#{@category}" %> Rentals</h3>
   
   <table class="table table-bordered">
-    <tr class="success">
-      <th>Subcat</th>
-      <th>Bdrms</th>
-      <th>Baths</th>
+    <tr style="text-align:center" class="success">
+      <th>Subcategory</th>
+      <% if @category == "Cabin" %>
+        <th>Bdrms</th>
+        <th>Baths</th>
+      <% end %>
       <th>Max<br>Occ</th>
       <th style="width:400px">Description</th>
       <th>Weekday<br>Rate</th>
@@ -16,27 +18,29 @@
       <th></th>
     </tr>
       
-    <% @rental_types.order(:subcategory, :max_occupancy).each do |r| %>
+    <% RentalType.where(category: @category).order(:subcategory, :max_occupancy).each do |r| %>
 
-      <tr>
+      <tr style="font-weight:normal; text-align:center">
         <td><%= r.subcategory %></td>
-        <td><%= r.num_bedrooms %></td>
-        <td><%= r.num_baths %></td>
+        <% if @category == "Cabin" %>
+          <td><%= r.num_bedrooms %></td>
+          <td><%= r.num_baths %></td>
+        <% end %>
         <td><%= r.max_occupancy %></td>
-        <td style="width:400px"><%= r.description %></td>
-        <td><%= r.weekday_rate %></td>
-        <td><%= r.weekend_rate %></td>
-        <td>
+        <td style="width:400px; text-align:left"><%= r.description %></td>
+        <td><%= "$#{sprintf('%.2f', r.weekday_rate)}" %></td>
+        <td><%= "$#{sprintf('%.2f', r.weekend_rate)}" %></td>
+        <td style="text-align:left">
           <p><a type="button" class="btn-sm details-button" href="/rentalitems_index/<%= "#{r.id}" %>">View Rental Items</a></p>
-          <p><a type="button" class="btn-sm go-button" href="/rentaltype/<%= "#{r.id}" %>/edit" %>Edit Rental type</a></p>
-          <%= hidden_field_tag "reservation_id", r.id %>
+          <p><a type="button" class="btn-sm go-button" href="/<%= "#{@category}" %>/<%= "#{r.id}" %>/edit" %>Edit <%= "#{@category}" %></a></p>
+          <%= hidden_field_tag "rental_type_id", r.id %>
           <p><%= submit_tag "Delete", class: "btn-sm stop-button", data: { confirm: 'Are you sure?' } %></p>
         </td>
       </tr>
 
     <% end %>
   </table>
-  <a type="button" class="btn go-button" href="/rentaltype/new">Add New Cabin Rental</a>
+  <a type="button" class="btn go-button" href="/<%= "#{@category}" %>/new">Add New <%= "#{@category}" %> Rental</a>
   
 <% end %>
 </div>

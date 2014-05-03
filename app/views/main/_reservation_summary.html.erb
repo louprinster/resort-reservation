@@ -1,10 +1,6 @@
 
-<!--<div style="width:850px;border: 1px #B06A09 solid; margin: auto 100px auto 100px; padding:20px">-->
-
-  <!--<h4 style="background:#C9BCAD; padding:15px; text-align:left;">Reservation Summary</h4>-->
 
   <p>
-    <b><%= "#{rental_type.subcategory} #{rental_type.category}" %> No. <%= res_item.rental_item.name %></b><br>
     <% if rental_type.category == "Cabin" %>        
         <%= "#{rental_type.num_bedrooms} #{"bedroom".pluralize(rental_type.num_bedrooms)}, " %>
         <%= "#{rental_type.num_baths} #{"bath".pluralize(rental_type.num_baths)}" %><br>

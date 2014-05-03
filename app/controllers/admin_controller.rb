@@ -124,23 +124,69 @@ class AdminController < ApplicationController
   
 #=======================================================================  
   
-  def rentaltypes_index
-    @rental_types = RentalType.where(category: "Cabin")
+  def category_index
+    @category = params[:category].capitalize
     render :rentaltypes and return 
   end
   
-  def rentaltypes_index_post
+  def category_index_post
     if params[:commit] == "Delete"
       rental_type = RentalType.find(params[:rental_type_id])
+      category = rental_type.category
       rental_type.destroy!
       flash[:success] = "Rental Type deleted"
-      redirect_to "/admin/rentaltypes" and return
+      redirect_to "/admin/#{category}" and return
     end    
   end
   
-  def rentaltype_edit
+  def category_edit
     @rental_type = RentalType.find(params[:id])
-    render :rentaltype_edit and return
+    @post_route  = "/#{params[:category]}/#{params[:id]}/update"
+    render :rentaltype_edit_new and return
+  end
+
+  def category_update
+    @rental_type = RentalType.find(params[:id])
+    @rental_type.subcategory = params[:subcategory]
+    @rental_type.max_occupancy = params[:max_occupancy]
+    @rental_type.description   = params[:description]
+    @rental_type.num_bedrooms  = params[:num_bedrooms]
+    @rental_type.num_baths     = params[:num_baths]
+    @rental_type.weekday_rate  = params[:weekday_rate]
+    @rental_type.weekend_rate  = params[:weekend_rate]
+    category = params[:category]
+    if @rental_type.save
+      flash[:success] = "#{category} updated/created"
+      redirect_to "/admin/#{category}" and return
+    else
+      render :rentaltype_edit_new and return
+    end
+  end
+
+  def category_new
+    @rental_type = RentalType.new
+    @rental_type.category = params[:category]
+    @post_route  = "/#{params[:category]}/create"
+    render :rentaltype_edit_new and return
+  end
+
+  def category_create
+    @rental_type = RentalType.new
+    @rental_type.category      = params[:category]
+    @rental_type.subcategory   = params[:subcategory]
+    @rental_type.max_occupancy = params[:max_occupancy]
+    @rental_type.description   = params[:description]
+    @rental_type.num_bedrooms  = params[:num_bedrooms]
+    @rental_type.num_baths     = params[:num_baths]
+    @rental_type.weekday_rate  = params[:weekday_rate]
+    @rental_type.weekend_rate  = params[:weekend_rate]
+    category = params[:category]
+    if @rental_type.save
+      flash[:success] = "#{category} updated/created"
+      redirect_to "/admin/#{category}" and return
+    else
+      render :rentaltype_edit_new and return
+    end
   end
 
 end
