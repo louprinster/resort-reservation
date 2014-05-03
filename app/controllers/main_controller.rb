@@ -183,8 +183,12 @@ end
 def reservation_post
   
   @reservation_item = ReservationItem.find(session[:reservation_item_id])
-  
-  if params["commit"] == "Cancel"  
+
+  if params[:commit] == "Back to Reservation Summary"
+    res_item = ReservationItem.find(session[:reservation_item_id])
+    res_item.destroy!
+    redirect_to "/add_reservation_item" and return
+  elsif params["commit"] == "Cancel"  
     @res_item_id = session[:reservation_item_id]
     cancel_reservation_item
     
