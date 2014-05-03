@@ -3,71 +3,61 @@
 <div class="container">
 <div class="admin-box">
 
-  <h2> Manage Reservations </h2>
+  <h3> Manage Reservations </h3>
     
-  <% @customers.each do |c| %>
-      <p><div style="background-color:#B6CC9F">Customer: <%= "#{c.title} #{c.first_name} #{c.last_name}" %></div></p>
-      <% Reservation.where(customer_id: c.id).order(:id).each do |r| %>
+  <% @customers.order(:last_name).each do |c| %>
+      <% reservations = Reservation.where(customer_id: c.id, status: "confirmed") %>
+
+      <% if reservations.count > 0 %>
+        <p><div style="background-color:#CBE8BA;padding:10px">Customer: <%= "#{c.title} #{c.first_name} #{c.last_name}" %></div></p>
+
+        <% reservations.order(:id).each do |r| %>
           <p>
-          <div class="row">
-            <div class="col-md-4">&nbsp;&nbsp;&nbsp;&nbsp;<b>Reservation Confirmation No: <%= r.confirmation_num %></b></div>
-            <div class="col-md-4">&nbsp;&nbsp;&nbsp;&nbsp;<b>Status: <%= r.status %></b></div>
-            <div class="col-md-4">
-              <a type="button" class="btn go-button" href="/reservation/<%= "#{r.id}" %>/edit">Edit</a>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <%= hidden_field_tag "reservation_id", r.id %>
-              <%= submit_tag "Delete", class: "btn details-button", data: { confirm: 'Are you sure?' } %>
-            </div>
-
-          </div></p>
-          <% r.reservation_items.order(:id).each do |res_item| %>
-              <% rental_type = res_item.rental_item.rental_type %>
-              
-              <div class="row">
-
-                <div class="col-md-3 col-md-offset-1">
-                  <%= "#{rental_type.subcategory} #{rental_type.category}" %> No. <%= res_item.rental_item.name %></b><br>
-                  <% if rental_type.category == "Cabin" %>        
-                      <%= "#{rental_type.num_bedrooms} #{"bedroom".pluralize(rental_type.num_bedrooms)}, " %>
-                      <%= "#{rental_type.num_baths} #{"bath".pluralize(rental_type.num_baths)}" %><br>
-                      Max Occupancy: <%= rental_type.max_occupancy %><br>
-                  <% elsif rental_type.category == "Boat" %>
-                      Max Occupancy: <%= rental_type.max_occupancy %><br>
-                  <% elsif rental_type.category == "Boat Slip" %>
-                      Length: <%= rental_type.length %><br>
-                      Width: <%= rental_type.width %><br>
-                      Height: <%= rental_type.height %><br>
-                  <% end %>
-                </div>
-                <div class="col-md-3">
-                  <b>From: </b><%= res_item.start_date.strftime("%a, %b %d, %Y") %>
-                  <% if (rental_type.category == "Cabin") || (rental_type.category == "Boat Slip") %>
-                  <br><b>To: </b><%= res_item.end_date.strftime("%a, %b %d, %Y") %>
-                  <% end %>
-                  <br><b>No. of days: </b><%=res_item.num_of_days %><br>
-                  <%= "#{res_item.adults} #{'adult'.pluralize(res_item.adults)}, " %>
-                  <%= "#{res_item.children} #{'child'.pluralize(res_item.children)}, " %>
-                  <%= "#{res_item.pets} #{'pet'.pluralize(res_item.pets)}" %><br>
-                </div>
-                <div class="col-md-3">
-                  Rate Summary:<br>
-                  <table>
-                    <tr>
-                      <th>Ave. Nightly Rate:&nbsp;&nbsp;&nbsp;</th>
-                      <td style="text-align:right"><%= "$#{sprintf('%.2f', res_item.ave_rate)}" %></td>
-                    </tr>
-                    <tr>
-                      <th>Subtotal: </th><td style="text-align:right"><%= res_item.subtotal %></td></tr>
-                    <tr><th>Tax: </th><td style="text-align:right"><%= res_item.tax %></td></tr>
-                    <tr style="background-color:yellow"><th>Total: </th><td style="text-align:right"><%= res_item.total %></td></tr>
-                  </table>
-                </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;<b>Confirmation No:&nbsp;&nbsp;&nbsp;&nbsp;<%= r.confirmation_num %></b>
+            &nbsp;&nbsp;&nbsp;&nbsp;<b>Status: <%= r.status %></b>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a type="button" class="btn-sm go-button" href="/reservation/<%= "#{r.id}" %>/edit">Edit Reservation</a>
+            &nbsp;&nbsp;
+            <%= link_to "Delete Reservation", "/reservation/#{r.id}/delete", data: { confirm: 'Are you sure?' }, class: "btn-sm stop-button" %>
+          </p>
+          
+          <table class="table table-bordered">
+            <tr class="info">
+              <th>Rental Item</th><th>No.</th><th>Beds</th><th>Baths</th><th>Max</th>
+              <th>From</th><th>To</th><th>No. Days</th><th>Adults</th><th>Kids</th><th>Pets</th>
+              <th>Ave Rate</th><th>Subtotal</th><th>Tax</th><th>Total</th>
+            </tr>
             
-              </div>
-          <% end %> <!-- res_item loop -->
-        
-    <% end %><!-- reservation -->
-  <% end %><!-- customer -->
+            <% r.reservation_items.order(:id).each do |res_item| %>
+              <% rental_type = res_item.rental_item.rental_type %>
+              <tr style="font-weight:normal">
+                <td><%= "#{rental_type.subcategory} #{rental_type.category}" %></td>
+                <td><%= res_item.rental_item.name %></td>
+                <% if rental_type.category == "Cabin" %>        
+                    <td><%= rental_type.num_bedrooms %></td>
+                    <td><%= rental_type.num_baths %></td>
+                <% else %>
+                    <td></td>
+                    <td></td>
+                <% end %>
+                <td><%= rental_type.max_occupancy %></td>
+                <td><%= res_item.start_date.strftime("%-m/%-d/%-y") %></td>
+                <td><%= res_item.end_date.strftime("%-m/%-d/%-y") %></td>
+                <td><%= res_item.num_of_days %></td>
+                <td><%= res_item.adults %></td>
+                <td><%= res_item.children %></td>
+                <td><%= res_item.pets %></td>
+                <td<%= res_item.pets %></td>
+                <td><%= "$#{sprintf('%.2f', res_item.ave_rate)}" %></td>
+                <td><%= "$#{sprintf('%.2f',res_item.subtotal)}" %></td>
+                <td><%= "$#{sprintf('%.2f',res_item.tax)}" %></td>
+                <td><%= "$#{sprintf('%.2f',res_item.total)}" %></td>
+              </tr>
+            <% end %> <!-- res_item loop -->
+          </table>
+        <% end %><!-- reservation loop -->
+      <% end %><!-- if confirmed reservations exist %>
+  <% end %><!-- customer loop -->
       
 </div>
 </div>
