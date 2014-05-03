@@ -1,0 +1,78 @@
+  <div class="pull-left left-box">
+
+    <h4 style="text-align:center" class="header-box">Your Reservation</h4>
+    <hr>
+    
+    <p><div class="form-group <%= reservation_item.errors[:start_date] != [] && "has-error" %>">
+        <%= label_tag :start_date, "Check-in #{reservation_item.errors[:start_date].join(", ")}", class: "control-label" %><br>
+        <%= text_field_tag :start_date, @start_date, class: "datepicker form-control" %>
+    </div></p>
+
+    <% if reservation_category == "Cabin" %>
+        <p><div class="form-group <%= reservation_item.errors[:end_date] != [] && "has-error" %>">
+            <%= label_tag :end_date, "Check-out #{reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
+            <%= text_field_tag :end_date, @end_date, class: "datepicker form-control" %>
+        </div></p>
+        <p><b>Select a Cabin Type:</b></p>
+        <p><div class="form-group <%= reservation_item.errors[:sub_category] != [] && "has-error" %>">
+            <%= radio_button_tag "reservation_subcategory", "Land", reservation_item.subcategory == "Land" %>&nbsp;
+            <%= label_tag "reservation_subcategory_land", "Land Cabin"  %><br>
+            <%= radio_button_tag "reservation_subcategory", "Floating", reservation_item.subcategory == "Floating" %>&nbsp;
+            <%= label_tag "reservation_subcategory_floating", "Floating Cabin"  %>
+        </div></p>
+
+    <% elsif reservation_category == "Boat" %>
+        <p>
+          <%= label_tag "num_of_days", "Number of days" %>
+          <%= select_tag "num_of_days", options_for_select([1,2,3,4,5,6,7,8,9,10], reservation_item.num_of_days) %>
+        </p>
+        <p><b>Select a Boat Type:</b></p>
+        <p>
+            <%= radio_button_tag "reservation_subcategory", "Deck", reservation_item.subcategory == "Deck" %>&nbsp;
+            <%= label_tag "reservation_subcategory_deck", "Deck Boat"  %><br>
+            <%= radio_button_tag "reservation_subcategory", "Pontoon", reservation_item.subcategory == "Pontoon" %>&nbsp;
+            <%= label_tag "reservation_subcategory_pontoon", "Pontoon Boat"  %><br>
+            <%= radio_button_tag "reservation_subcategory", "Double Decker Pontoon", @reservation_subcategory == "Double Decker Pontoon" %>&nbsp;
+            <%= label_tag "reservation_subcategory_dblpontoon", "Double Decker Pontoon"  %>
+         </p>
+    <% elsif reservation_category == "Boat Slip" %>
+        <p><div class="form-group <%= reservation_item.errors[:end_date] != [] && "has-error" %>">
+            <%= label_tag :end_date, "Check-out #{reservation_item.errors[:end_date].join(", ")}", class: "control-label" %><br>
+            <%= text_field_tag :end_date, @end_date, class: "datepicker form-control" %>
+        </div></p>
+        <p><b>Select a boat slip category:</b></p>
+        <p>
+            <%= radio_button_tag "reservation_subcategory", "Covered", reservation_item.subcategory == "Covered" %>&nbsp;
+            <%= label_tag "reservation_subcategory_covered", "Covered"  %><br>
+            <%= radio_button_tag "reservation_subcategory", "Uncovered", reservation_item.subcategory == "Uncovered" %>&nbsp;
+            <%= label_tag "reservation_subcategory_uncovered", "Uncovered"  %><br>
+        </p>      
+    <% end %>
+    
+    <% if reservation_category == "Boat Slip" %>
+      Add vessel dimension entry here<br>
+    
+    <% else %>
+        <p>
+            <%= label_tag "adults", "Adults" %>
+            <%= select_tag "adults", options_for_select([1,2,3,4,5,6,7,8,9,10], reservation_item.adults) %><br>
+        </p>
+        <p>
+            <%= label_tag "children", "Children under 18" %>
+            <%= select_tag "children", options_for_select([0,1,2,3,4,5,6,7,8,9], reservation_item.children) %><br>
+        </p>
+        <p> 
+            <%= label_tag "pets", "Pets" %>
+            <%= select_tag "pets", options_for_select([0,1,2,3], reservation_item.pets) %>
+        </p>
+        
+    <% end %>
+    
+    <p><%= submit_tag "Check Availability", class:"btn-sm go-button" %></p>
+    
+    <% if session[:reservation_id] != nil %>
+      <% if Reservation.find(session[:reservation_id]).reservation_items.first.rental_item_id != nil %>
+          <p><%= submit_tag "Back to Reservation Summary", class:"btn-sm details-button" %></p>
+      <% end %>
+    <% end %>
+</div>
