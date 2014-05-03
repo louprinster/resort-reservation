@@ -1,27 +1,30 @@
 <div class="container">
-<div class="admin-box" style="width:700px">
+<div class="admin-box">
 
-<%= form_tag "/admin/customers" do %>
 
-  <h1> Manage Customers </h1>
-    <table class="table">
+  <h3> Manage Customers </h3>
+    <table class="table table-bordered">
+      <tr class="success">
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th></th>
+      </td>
       <% @customers.order(:last_name).each do |c| %>
-        <tr>
-          <td><%= c.last_name %>, <%= c.title %><%= c.first_name %><br>
-              <%= c.address1 %><br>
-              <%= c.city %>, <%= c.state %>&nbsp;&nbsp;<%= c.zipcode %><br>
-              <%= c.phone1 %>&nbsp;&nbsp;<%= c.phone2 %><br>
-              <%= c.email %>
-          </td>
-          <td>              
-              <a type="button" class="btn details-button" href="/customer/<%= "#{c.id}" %>/reservations">Reservations</a>
+        <tr style="font-weight:normal">
+          <td><%= c.last_name %>, <%= c.title %><%= c.first_name %></td>
+          <td><%= c.address1 %><br>
+              <%= c.city %>, <%= c.state %>&nbsp;&nbsp;<%= c.zipcode %></td>
+          <td><%= c.phone1 %><br><%= c.phone2 %></td>
+          <td><%= c.email %></td>
+          <td><p> 
+              <%= link_to "View Reservations", "/customer/#{c.id}/reservations", class: "btn-sm details-button" %>
               &nbsp;&nbsp;
-              
-              <a type="button" class="btn go-button" href="/customer/<%= "#{c.id}" %>/edit">Edit</a>
+              <a type="button" class="btn-sm go-button" href="/customer/<%= "#{c.id}" %>/edit">Edit Customer</a>
               &nbsp;&nbsp;
-              
-              <%= hidden_field_tag "customer_id", c.id %>
-              <%= submit_tag "Delete", class: "btn stop-button", data: { confirm: 'Are you sure?' } %>
+              <%= link_to "Delete Customer", "/customer/#{c.id}/delete", data: { confirm: 'Are you sure?' }, class: "btn-sm stop-button" %>
+              </p>          
           </td>
         </tr>
       <% end %>
@@ -29,7 +32,6 @@
     <br>
     <a type="button" class="btn go-button" href="/customer/new">Add New Customer</a>
 
-<% end %>
 
 </div>
 </div>

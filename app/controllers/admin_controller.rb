@@ -25,18 +25,6 @@ class AdminController < ApplicationController
     end
     render :customers and return
   end
-
-  def customers_index_post
-    customer_id = params[:customer_id]
-    if params[:commit] == "Reservations"
-      redirect_to "/:customer_id/reservations" and return
-    elsif params[:commit] == "Delete"
-      customer = Customer.find(customer_id)
-      customer.destroy!
-      flash[:success] = "Customer deleted."
-      redirect_to "/admin/customers" and return  
-    end
-  end
   
   def customer_edit
     @customer = Customer.find(params[:id])
@@ -94,9 +82,33 @@ class AdminController < ApplicationController
     end
   end
 
+  def customer_destroy
+    customer = Customer.find(params[:id])
+    reservations = customer.reservations.where(status: "confirmed")
+    if reservations.count > 0
+      flash[:warning] = "This customer has confirmed reservations. Delete reservations first."
+      @customers = Customer.order(:last_name)
+      @u_s_states  = USState.order(:name).all
+      render :customers and return
+    else
+      customer.destroy!
+      flash[:success] = "Customer deleted."
+      redirect_to "/admin/customers" and return
+    end  
+  end
+
   def customer_reservations
-    @customers = Customer.where(id: params[:id])
-    render :reservations and return
+    c = Customer.find(params[:id])
+    reservations = c.reservations.where(status: "confirmed")
+    if reservations.count == 0
+      flash.now[:info] = "There are no confirmed reservations for #{c.title} #{c.first_name} #{c.last_name}"
+      @customers = Customer.order(:last_name)
+      @u_s_states  = USState.order(:name).all
+      render :customers and return
+    else
+      @customers = Customer.where(id: params[:id])
+      render :reservations and return
+    end
   end
 
 #========================================================================
@@ -106,15 +118,6 @@ class AdminController < ApplicationController
     render :reservations and return
   end
   
-  def reservations_index_post
-    if params[:commit] == "Delete"
-      reservation = Reservation.find(params[:reservation_id])
-      reservation.destroy!
-      flash[:success] = "Reservation deleted"
-      redirect_to "/admin/reservations" and return
-    end
-  end
-  
   def reservation_edit
     session[:reservation_id] = params[:id]
     customer = Reservation.find(params[:id]).customer
@@ -122,21 +125,18 @@ class AdminController < ApplicationController
     redirect_to "/add_reservation_item" and return
   end
   
+  def reservation_destroy
+    reservation = Reservation.find(params[:id])
+    reservation.destroy!
+    flash[:success] = "Reservation deleted"
+    redirect_to "/admin/reservations" and return
+  end
+  
 #=======================================================================  
   
   def category_index
     @category = params[:category].capitalize
     render :rentaltypes and return 
-  end
-  
-  def category_index_post
-    if params[:commit] == "Delete"
-      rental_type = RentalType.find(params[:rental_type_id])
-      category = rental_type.category
-      rental_type.destroy!
-      flash[:success] = "Rental Type deleted"
-      redirect_to "/admin/#{category}" and return
-    end    
   end
   
   def category_edit
@@ -186,6 +186,21 @@ class AdminController < ApplicationController
       redirect_to "/admin/#{category}" and return
     else
       render :rentaltype_edit_new and return
+    end
+  end
+
+  def category_delete
+    rental_type = RentalType.find(params[:id])
+    rental_items = rental_type.rental_items
+    if rental_items.count > 0
+      flash[:warning] = "Warning: Rental items for this rental type exist. Delete rental items first."
+      @category = rental_type.category
+      render :rentaltypes and return
+    else
+      category = rental_type.category
+      rental_type.destroy!
+      flash[:success] = "Rental Type deleted"
+      redirect_to "/admin/#{category}" and return
     end
   end
 

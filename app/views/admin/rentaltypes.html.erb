@@ -1,7 +1,5 @@
 <div class="admin-box">
 
-<%= form_tag "/admin/#{@category}" do %>  
-
 <h3>Manage <%= "#{@category}" %> Rentals</h3>
   
   <table class="table table-bordered">
@@ -33,8 +31,7 @@
         <td style="text-align:left">
           <p><a type="button" class="btn-sm details-button" href="/rentalitems_index/<%= "#{r.id}" %>">View Rental Items</a></p>
           <p><a type="button" class="btn-sm go-button" href="/<%= "#{@category}" %>/<%= "#{r.id}" %>/edit" %>Edit <%= "#{@category}" %></a></p>
-          <%= hidden_field_tag "rental_type_id", r.id %>
-          <p><%= submit_tag "Delete", class: "btn-sm stop-button", data: { confirm: 'Are you sure?' } %></p>
+          <p><%= link_to "Delete", "/#{@category}/#{r.id}/delete", data: { confirm: 'Are you sure?' }, class: "btn-sm stop-button" %>
         </td>
       </tr>
 
@@ -42,5 +39,4 @@
   </table>
   <a type="button" class="btn go-button" href="/<%= "#{@category}" %>/new">Add New <%= "#{@category}" %> Rental</a>
   
-<% end %>
 </div>
