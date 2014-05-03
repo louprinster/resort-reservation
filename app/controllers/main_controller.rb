@@ -172,7 +172,7 @@ def reservation_get
     @available_rental_types = rental_type_search
     
     if @available_rental_types == {}
-      flash.now[:info] = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy."
+      flash.now[:info] = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy. Try different dates, or reserve more than one #{@reservation_category}."
       render :reservation_intro and return
     else
       render :your_reservation and return
@@ -214,7 +214,7 @@ def reservation_post
       @rental_types = RentalType.where(category: @reservation_category, subcategory: @reservation_subcategory)
       @available_rental_types = rental_type_search
       if @available_rental_types == {}
-        flash.now[:info] = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy."
+        flash.now[:info] = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy. Try different dates, or reserve more than one #{@reservation_category}."
         render :reservation_intro and return
       else
         render :your_reservation and return
