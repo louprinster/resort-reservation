@@ -70,11 +70,11 @@
         <div class="form-inline">
           <div class="form-group <%= @customer.errors[:phone1] != [] && "has-error" %>" style="width:200px">
             <%= label_tag "phone1", "Phone 1 #{@customer.errors[:phone1].join(", ")}", class: "control-label" %>
-            <%= text_field_tag "phone1", @customer.phone1, class: "form-control" %>
+            <%= text_field_tag "phone1", @customer.phone1, placeholder: "xxx-xxx-xxxx", class: "form-control" %>
           </div>&nbsp;&nbsp;
           <div class="form-group <%= @customer.errors[:phone2] != [] && "has-error" %>" style="width:200px">
             <%= label_tag "phone2", "Phone 2 #{@customer.errors[:phone2].join(", ")}", class: "control-label" %>
-            <%= text_field_tag "phone2", @customer.phone2, class: "form-control" %>
+            <%= text_field_tag "phone2", @customer.phone2, placeholder: "xxx-xxx-xxxx", class: "form-control" %>
           </div>
         </div><br>
         <div class="form-group <%= @customer.errors[:email] != [] && "has-error" %>" style="width:400px">
