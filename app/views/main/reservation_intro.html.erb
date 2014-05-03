@@ -80,7 +80,13 @@
         
     <% end %>
     
-      <p><%= submit_tag "Check Availability", class:"btn go-button" %></p>
+      <p><%= submit_tag "Check Availability", class:"btn-sm go-button" %></p>
+      <% if session[:reservation_id] != nil %>
+        <% if Reservation.find(session[:reservation_id]).reservation_items.first.rental_item_id != nil %>
+            <p><%= submit_tag "Back to Reservation Summary", class:"btn-sm details-button" %></p>
+        <% end %>
+      <% end %>
+
   </div>
   
     <!--<h4 class="header-box" style="width:400px">Nickajack <%= "#{@reservation_category} Rentals" %></h4>-->
