@@ -258,14 +258,14 @@ def add_reservation_item_post
     @res_item_id = params["cancel_res_item_id"]
     cancel_reservation_item
     
-  elsif params["commit"] == "Add a cabin reservation"
+  elsif params["commit"] == "Add a Cabin Reservation"
     @reservation_category = "Cabin"
     session[:reservation_category] = "Cabin"
     session[:reservation_subcategory] = nil
     session[:reservation_item_id] = nil
     redirect_to "/cabin/intro" and return
     
-  elsif params["commit"] == "Add a boat reservation"
+  elsif params["commit"] == "Add a Boat Reservation"
     @reservation_category = "Boat"
     session[:reservation_category] = "Boat"
     session[:reservation_subcategory] = nil
@@ -304,7 +304,21 @@ def guest_details_post
   elsif params["cancel_res_item_id"] != nil
     @res_item_id = params["cancel_res_item_id"]
     cancel_reservation_item
-        
+  
+  elsif params["commit"] == "Add a Cabin Reservation"
+    @reservation_category = "Cabin"
+    session[:reservation_category] = "Cabin"
+    session[:reservation_subcategory] = nil
+    session[:reservation_item_id] = nil
+    redirect_to "/cabin/intro" and return
+    
+  elsif params["commit"] == "Add a Boat Reservation"
+    @reservation_category = "Boat"
+    session[:reservation_category] = "Boat"
+    session[:reservation_subcategory] = nil
+    session[:reservation_item_id] = nil
+    redirect_to "/boat/intro" and return
+            
   elsif params["commit"] == "Continue to Review"
       @email = params["email"] # used to try to match against existing customer records
       find_customer
