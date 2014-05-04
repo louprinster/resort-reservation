@@ -71,8 +71,11 @@
     <p><%= submit_tag "Check Availability", class:"btn-sm go-button" %></p>
     
     <% if session[:reservation_id] != nil %>
-      <% if Reservation.find(session[:reservation_id]).reservation_items.first.rental_item_id != nil %>
+      <% reservation_items = Reservation.find(session[:reservation_id]).reservation_items %>
+      <% if reservation_items.count > 0 %> 
+        <% if reservation_items.first.rental_item_id != nil %>
           <p><%= submit_tag "Back to Reservation Summary", class:"btn-sm details-button" %></p>
+        <% end %>
       <% end %>
     <% end %>
 </div>
