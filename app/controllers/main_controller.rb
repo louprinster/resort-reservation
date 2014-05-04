@@ -103,14 +103,8 @@ def intro_post
       @reservation_item.adults     = params["adults"].to_i
       @reservation_item.children   = params["children"].to_i
       @reservation_item.pets       = params["pets"].to_i
-      @start_date = params["start_date"].to_date.strftime("%a, %b %d, %Y")
-      if @reservation_category == "Boat"
-        @reservation_item.num_of_days = 1
-      elsif @reservation_category == "Cabin"
-        @end_date   = params["end_date"].to_date.strftime("%a, %b %d, %Y")
-      elsif @reservation_category == "Boat Slip"
-        @end_date == params["end_date"].to_date.strftime("%a, %b %d, %Y")
-      end    
+      @reservation_item.num_of_days = params["num_of_days"]
+      setup_dates_after_error
       flash.now[:error] = "Please choose a #{@reservation_category} type"
       render :reservation_intro and return
     else
