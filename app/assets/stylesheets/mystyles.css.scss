@@ -3,28 +3,19 @@
 }
 
 html {
-  background-color: #eee;
+  /*background-color: #eee;*/
+  height: 100%;
+  background-image: image-url("nickajacklake.jpg");
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-attachment: fixed;
 }
 body {
 
 /* Move down content because the fixed navbar is 50px tall */
   padding-top: 50px;
-
-  
   height: 100%;
-  
-  /* 
-  background-image: image-url("nickajacklake.jpg");
-  background-repeat: no-repeat;
-  background-position: top left;
-  background-attachment: fixed;
-  width: 760px;
-  margin: 20px auto;
-  background-color: white;
-  color: #4A3434;
-  border: 3px #ccc solid;
-  padding: 30px;*/
-  
+      
   font-family: Segoe UI,Helvetica,Arial,sans-serif;
   font-size: 10pt;
 }
