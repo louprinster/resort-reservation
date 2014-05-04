@@ -33,7 +33,7 @@ class ReservationItem < ActiveRecord::Base
   end
   
   def start_must_be_today_or_after
-    if self.start_date != nil
+    if self.start_date != nil && self.start_date != ""
       if self.start_date < Date.today
         errors.add(:start_date, "must be today or after")
       end
@@ -41,7 +41,7 @@ class ReservationItem < ActiveRecord::Base
   end
   
   def end_must_be_after_start_date
-    if self.end_date != nil
+    if self.end_date != nil && self.end_date != "" && self.start_date != nil && self.start_date != ""
       if self.end_date <= self.start_date
         errors.add(:end_date, "must be after Check-in")
       end

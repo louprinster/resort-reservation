@@ -99,10 +99,11 @@ def intro_post
     @reservation_category = session[:reservation_category]
     if params["reservation_subcategory"] == nil
       @reservation_item = ReservationItem.new
-      @start_date = params["start_date"].to_date.strftime("%a, %b %d, %Y")
+      @reservation_subcategory     = params["reservation_subcategory"]
       @reservation_item.adults     = params["adults"].to_i
       @reservation_item.children   = params["children"].to_i
       @reservation_item.pets       = params["pets"].to_i
+      @start_date = params["start_date"].to_date.strftime("%a, %b %d, %Y")
       if @reservation_category == "Boat"
         @reservation_item.num_of_days = 1
       elsif @reservation_category == "Cabin"
@@ -149,6 +150,16 @@ def intro_post
           session[:reservation_item_id] = @reservation_item.id
           redirect_to "/your_reservation" and return
         else
+          if params["start_date"] != ""
+            @start_date = params["start_date"].to_date.strftime("%a, %b %d, %Y")
+          end
+          if params["end_date"] != ""
+            if @reservation_category == "Cabin"
+              @end_date   = params["end_date"].to_date.strftime("%a, %b %d, %Y")
+            elsif @reservation_category == "Boat Slip"
+              @end_date == params["end_date"].to_date.strftime("%a, %b %d, %Y")
+            end
+          end    
           render :reservation_intro and return
         end
       end
@@ -194,7 +205,7 @@ def reservation_post
     
   elsif params["commit"] == "Check Availability"
     @reservation_category             = session[:reservation_category]
-    @reservation_subcategory          = params["reservation_subcategory"]
+    @reservation_subcategory          = params["reservation_subcategory"].titleize
     session[:reservation_subcategory] = params["reservation_subcategory"].titleize
           
     @reservation_item.category       = @reservation_category
@@ -205,9 +216,8 @@ def reservation_post
     @reservation_item.end_date       = params["end_date"]
     @reservation_item.num_of_days    = params["num_of_days"].to_i
 
-    @start_date = @reservation_item.start_date.strftime("%a, %b %d, %Y")
-
     if @reservation_item.save
+      @start_date = @reservation_item.start_date.strftime("%a, %b %d, %Y")
       if @reservation_category == "Cabin"
         @end_date   = @reservation_item.end_date.strftime("%a, %b %d, %Y")
         @reservation_item.num_of_days  = (@reservation_item.start_date...@reservation_item.end_date).count
@@ -224,7 +234,8 @@ def reservation_post
         render :your_reservation and return
       end
     else
-      render :your_reservation and return
+      setup_dates_after_error
+      render :reservation_intro and return
     end
                       
   elsif params["rental_item_id"] != nil
@@ -522,6 +533,19 @@ def contact
 end
 
 # SUBROUTINES =======================================================================
+
+def setup_dates_after_error
+  if params["start_date"] != ""
+    @start_date = params["start_date"].to_date.strftime("%a, %b %d, %Y")
+  end
+  if params["end_date"] != ""
+    if @reservation_category == "Cabin"
+      @end_date   = params["end_date"].to_date.strftime("%a, %b %d, %Y")
+    elsif @reservation_category == "Boat Slip"
+      @end_date == params["end_date"].to_date.strftime("%a, %b %d, %Y")
+    end
+  end    
+end
 
 def find_customer
   if session[:customer_id] != nil 

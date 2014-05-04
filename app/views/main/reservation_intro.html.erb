@@ -10,7 +10,8 @@
 <div class="container">
 <%= form_tag "/#{@reservation_category}/intro" do %>
 
-  <%= render partial: "search_reservation", locals: {reservation_category: @reservation_category, reservation_item: @reservation_item} %>
+  <%= render partial: "search_reservation", 
+        locals: {reservation_category: @reservation_category, reservation_item: @reservation_item} %>
     
   <%= render partial: "rental_type_intro", locals: {category: @reservation_category} %>
   

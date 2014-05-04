@@ -101,6 +101,7 @@
    $(document).ready(
     function() {
       $( "#start_date" ).datepicker({
+        defaultDate: "+0D",
         minDate: "+0D",
         changeMonth: true,
         numberOfMonths: 2,
@@ -110,7 +111,7 @@
         }
       });      
       $( "#end_date" ).datepicker({
-        defaultDate: "#start_date+2D",
+        defaultDate: "start_date+2D",
         minDate: "#start_date+1D",
         changeMonth: true,
         numberOfMonths: 2,
