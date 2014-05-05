@@ -14,6 +14,10 @@ ResortReservation::Application.routes.draw do
   get "/modify_confirmed_reservation/:last_name/:confirmation_num" => "main#modify_confirmed_reservation_get",
     as: "modify_confirmed_reservation"
   post "/modify_confirmed_reservation" => "main#modify_confirmed_reservation_post"
+  get  "/my_reservations"             => "main#my_reservations_get"
+  post "/my_reservations"             => "main#my_reservations_post"
+  get  "/my_profile"                  => "main#my_profile_get"
+  post "/my_profile"                  => "main#my_profile_post"
   
   get "/contact"                      => "main#contact"
   

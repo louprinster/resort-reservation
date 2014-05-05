@@ -1,7 +1,11 @@
 class MainController < ApplicationController
 
 before_filter do
-  session[:original_route] = request.path_info
+  if request.path_info == "/my_reservations" || request.path_info == "/my_profile"
+    session[:original_route] = "/"
+  else
+    session[:original_route] = request.path_info
+  end
   
   @logged_in_user = User.where(id: session[:logged_in_user_id]).first
   if @logged_in_user != nil && @logged_in_user.was_email_verified != true
@@ -524,6 +528,78 @@ end
 #====================================================================================
 
 def contact
+end
+
+#====================================================================================
+
+def my_reservations_get
+  email = User.find(session[:logged_in_user_id]).email
+  @customer = Customer.find_by(email: email)
+  if @customer == nil
+    flash[:info] = "You have no existing reservations. Please take this time to enter your profile information."
+    redirect_to "/my_profile" and return
+  else
+    @reservations = @customer.reservations.where(status: "confirmed")
+    if @reservations.count > 0
+      render :my_reservations and return
+    else
+     flash[:info] = "You have no confirmed reservations"
+     redirect_to "/" and return   
+    end 
+  end
+
+end
+
+def my_reservations_post
+  if params[:reservation_id] != nil
+    session[:reservation_id] = params[:reservation_id].to_i
+    customer = Customer.find(session[:logged_in_user_id])
+    session[:customer_id] = customer.id
+    redirect_to "/add_reservation_item" and return
+  elsif params[:commit] = "Done"
+    redirect_to "/" and return
+  end
+end
+  
+def my_profile_get
+  email = User.find(session[:logged_in_user_id]).email
+  @customer = Customer.find_by(email: email)
+  if @customer == nil
+    @customer = Customer.new
+    @customer.email = email
+    @u_s_states  = USState.order(:name).all
+  else
+    session[:customer_id] = @customer.id
+  end
+  render :my_profile and return
+end
+
+def my_profile_post
+  if params[:commit] == "Update"
+    find_customer
+    @customer.title       = params["title"]
+    @customer.first_name  = params["first_name"]
+    @customer.last_name   = params["last_name"]
+    @customer.address1    = params["address1"]
+    @customer.address2    = params["address2"]
+    @customer.city        = params["city"]
+    @customer.state       = params["state"]
+    @customer.zipcode     = params["zipcode"]
+    @customer.phone1      = params["phone1"]
+    @customer.phone2      = params["phone2"]
+    @customer.email       = params["email"]
+    if @customer.save == true
+      session[:customer_id] = @customer.id
+      redirect_to "/" and return
+    else
+      @reservation_items = Reservation.find(session[:reservation_id]).reservation_items
+      @u_s_states  = USState.order(:name).all
+      render :my_profile and return
+    end
+  elsif params[:commit] == "Cancel"
+    redirect_to "/" and return
+  end
+
 end
 
 # SUBROUTINES =======================================================================

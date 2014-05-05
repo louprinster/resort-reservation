@@ -1,0 +1,19 @@
+<div class="container">
+<div class="box" style="width:770px">
+
+<%= form_tag "/my_profile" do %>
+
+<h3 class="header-box">My Profile</h3>
+
+  <%= error_messages_for @customer, :header_message => nil, class:"error_message" %>
+
+  <%= render partial: "customer_form", locals: {customer: @customer} %>
+  <div class="pull-right">
+    <%= submit_tag "Cancel", class: "btn details-button" %>&nbsp;&nbsp;&nbsp;&nbsp;
+    <%= submit_tag "Update", class: "btn go-button" %>
+  </div><br><br>
+
+<% end %>
+
+</div>
+</div>

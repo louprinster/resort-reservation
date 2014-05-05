@@ -1,0 +1,52 @@
+        <div class="form-inline">
+          <div class="form-group <%= customer.errors[:title] != [] && "has-error" %>" style="width:100px">
+            <%= label_tag :title, "Title #{customer.errors[:title].join(", ")}", class: "control-label" %>
+            <%= select_tag "title", options_for_select(["Ms.", "Mr.", "Mrs.", "Dr."], customer.title), prompt: "Title", class: "form-control" %>
+          </div>
+          <div class="form-group <%= customer.errors[:first_name] != [] && "has-error" %>" style="width:300px">
+            <%= label_tag :first_name, "First Name #{customer.errors[:first_name].join(", ")}", class: "control-label" %>
+            <%= text_field_tag "first_name", customer.first_name, class: "form-control" %>
+          </div>&nbsp;&nbsp;
+          <div class="form-group <%= customer.errors[:last_name] != [] && "has-error" %>" style="width:300px">
+            <%= label_tag "last_name", "Last Name #{customer.errors[:last_name].join(", ")}", class: "control-label" %>
+            <%= text_field_tag "last_name", customer.last_name, class: "form-control" %>
+          </div>
+        </div><br>
+        <div class="form-group <%= customer.errors[:address1] != [] && "has-error" %>" style="width:500px">
+          <%= label_tag "address1", "Address 1 #{customer.errors[:address1].join(", ")}", class: "control-label" %>
+          <%= text_field_tag "address1", customer.address1, class: "form-control" %>
+        </div>
+        <div class="form-group <%= customer.errors[:address2] != [] && "has-error" %>" style="width:500px">
+          <%= label_tag "address2", "Address 2 #{customer.errors[:address2].join(", ")}", class: "control-label" %>
+          <%= text_field_tag "address2", customer.address2, class: "form-control" %>
+        </div>
+        <div class="form-inline">
+          <div class="form-group <%= customer.errors[:city] != [] && "has-error" %>" style="width:300px">
+            <%= label_tag "city", "City #{customer.errors[:city].join(", ")}", class: "control-label" %>
+            <%= text_field_tag "city", customer.city, class: "form-control" %>
+          </div>&nbsp;&nbsp;
+          <div class="form-group <%= customer.errors[:state] != [] && "has-error" %>" style="width:200px">
+            <%= label_tag "state", "State #{customer.errors[:state].join(", ")}", class: "control-label" %>
+            <%= select_tag "state", options_from_collection_for_select(
+                  USState.order(:id), :abbreviation, :name, customer.state),
+                  prompt: "Choose a state...", class: "form-control" %>
+          </div>&nbsp;&nbsp;
+          <div class="form-group <%= customer.errors[:zipcode] != [] && "has-error" %>" style="width:100px">
+            <%= label_tag "zipcode", "Zip Code #{customer.errors[:zipcode].join(", ")}", class: "control-label" %>
+            <%= text_field_tag "zipcode", customer.zipcode, class: "form-control" %>          
+          </div>
+        </div><br>
+        <div class="form-inline">
+          <div class="form-group <%= customer.errors[:phone1] != [] && "has-error" %>" style="width:200px">
+            <%= label_tag "phone1", "Phone 1 #{customer.errors[:phone1].join(", ")}", class: "control-label" %>
+            <%= text_field_tag "phone1", customer.phone1, placeholder: "xxx-xxx-xxxx", class: "form-control" %>
+          </div>&nbsp;&nbsp;
+          <div class="form-group <%= customer.errors[:phone2] != [] && "has-error" %>" style="width:200px">
+            <%= label_tag "phone2", "Phone 2 #{customer.errors[:phone2].join(", ")}", class: "control-label" %>
+            <%= text_field_tag "phone2", customer.phone2, placeholder: "xxx-xxx-xxxx", class: "form-control" %>
+          </div>
+        </div><br>
+        <div class="form-group <%= customer.errors[:email] != [] && "has-error" %>" style="width:400px">
+          <%= label_tag "email", "Email #{customer.errors[:email].join(", ")}", class: "control-label" %>
+          <%= text_field_tag "email", customer.email, class: "form-control" %>
+        </div>

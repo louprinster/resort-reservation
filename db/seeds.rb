@@ -15,6 +15,7 @@
 
 Admin.create! username: "tom", password: "123", password_confirmation: "123"
 Admin.create! username: "deb", password: "234", password_confirmation: "234"
+User.create! email: "louprinster+1@gmail.com", password: "sue", password_confirmation: "sue"
 
 if RentalType.count == 0
 RentalType.create! \
@@ -349,12 +350,12 @@ end
 
 if Reservation.count == 0
 Reservation.create! \
-      confirmation_num: rand(99999999)+1,
+      confirmation_num: 11111111,
       customer_id:    1,
       status:         "confirmed"
 
 Reservation.create! \
-      confirmation_num: rand(99999999)+1,
+      confirmation_num: 22222222,
       customer_id:    1,
       status:         "confirmed"
 else
@@ -364,33 +365,52 @@ end
 if ReservationItem.count == 0
 ReservationItem.create! \
       category:       "Cabin",
-      start_date:     Date.new(2014, 06, 01),
-      end_date:       Date.new(2014, 06, 05),
-      num_of_days:    4,
+      subcategory:    "Land",
+      start_date:     Date.new(2014, 06, 06),
+      end_date:       Date.new(2014, 06, 20),
+      num_of_days:    14,
       adults:         2,
-      children:       2,
-      pets:           1,
-      ave_rate:       100.0,
-      subtotal:       400.0,
-      tax:            10,
-      total:          410.0,
+      children:       0,
+      pets:           0,
+      ave_rate:       114.21,
+      subtotal:       1600.0,
+      tax:            276.0,
+      total:          1876.0,
       rental_item_id: 1,
       reservation_id: 1,
       status:         "confirmed"
 
 ReservationItem.create! \
-      category:       "Cabin",
-      start_date:     Date.new(2014, 06, 10),
-      end_date:       Date.new(2014, 06, 14),
-      num_of_days:    3,
+      category:       "Boat",
+      subcategory:    "Deck",
+      start_date:     Date.new(2014, 06, 07),
+      end_date:       Date.new(2014, 06, 9),
+      num_of_days:    2,
       adults:         2,
-      children:       2,
-      pets:           1,
-      ave_rate:       100.0,
-      subtotal:       300.0,
-      tax:            10,
-      total:          310.0,
-      rental_item_id: 1,
+      children:       0,
+      pets:           0,
+      ave_rate:       337.5,
+      subtotal:       675.0,
+      tax:            116.44,
+      total:          791.44,
+      rental_item_id: 17,
+      reservation_id: 1,
+      status:         "confirmed"
+
+
+ReservationItem.create! \
+      category:       "Cabin",
+      start_date:     Date.new(2014, 07, 16),
+      end_date:       Date.new(2014, 07, 21),
+      num_of_days:    5,
+      adults:         2,
+      children:       4,
+      pets:           0,
+      ave_rate:       220.0,
+      subtotal:       1100.0,
+      tax:            189.75,
+      total:          1289.75,
+      rental_item_id: 15,
       reservation_id: 2,
       status:         "confirmed"
             
@@ -401,32 +421,68 @@ end
 if Rate.count == 0
 Rate.create! \
       reservation_item_id: 1,
-      date:     Date.new(2014, 06, 01),
+      date:     Date.new(2014, 06, 06),
+      amount:   150.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 06, 07),
+      amount:   150.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 06, 8),
       amount:   100.0
 Rate.create! \
       reservation_item_id: 1,
-      date:     Date.new(2014, 06, 02),
-      amount:   100.0
-Rate.create! \
-      reservation_item_id: 1,
-      date:     Date.new(2014, 06, 03),
-      amount:   100.0
-Rate.create! \
-      reservation_item_id: 1,
-      date:     Date.new(2014, 06, 04),
+      date:     Date.new(2014, 06, 9),
       amount:   100.0
 Rate.create! \
       reservation_item_id: 2,
       date:     Date.new(2014, 06, 10),
       amount:   100.0
 Rate.create! \
-      reservation_item_id: 2,
+      reservation_item_id: 1,
       date:     Date.new(2014, 06, 11),
       amount:   100.0
 Rate.create! \
-      reservation_item_id: 2,
+      reservation_item_id: 1,
       date:     Date.new(2014, 06, 12),
       amount:   100.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 06, 13),
+      amount:   150.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 06, 14),
+      amount:   150.0
+Rate.create! \
+      reservation_item_id: 2,
+      date:     Date.new(2014, 06, 15),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 06, 16),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 06, 17),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 06, 18),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 1,
+      date:     Date.new(2014, 06, 19),
+      amount:   100.0
+Rate.create! \
+      reservation_item_id: 2,
+      date:     Date.new(2014, 06, 07),
+      amount:   350.0
+Rate.create! \
+      reservation_item_id: 2,
+      date:     Date.new(2014, 06, 8),
+      amount:   325.0
 
 else 
   puts "Already created rates"
@@ -445,7 +501,7 @@ Customer.create! \
       zipcode:    "91107",
       phone1:     "123-123-1234",
       phone2:     nil,
-      email:      "sueblue@gmail.com"
+      email:      "louprinster+1@gmail.com"
       
 Customer.create! \
       title:      "Mr.",
@@ -458,7 +514,7 @@ Customer.create! \
       zipcode:    "91107",
       phone1:     "123-123-1234",
       phone2:     nil,
-      email:      "joesmith@gmail.com"      
+      email:      "louprinster+2@gmail.com"      
 else
   puts "Already created customer"
 end

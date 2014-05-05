@@ -32,21 +32,19 @@ class UserController < ApplicationController
     @user.email_verification_token = rand(10 ** 8)
     if @user.save == true
       session[:logged_in_user_id] = @user.id
-      flash[:success] = "Your account has been created"
+      flash[:success] = "Your account has been created."
 
       link = verify_email_url(@user.id, @user.email_verification_token)
       
       Pony.mail(
         to:        @user.email,
-        subject:   "Thanks for registering",
+        subject:   "Nickajack Resort email verification",
         body:      "Please click the following link to verify your email address: #{link}",
-        html_body: "Please click <a href='#{link}'>here</a> to verify your email address."
+        html_body: "Thanks for registering with Nickajack Marina and Resorts. Please click <a href='#{link}'>here</a> to verify your email address."
       )
 
       session[:logged_in_user_id] = @user.id
-
       determine_route
-#       redirect_to user_index_path and return
     else
       render :new and return
     end
@@ -61,7 +59,6 @@ class UserController < ApplicationController
       flash[:error] = "Wrong email or password"
     end
       determine_route
-#       redirect_to user_index_path and return
   end
 
   def logout
