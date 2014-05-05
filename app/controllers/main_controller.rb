@@ -98,6 +98,12 @@ end
 def intro_post
 
   if params[:commit] == "Back to Reservation Summary"
+#     if session[:reservation_item_id] != nil
+#       res_item = ReservationItem.find(session[:reservation_item_id])
+#       if res_item.rental_item_id == nil
+#         res_item.destroy!
+#       end
+#     end
     redirect_to "/add_reservation_item" and return
   elsif params[:commit] == "Check Availability"
     @reservation_category = session[:reservation_category]
@@ -169,11 +175,11 @@ end
 #================================================================================
 
 def reservation_get
-
     @reservation_category     = session[:reservation_category]
     @reservation_subcategory  = session[:reservation_subcategory]
-
     @reservation_item = ReservationItem.find(session[:reservation_item_id])
+    @reservation_item.category = @reservation_category
+    @reservation_item.subcategory = @reservation_subcategory
     @start_date = @reservation_item.start_date.strftime("%a, %b %d, %Y")
     @end_date   = @reservation_item.end_date.strftime("%a, %b %d, %Y")
 
@@ -190,12 +196,15 @@ def reservation_get
 end
 
 def reservation_post
-  
   @reservation_item = ReservationItem.find(session[:reservation_item_id])
 
   if params[:commit] == "Back to Reservation Summary"
-    res_item = ReservationItem.find(session[:reservation_item_id])
-    res_item.destroy!
+    if session[:reservation_item_id] != nil
+      res_item = ReservationItem.find(session[:reservation_item_id])
+      if res_item.rental_item_id == nil
+        res_item.destroy!
+      end
+    end
     redirect_to "/add_reservation_item" and return
   elsif params["commit"] == "Cancel"  
     @res_item_id = session[:reservation_item_id]
@@ -207,6 +216,7 @@ def reservation_post
     session[:reservation_subcategory] = params["reservation_subcategory"].titleize
           
     @reservation_item.category       = @reservation_category
+    @reservation_item.subcategory    = @reservation_subcategory
     @reservation_item.start_date     = params["start_date"]
     @reservation_item.adults         = params["adults"].to_i
     @reservation_item.children       = params["children"].to_i
