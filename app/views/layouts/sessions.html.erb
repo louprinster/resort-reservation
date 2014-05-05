@@ -35,6 +35,8 @@
           </div><!--/.navbar-collapse -->
       </div><!-- container-->
     </div><!--navbar-->
+
+  <div class="page-wrap">
   
     <% if flash[:error] != nil %>
       <div class="alert alert-danger">
@@ -58,12 +60,11 @@
     <% end %>
     
     <%= yield %>
-    
-    <br clear="all">   
-    <hr>
-    <footer style="padding:30px; background-color:#B5ADA5">
-      <p>&copy; Lou Prinster 2014</p>
-    </footer>
+  </div>
+  <br clear="all">   
+  <footer class="site-footer"">
+    <p>&copy; Lou Prinster 2014</p>
+  </footer>
 
 
   <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js" type="text/javascript"></script> 

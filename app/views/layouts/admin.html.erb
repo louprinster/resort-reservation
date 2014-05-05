@@ -55,9 +55,8 @@
     </div><!-- container-->
   </div><!--navbar-->
 
-  <div id="wrap">
-    <div id="main" class="container clear-top">
-  
+  <div class="page-wrap">
+    <div class="container">  
         <% if flash[:error] != nil %>
           <div class="alert alert-danger">
             <%= flash[:error] %>
@@ -81,13 +80,12 @@
   
 
          <%= yield %>
-    
       </div>
     </div>   
     
     <br clear="all">
        
-    <footer class="footer">
+    <footer class="site-footer">
       <p>&copy; Lou Prinster 2014</p>
     </footer>
 

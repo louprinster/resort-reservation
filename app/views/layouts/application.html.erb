@@ -25,15 +25,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Nickajack Marina & Resort</a>
+          <a class="navbar-brand" href="/">Nickajack Marina & Resort</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
             <li><a href="/cabin/intro">Cabin Rentals</a>
             <li><a href="/boat/intro">Boat Rentals</a>
             <!--<li><a href="/boat_slip/intro">Boat Slips</a>-->
-            <li><a href="/contact">Contact</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <% if session[:logged_in_user_id] != nil %>
+              <li><a href="/my_reservations">My Reservations</a></li>
+              <li><a href="/my_profile">My Profile</a></li>
+            <% end %>
           </ul>
         
         <div class="navbar-right" style="color:silver">
@@ -44,7 +47,7 @@
          <% else %>
             <%= form_tag logout_path do %>
               You are logged in as <b><%= User.where(id: session[:logged_in_user_id]).first.email %>&nbsp;&nbsp;
-              <button type="submit" class="btn btn-info navbar-btn">Logout</button>
+              <button type="submit" class="btn details-button navbar-btn">Logout</button>
             <% end %>
         <% end %>
       </div>   
