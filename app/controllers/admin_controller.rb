@@ -12,6 +12,9 @@ class AdminController < ApplicationController
   end
 
   def index
+    session[:reservation_id] = nil
+    session[:customer_id] = nil
+    session[:logged_in_user_id] = nil
     render :index and return
   end
 
