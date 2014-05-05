@@ -20,9 +20,9 @@ def rental_type_search
   max_occupancy = @rental_types.order(:max_occupancy).last.max_occupancy  
   
   if total_guests > max_occupancy
-    flash.now[:info] = 
-      "Capacity of our largest #{@reservation_subcategory} #{@reservation_category} 
-          is #{max_occupancy}."
+#     flash.now[:info] = 
+#       "Capacity of our largest #{@reservation_subcategory} #{@reservation_category} 
+#           is #{max_occupancy}."
     @available_rental_types = {}
     
   else 
@@ -226,14 +226,17 @@ def reservation_post
       @rental_types = RentalType.where(category: @reservation_category, subcategory: @reservation_subcategory)
       @available_rental_types = rental_type_search
       if @available_rental_types == {}
-        flash.now[:info] = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy. Try different dates, or reserve more than one #{@reservation_category}."
-        render :reservation_intro and return
+#         flash.now[:info] = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy. Try different dates, or reserve more than one #{@reservation_category}."
+#         render :reservation_intro and return
+        @message = "No #{@reservation_subcategory} #{@reservation_category}s are available for this date range or occupancy. Try different dates, or reserve more than one #{@reservation_category}."
+        render :your_reservation and return
       else
         render :your_reservation and return
       end
     else
       setup_dates_after_error
-      render :reservation_intro and return
+#       render :reservation_intro and return
+      render :your_reservation and return
     end
                       
   elsif params["rental_item_id"] != nil
