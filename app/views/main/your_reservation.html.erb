@@ -6,6 +6,10 @@
           locals: {reservation_category: @reservation_category, reservation_item: @reservation_item} %>
     
   <div style="padding:20px; margin:20px 20px 20px 280px" class="box">
+
+    <% if @message != nil %>
+      <%= @message %>
+    <% end %>
     
     <% if @available_rental_types != nil %>
 
