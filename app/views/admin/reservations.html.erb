@@ -1,14 +1,14 @@
-<%= form_tag "/admin/reservations" do %>
+<%= form_tag "/my_reservations" do %>
 
 <div class="container">
 <div class="admin-box">
+  <h3 class="header-box"> Manage Reservations </h3>
 
-  <h3> Manage Reservations </h3>
-    
-  <% @customers.order(:last_name).each do |c| %>
-      <% reservations = Reservation.where(customer_id: c.id, status: "confirmed") %>
+     <% @customers.order(:last_name).each do |c| %>
+     
+      <% reservations = c.reservations.where(status: "confirmed") %>
 
-      <% if reservations.count > 0 %>
+      <!--<% if reservations.count > 0 %>-->
         <p><div style="background-color:#CBE8BA;padding:10px">Customer: <%= "#{c.title} #{c.first_name} #{c.last_name}" %></div></p>
 
         <% reservations.order(:id).each do |r| %>
@@ -56,9 +56,8 @@
             <% end %> <!-- res_item loop -->
           </table>
         <% end %><!-- reservation loop -->
-      <% end %><!-- if confirmed reservations exist %>
-  <% end %><!-- customer loop -->
-      
+      <!--<% end %>--><!-- if confirmed reservations exist %>
+   <% end %><!-- customer loop -->     
 </div>
 </div>
 <% end %>

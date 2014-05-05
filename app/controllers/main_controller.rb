@@ -621,6 +621,7 @@ def find_customer
   if session[:customer_id] != nil 
     @customer = Customer.find(session[:customer_id])
   elsif session[:logged_in_user_id] != nil
+  
     user = User.find(session[:logged_in_user_id])
     @customer = Customer.find_by(email: user.email)
     if @customer == nil

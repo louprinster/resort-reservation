@@ -10,6 +10,7 @@
         <th>Baths</th>
       <% end %>
       <th>Max<br>Occ</th>
+      <th>No.<br>Units</th>
       <th style="width:400px">Description</th>
       <th>Weekday<br>Rate</th>
       <th>Weekend<br>Rate</th>
@@ -25,11 +26,12 @@
           <td><%= r.num_baths %></td>
         <% end %>
         <td><%= r.max_occupancy %></td>
+        <td><%= r.rental_items.count %></td>
         <td style="width:400px; text-align:left"><%= r.description %></td>
         <td><%= "$#{sprintf('%.2f', r.weekday_rate)}" %></td>
         <td><%= "$#{sprintf('%.2f', r.weekend_rate)}" %></td>
         <td style="text-align:left">
-          <p><a type="button" class="btn-sm details-button" href="/rentalitems_index/<%= "#{r.id}" %>">View Rental Items</a></p>
+          <!--<p><a type="button" class="btn-sm details-button" href="/rentalitems_index/<%= "#{r.id}" %>">View Rental Items</a></p>-->
           <p><a type="button" class="btn-sm go-button" href="/<%= "#{@category}" %>/<%= "#{r.id}" %>/edit" %>Edit <%= "#{@category}" %></a></p>
           <p><%= link_to "Delete", "/#{@category}/#{r.id}/delete", data: { confirm: 'Are you sure?' }, class: "btn-sm stop-button" %>
         </td>

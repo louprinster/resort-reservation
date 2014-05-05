@@ -1,0 +1,50 @@
+<div class="admin-box">
+
+<h3>Manage <%= "#{@category}" %> Rental Items</h3>
+  
+  
+    <% @rental_types.order(:id).each do |rental_type| %>
+  
+      <div style="background-color:#CBE8BA;padding:10px;font-weight:bold">
+      <% if rental_type.category = "Cabin" %>
+        <%= rental_type.num_bedrooms %> bdrm, <%= rental_type.num_baths %> bath 
+      <% end %>  
+      <%= rental_type.subcategory %> <%= rental_type.category %>s
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      Max Occupancy: <%= rental_type.max_occupancy %>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      Weekday Rate: <%= "$#{sprintf('%.2f', rental_type.weekday_rate)}" %>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      Weekend Rate: <%= "$#{sprintf('%.2f', rental_type.weekend_rate)}" %>
+      </div> 
+      
+      <table class="table table-bordered">
+        <tr>
+          <th>Unit No.</th>
+          <th>Status</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+        <% rental_type.rental_items.order(:id).each do |rental_item| %>
+          <tr style="font-weight:normal">
+            <td><%= rental_item.name %></td>
+            <td><%= rental_item.status %></td>
+            <td><%= rental_item.notes %></td>
+            <td><p>
+                <%= link_to "View Reservations", "/rentalitem/#{rental_item.id}/reservations", class: "btn-sm details-button" %>
+                &nbsp;&nbsp;
+                <a type="button" class="btn-sm go-button" href="/rentalitem/<%= "#{rental_item.id}" %>/edit">Edit</a>
+                &nbsp;&nbsp;
+                <%= link_to "Delete", "/rentalitem/#{rental_item.id}/delete", data: { confirm: 'Are you sure?' }, class: "btn-sm stop-button" %>
+                </p>
+            </td>
+          </tr>
+        <% end %><!-- rental item loop -->
+      </table>
+
+    <% end %><!-- rental type loop -->
+
+
+
+      
+</div>

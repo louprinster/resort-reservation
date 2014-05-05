@@ -204,4 +204,17 @@ class AdminController < ApplicationController
     end
   end
 
+#=================================================================================
+
+  def rentalitems_index
+    @category = params[:category]
+    @category = "Cabin"
+    @rental_types = RentalType.where(category: @category)
+    render :rentalitems and return
+  end
+  
+  def rentalitem_edit
+    
+  end
+
 end

@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20140428180642) do
     t.integer "rental_type_id"
     t.string  "bed_config"
     t.string  "status"
+    t.text    "notes"
   end
 
   create_table "rental_types", force: true do |t|

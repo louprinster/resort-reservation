@@ -53,12 +53,20 @@ ResortReservation::Application.routes.draw do
   get  "/customer/new"          => "admin#customer_new"
   post "/customer/create"       => "admin#customer_create"
   get  "/customer/:id/delete"   => "admin#customer_destroy"
-  get  "customer/:id/reservations" => "admin#customer_reservations"
+  get  "/customer/:id/reservations" => "admin#customer_reservations"
     
   get  "/admin/reservations"    => "admin#reservations_index"
   post "/admin/reservations"    => "admin#reservations_index_post"
   get "/reservation/:id/edit"   => "admin#reservation_edit"
   get "/reservation/:id/delete" => "admin#reservation_destroy"
+
+  get  "/rentalitems/:id"     => "admin#rentalitems_index"
+  get  "/rentalitem/:id/edit"   => "admin#rentalitem_edit"
+  post "/rentalitem/:id/update" => "admin#rentalitem_update"
+  get  "/rentalitem/new"        => "admin#rentalitem_new"
+  post "/rentalitem/create"     => "admin#rentalitem_create"
+  get  "/rentalitem/:id/delete" => "admin#rentalitem_destroy"
+  get  "/rentalitem/:id/reservations" => "admin#customer_reservations"
   
   get  "/admin/:category"       => "admin#category_index"
   get  "/:category/:id/edit"    => "admin#category_edit"
@@ -66,10 +74,7 @@ ResortReservation::Application.routes.draw do
   get  "/:category/new"         => "admin#category_new"
   post "/:category/create"      => "admin#category_create"
   get  "/:category/:id/delete"  => "admin#category_delete"
-  
-  get  "/admin/rentalitems"     => "admin#rentalitem_index"
-  
-  
+  get  "/:category/:id/rentalitems" => "admin#catgory_rentalitems"
   
 end
 

@@ -5,6 +5,7 @@ class RentalItems < ActiveRecord::Migration
       t.integer :rental_type_id
       t.string  :bed_config
       t.string  :status
+      t.text    :notes
     end
   end
 end
