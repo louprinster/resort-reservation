@@ -623,14 +623,17 @@ def find_customer
   elsif session[:logged_in_user_id] != nil
     user = User.find(session[:logged_in_user_id])
     @customer = Customer.find_by(email: user.email)
-    session[:customer_id] = @customer.id
     if @customer == nil
       @customer = Customer.new
+    else
+      session[:customer_id] = @customer.id
     end
   elsif @email != nil
     @customer = Customer.find_by(email: @email)
     if @customer == nil
       @customer = Customer.new
+    else
+      session[:customer_id] = @customer.id
     end
   else
     @customer = Customer.new
