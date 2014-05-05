@@ -89,7 +89,7 @@ class AdminController < ApplicationController
     customer = Customer.find(params[:id])
     reservations = customer.reservations.where(status: "confirmed")
     if reservations.count > 0
-      flash[:warning] = "This customer has confirmed reservations. Delete reservations first."
+      flash.now[:warning] = "This customer has confirmed reservations. Delete reservations first."
       @customers = Customer.order(:last_name)
       @u_s_states  = USState.order(:name).all
       render :customers and return
